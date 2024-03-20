@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
+import VerifyEmail from "./pages/verifyEmail/verifyEmail";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
 import { useState, useEffect } from "react";
@@ -13,25 +14,48 @@ import { Navigate } from "react-router-dom";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const App = () => {
-  const [user, setUser] = useState(null);
-
+  const [emailVerified, setEmailVerified] = useState(false);
+  const [email, setEmail] = useState(null);
+  const [user, setUser] = useState();
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    onAuthStateChanged(auth, (user) => {
       setUser(user);
-      console.log(user);
+      if (!user) {
+        setEmail(null);
+        setUser(user);
+        setEmailVerified(false);
+      }
+      if (user) {
+        setEmailVerified(user.emailVerified);
+        setEmail(user.email);
+      }
     });
+  }, [email, user]);
 
-    return () => unsubscribe();
-  }, []);
+  const emailVerification = (emailVerified) => {
+    console.log(user);
+    if (emailVerified) {
+      return <Navigate to="/" />;
+    }
+    if (user && !emailVerified) {
+      auth.signOut();
+      return <Navigate to="/verifyEmail" />;
+    }
+    if (!user) {
+      return <Login />;
+    }
+  };
+
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
           <Route
-            path="/login"
-            element={user ? <Navigate to="/" /> : <Login />}
+            path="/"
+            element={email ? <Home /> : <Navigate to="/login" />}
           />
+          <Route path="/login" element={emailVerification(emailVerified)} />
+          <Route path="/verifyEmail" element={<VerifyEmail />} />
         </Routes>
       </BrowserRouter>
     </Provider>

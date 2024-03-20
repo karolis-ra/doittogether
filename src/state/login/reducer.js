@@ -6,6 +6,7 @@ import { collection, getDocs } from "firebase/firestore";
 const initialState = {
   userSetUp: false,
   userAccountInfo: {},
+  loggedInUser: {},
 };
 
 export const loginSlice = createSlice({
@@ -14,14 +15,16 @@ export const loginSlice = createSlice({
   reducers: {
     registerUser: (state, { payload }) => {
       if (!state.userSetUp) {
-        console.log("email and pass registered");
         state.userAccountInfo = payload;
         state.userSetUp = true;
       }
     },
+    loginUser: (state, { payload }) => {
+      state.loggedInUser = payload;
+    },
   },
 });
 
-export const { registerUser } = loginSlice.actions;
+export const { registerUser, loginUser } = loginSlice.actions;
 
 export default loginSlice.reducer;
