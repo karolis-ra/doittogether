@@ -16,6 +16,10 @@ import {
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../firebase/clientApp";
+import { DefaultButton } from "../../components/DefaultButton";
+import { FlexWrapper } from "../../components/FlexWrapper";
+import styled from "styled-components";
+import { COLORS } from "../../styles/colors";
 
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
@@ -35,7 +39,6 @@ export default function Login() {
   };
 
   const handleLogin = async (e) => {
-    console.log("hello");
     e.preventDefault();
     signInWithEmailAndPassword(
       auth,
@@ -62,24 +65,6 @@ export default function Login() {
       });
   };
 
-  const handleFacebookLogin = async (e) => {
-    e.preventDefault();
-    await signInWithPopup(auth, facebookProvider)
-      .then((result) => {
-        const user = result.user;
-        const credential = FacebookAuthProvider.credentialFromResult(result);
-        const accessToken = credential.accessToken;
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error.customData.email;
-        const credential = FacebookAuthProvider.credentialFromError(error);
-
-        // ...
-      });
-  };
-
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     // dispatch(registerUser(emailAndPassword));
@@ -88,9 +73,7 @@ export default function Login() {
       e.target.email.value,
       e.target.password.value
     );
-    await sendEmailVerification(auth.currentUser).then(() => {
-      console.log("email sent");
-    });
+    await sendEmailVerification(auth.currentUser).then(() => {});
   };
 
   useEffect(() => {
@@ -110,27 +93,65 @@ export default function Login() {
   };
 
   return (
-    <div>
-      {}
-      <form onSubmit={login ? handleLogin : handleFormSubmit}>
-        <label>email</label>
-        <input id="email" type="email" />
-        <label>password</label>
-        <input id="password" type="string" />
-        <button>{login ? "Login" : "SignUp"}</button>
-      </form>
-      <form onSubmit={handleGoogleLogin}>
-        <button>google login</button>
-      </form>
-      <form onSubmit={handleFacebookLogin}>
-        <button>Facebook login</button>
-      </form>
-      <button onClick={login ? setSignUp : setLogIn}>
-        {login
-          ? "Dont have an account? SignUp"
-          : "Already have an account? Login"}
-      </button>
-      <button onClick={logout}>logout</button>
-    </div>
+    <StyledWrap>
+      <FlexWrapper
+        flexDirection="column"
+        justifyContent="center"
+        margin="0 auto"
+      >
+        <StyledForm onSubmit={login ? handleLogin : handleFormSubmit}>
+          <FlexWrapper flexDirection="column" gap="20px">
+            <StyledInput id="email" type="email" placeholder="El.Paštas" />
+            <StyledInput
+              id="password"
+              type="password"
+              placeholder="Slaptažodis"
+            />
+            <DefaultButton>
+              {login ? "Prisijungti" : "Registruotis"}
+            </DefaultButton>
+          </FlexWrapper>
+        </StyledForm>
+        {/* <DefaultButton onClick={handleGoogleLogin}>google login</DefaultButton> */}
+        <FlexWrapper justifyContent="space-between" padding="20px 0">
+          <QuestionBlock>
+            {login ? "Dar neturi paskyros?" : "Turi paskyrą?"}
+          </QuestionBlock>
+          <StyledAction onClick={login ? setSignUp : setLogIn}>
+            {login ? "Sukurti paskyrą" : "Prisijunk"}
+          </StyledAction>
+        </FlexWrapper>
+      </FlexWrapper>
+    </StyledWrap>
   );
 }
+
+const StyledForm = styled.form`
+  min-width: 280px;
+`;
+
+const StyledWrap = styled.div`
+  display: flex;
+  height: 100vh;
+`;
+
+const StyledInput = styled.input`
+  border: none;
+  border-bottom: 1px solid ${COLORS.gray};
+  padding: 10px;
+  font-size: 16px;
+  &:focus {
+    border: none;
+    border-bottom: 1px solid ${COLORS.gray};
+  }
+`;
+
+const QuestionBlock = styled.div`
+  font-size: 12px;
+  color: ${COLORS.black};
+`;
+
+const StyledAction = styled.a`
+  font-size: 12px;
+  color: ${COLORS.blue};
+`;
