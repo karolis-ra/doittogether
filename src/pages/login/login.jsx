@@ -1,33 +1,28 @@
 import React from "react";
 import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { loginSelector } from "../../state/login/selector";
-import { registerUser } from "../../state/login/reducer";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../state/login/reducer";
 import { useState } from "react";
 import {
-  getAuth,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  FacebookAuthProvider,
   signInWithPopup,
   sendEmailVerification,
   onAuthStateChanged,
 } from "firebase/auth";
 import { auth } from "../../firebase/clientApp";
-import { DefaultButton } from "../../components/DefaultButton";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
 
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
-  const facebookProvider = new FacebookAuthProvider();
 
   const [login, setLogin] = useState(true);
+  const [success, setSuccess] = useState(true);
+  const [wrongPass, setWrongPass] = useState(false);
 
-  const { userAccountInfo, userSetUp } = useSelector(loginSelector);
   const dispatch = useDispatch();
 
   const setSignUp = () => {
@@ -44,9 +39,17 @@ export default function Login() {
       auth,
       e.target.email.value,
       e.target.password.value
-    ).then((userCredential) => {
-      const user = userCredential.user;
-    });
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        if (error) {
+          setSuccess(false);
+        }
+      });
   };
 
   const handleGoogleLogin = async (e) => {
@@ -67,13 +70,17 @@ export default function Login() {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    // dispatch(registerUser(emailAndPassword));
-    await createUserWithEmailAndPassword(
-      auth,
-      e.target.email.value,
-      e.target.password.value
-    );
-    await sendEmailVerification(auth.currentUser).then(() => {});
+    if (e.target.password.value === e.target.password_copy.value) {
+      setWrongPass(false);
+      await createUserWithEmailAndPassword(
+        auth,
+        e.target.email.value,
+        e.target.password.value
+      );
+      await sendEmailVerification(auth.currentUser).then(() => {});
+    } else {
+      setWrongPass(true);
+    }
   };
 
   useEffect(() => {
@@ -95,25 +102,46 @@ export default function Login() {
   return (
     <StyledWrap>
       <FlexWrapper
-        flexDirection="column"
-        justifyContent="center"
+        flexdirection="column"
+        justifycontent="center"
         margin="0 auto"
       >
         <StyledForm onSubmit={login ? handleLogin : handleFormSubmit}>
-          <FlexWrapper flexDirection="column" gap="20px">
+          <FlexWrapper flexdirection="column" gap="20px">
             <StyledInput id="email" type="email" placeholder="El.Paštas" />
             <StyledInput
               id="password"
               type="password"
               placeholder="Slaptažodis"
             />
-            <DefaultButton>
-              {login ? "Prisijungti" : "Registruotis"}
-            </DefaultButton>
+            {!login && (
+              <StyledInput
+                id="password_copy"
+                type="password"
+                placeholder="Pakartokite slaptažodį"
+              />
+            )}
+            {!success && <ErrorMsg>Neteisingi prisijungimo duomenis</ErrorMsg>}
+            {wrongPass && <ErrorMsg>Slaptažodžiai nesutampa</ErrorMsg>}
+            <LoginButton>{login ? "Prisijungti" : "Registruotis"}</LoginButton>
+            {login && (
+              <FlexWrapper
+                gap="20px"
+                onClick={handleGoogleLogin}
+                cursor="pointer"
+                justifycontent="center"
+                padding="10px"
+                border="1px solid gray"
+                borderRadius="5px"
+              >
+                <GoogleImg src="/images/login/ggl_icon.png" />
+                <StyledLoginText>Prisijunk su Google</StyledLoginText>
+              </FlexWrapper>
+            )}
           </FlexWrapper>
         </StyledForm>
         {/* <DefaultButton onClick={handleGoogleLogin}>google login</DefaultButton> */}
-        <FlexWrapper justifyContent="space-between" padding="20px 0">
+        <FlexWrapper justifycontent="space-between" padding="20px 0">
           <QuestionBlock>
             {login ? "Dar neturi paskyros?" : "Turi paskyrą?"}
           </QuestionBlock>
@@ -152,6 +180,31 @@ const QuestionBlock = styled.div`
 `;
 
 const StyledAction = styled.a`
+  cursor: pointer;
   font-size: 12px;
   color: ${COLORS.blue};
+`;
+
+const ErrorMsg = styled.div`
+  font-size: 12px;
+  color: ${COLORS.red};
+`;
+
+const LoginButton = styled.button`
+  background-color: ${COLORS.saladGreen};
+  color: ${COLORS.white};
+  padding: 14px 0;
+  border: none;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+`;
+
+const GoogleImg = styled.img`
+  width: 25px;
+`;
+
+const StyledLoginText = styled.div`
+  color: ${COLORS.black};
 `;

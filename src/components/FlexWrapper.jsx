@@ -11,11 +11,11 @@ export const FlexWrapper = styled.div`
   margin-bottom: ${(props) => props.marginBottom};
   margin-bottom: ${(props) => props.marginBottom};
   gap: ${(props) => props.gap || "0"};
-  flex-direction: ${(props) => props.flexDirection || "row"};
+  flex-direction: ${(props) => props.flexdirection || "row"};
   gap: ${(props) => props.gap};
   background-color: ${(props) => props.backgroundColor};
   border: ${(props) => props.border};
-  justify-content: ${(props) => props.justifyContent};
+  justify-content: ${(props) => props.justifycontent};
   padding: ${(props) => props.padding};
   align-items: ${(props) => props.alignItems};
   align-self: ${(props) => props.alignSelf};
@@ -31,4 +31,5 @@ export const FlexWrapper = styled.div`
   background-position: center;
   background-color: ${(props) => props.bgColor};
   z-index: ${(props) => props.zIndex};
+  cursot: ${(props) => props.cursor};
 `;

@@ -8,7 +8,8 @@ export const DefaultButton = styled(Link)`
   text-decoration: none;
   width:100%;
   text-align: center;
-  color: ${(props) => (props.reverse === 1 ? COLORS.saladGreen : COLORS.white)};
+  color: ${(props) =>
+    props.$reverse === 1 ? COLORS.saladGreen : COLORS.white};
   font-weight: 600;
   background-color: ${(props) =>
     props.reverse === 1 ? COLORS.white : COLORS.saladGreen};
@@ -19,7 +20,7 @@ export const DefaultButton = styled(Link)`
   &:hover {
     background-color: ${(props) =>
       props.reverse === 1 ? COLORS.brown : COLORS.saladGreen};
-      color: ${(props) =>
-        props.reverse === 1 ? COLORS.saladGreen : COLORS.white};
+    color: ${(props) =>
+      props.reverse === 1 ? COLORS.saladGreen : COLORS.white};
   }
 `;
