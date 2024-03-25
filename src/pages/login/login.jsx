@@ -22,7 +22,7 @@ export default function Login() {
   const [login, setLogin] = useState(true);
   const [success, setSuccess] = useState(true);
   const [wrongPass, setWrongPass] = useState(false);
-
+  const [emailUsed, setEmailUsed] = useState(false);
   const dispatch = useDispatch();
 
   const setSignUp = () => {
@@ -76,8 +76,18 @@ export default function Login() {
         auth,
         e.target.email.value,
         e.target.password.value
-      );
-      await sendEmailVerification(auth.currentUser).then(() => {});
+      )
+        .then(() => {})
+        .catch((error) => {
+          if (error.code === "auth/email-already-in-use") {
+            setEmailUsed(true);
+          }
+        });
+      await sendEmailVerification(auth.currentUser)
+        .then(() => {})
+        .catch((error) => {
+          console.log(error.code);
+        });
     } else {
       setWrongPass(true);
     }
@@ -102,12 +112,12 @@ export default function Login() {
   return (
     <StyledWrap>
       <FlexWrapper
-        flexdirection="column"
-        justifycontent="center"
-        margin="0 auto"
+        $flexDirection="column"
+        $justifyContent="center"
+        $margin="0 auto"
       >
         <StyledForm onSubmit={login ? handleLogin : handleFormSubmit}>
-          <FlexWrapper flexdirection="column" gap="20px">
+          <FlexWrapper $flexDirection="column" $gap="20px">
             <StyledInput id="email" type="email" placeholder="El.Paštas" />
             <StyledInput
               id="password"
@@ -123,16 +133,19 @@ export default function Login() {
             )}
             {!success && <ErrorMsg>Neteisingi prisijungimo duomenis</ErrorMsg>}
             {wrongPass && <ErrorMsg>Slaptažodžiai nesutampa</ErrorMsg>}
-            <LoginButton>{login ? "Prisijungti" : "Registruotis"}</LoginButton>
+            {emailUsed && <ErrorMsg>El.pašto adresas yra užimtas</ErrorMsg>}
+            <LoginButton type="submit">
+              {login ? "Prisijungti" : "Registruotis"}
+            </LoginButton>
             {login && (
               <FlexWrapper
-                gap="20px"
+                $cursor="pointer"
+                $gap="20px"
                 onClick={handleGoogleLogin}
-                cursor="pointer"
-                justifycontent="center"
-                padding="10px"
-                border="1px solid gray"
-                borderRadius="5px"
+                $justifyContent="center"
+                $padding="10px"
+                $border="1px solid gray"
+                $borderRadius="5px"
               >
                 <GoogleImg src="/images/login/ggl_icon.png" />
                 <StyledLoginText>Prisijunk su Google</StyledLoginText>
@@ -141,7 +154,7 @@ export default function Login() {
           </FlexWrapper>
         </StyledForm>
         {/* <DefaultButton onClick={handleGoogleLogin}>google login</DefaultButton> */}
-        <FlexWrapper justifycontent="space-between" padding="20px 0">
+        <FlexWrapper $justifyContent="space-between" $padding="20px 0">
           <QuestionBlock>
             {login ? "Dar neturi paskyros?" : "Turi paskyrą?"}
           </QuestionBlock>
@@ -183,6 +196,10 @@ const StyledAction = styled.a`
   cursor: pointer;
   font-size: 12px;
   color: ${COLORS.blue};
+  transition: 0.3s ease-in-out;
+  &:hover {
+    color: ${COLORS.hoverBlue};
+  }
 `;
 
 const ErrorMsg = styled.div`
@@ -199,6 +216,10 @@ const LoginButton = styled.button`
   font-size: 16px;
   border-radius: 5px;
   cursor: pointer;
+  transition: 0.3s ease-in-out;
+  &:hover {
+    background-color: ${COLORS.hoverGreen};
+  }
 `;
 
 const GoogleImg = styled.img`

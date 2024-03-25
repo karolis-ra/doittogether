@@ -4,29 +4,31 @@ import { doItTogether } from "../../firebase/clientApp";
 import { collection, getDocs } from "firebase/firestore";
 
 const initialState = {
-  testD: [],
+  questions: [],
+  test: [],
 };
 
-export const fetchData = createAsyncThunk("data/fetchData", async () => {
-  const colRef = collection(doItTogether, "test");
+export const fetchQuestions = createAsyncThunk("data/fetchData", async () => {
+  const colRef = collection(doItTogether, "profile_form");
   let items = [];
   await getDocs(colRef).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
-      items.push({ ...doc.data(), id: doc.id });
+      items = doc.data();
     });
   });
   return items;
 });
 
-export const homeSlice = createSlice({
-  name: "home",
+export const profileForm = createSlice({
+  name: "profileForm",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchData.fulfilled, (state, { payload }) => {
-      state.testD = payload;
+    builder.addCase(fetchQuestions.fulfilled, (state, { payload }) => {
+      console.log(payload.klausimai);
+      state.questions = payload.klausimai;
     });
   },
 });
 
-export default homeSlice.reducer;
+export default profileForm.reducer;

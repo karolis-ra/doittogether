@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import homeReducer from "./home/reducer";
 import loginReducer from "./login/reducer";
+import profileFormReducer from "./profileForm/reducer";
 
 export const store = configureStore({
   reducer: {
-    home: homeReducer,
     login: loginReducer,
+    profileForm: profileFormReducer,
   },
 });

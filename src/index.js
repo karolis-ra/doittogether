@@ -5,12 +5,14 @@ import "./index.css";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
 import VerifyEmail from "./pages/verifyEmail/verifyEmail";
+import { ProfileForm } from "./pages/profileForm/profileForm";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
 import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/clientApp";
 import { Navigate } from "react-router-dom";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 const App = () => {
@@ -24,18 +26,16 @@ const App = () => {
         setEmail(null);
         setUser(user);
         setEmailVerified(false);
-      }
-      if (user) {
+      } else {
         setEmailVerified(user.emailVerified);
         setEmail(user.email);
       }
     });
-  }, [email, user]);
+  }, []);
 
   const emailVerification = (emailVerified) => {
-    console.log(user);
     if (emailVerified) {
-      return <Navigate to="/" />;
+      return <Navigate to="/profileForm" />;
     }
     if (user && !emailVerified) {
       auth.signOut();
@@ -56,6 +56,7 @@ const App = () => {
           />
           <Route path="/login" element={emailVerification(emailVerified)} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
+          <Route path="/profileForm" element={<ProfileForm />} />
         </Routes>
       </BrowserRouter>
     </Provider>
