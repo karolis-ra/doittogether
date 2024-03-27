@@ -9,9 +9,16 @@ import { FlexWrapper } from "../../components/FlexWrapper";
 import { useState } from "react";
 import { OptionBlock } from "../../components/OptionBlock";
 import { AnswerBlock } from "../../components/AnswerBlock";
+import { DefaultInput } from "../../components/DefaultInput";
+import { SubmitButton } from "../../components/SubmitButton";
 
 export const ProfileForm = () => {
   const [disciplines, setDisciplines] = useState([]);
+  const [gender, setGender] = useState("vyras");
+
+  const handleGenderSelection = (e) => {
+    setGender(e.target.value);
+  };
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -71,31 +78,14 @@ export const ProfileForm = () => {
               </FlexWrapper>
             );
           }
-          // PASIRINKIMAI PRIKLAUSOMI NUO PRIMOJO KLAUSIMO
           {
-            if (index === 1 && disciplines.length > 0) {
+            if (
+              (index === 1 || index === 2 || index === 3) &&
+              disciplines.length > 0
+            ) {
               return (
                 <AnswerBlock
-                  singleQuestion={singleQuestion}
-                  disciplines={disciplines}
-                />
-              );
-            }
-          }
-          {
-            if (index === 2 && disciplines.length > 0) {
-              return (
-                <AnswerBlock
-                  singleQuestion={singleQuestion}
-                  disciplines={disciplines}
-                />
-              );
-            }
-          }
-          {
-            if (index === 3 && disciplines.length > 0) {
-              return (
-                <AnswerBlock
+                  key={index}
                   singleQuestion={singleQuestion}
                   disciplines={disciplines}
                 />
@@ -103,6 +93,41 @@ export const ProfileForm = () => {
             }
           }
         })}
+        <FlexWrapper $flexDirection="column" $width="100%">
+          <StyledTitle>Asmeninė informacija</StyledTitle>
+          <StyledSubtitle>Lytis</StyledSubtitle>
+          <FlexWrapper>
+            <label>
+              <input
+                type="radio"
+                value="vyras"
+                checked={gender === "vyras"}
+                onClick={handleGenderSelection}
+                readOnly
+              />
+              Vyras
+            </label>
+            <label>
+              <input
+                type="radio"
+                value="moteris"
+                checked={gender === "moteris"}
+                onClick={handleGenderSelection}
+                readOnly
+              />
+              Moteris
+            </label>
+          </FlexWrapper>
+          <FlexWrapper $flexDirection="column">
+            <StyledSubtitle>Amžius</StyledSubtitle>
+            <DefaultInput type="number" id="age" placeholder="Amžius" />
+          </FlexWrapper>
+          <FlexWrapper $flexDirection="column">
+            <StyledSubtitle>Miestas</StyledSubtitle>
+            <DefaultInput type="string" id="city" placeholder="Miestas" />
+          </FlexWrapper>
+          <SubmitButton>Pateikti</SubmitButton>
+        </FlexWrapper>
       </FlexWrapper>
     </CenterWrap>
   );

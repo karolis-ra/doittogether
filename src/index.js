@@ -5,7 +5,7 @@ import "./index.css";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
 import VerifyEmail from "./pages/verifyEmail/verifyEmail";
-import { ProfileForm } from "./pages/profileForm/profileForm";
+import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
 import { useState, useEffect } from "react";
@@ -35,7 +35,7 @@ const App = () => {
 
   const emailVerification = (emailVerified) => {
     if (emailVerified) {
-      return <Navigate to="/profileForm" />;
+      return <Navigate to="/profileQuiz" />;
     }
     if (user && !emailVerified) {
       auth.signOut();
@@ -56,7 +56,7 @@ const App = () => {
           />
           <Route path="/login" element={emailVerification(emailVerified)} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
-          <Route path="/profileForm" element={<ProfileForm />} />
+          <Route path="/profileQuiz" element={<ProfileQuiz />} />
         </Routes>
       </BrowserRouter>
     </Provider>

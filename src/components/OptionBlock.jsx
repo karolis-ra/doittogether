@@ -3,7 +3,6 @@ import { useState } from "react";
 
 export const OptionBlock = ({
   index,
-  key,
   type,
   id,
   value,

@@ -13,6 +13,8 @@ import {
 } from "firebase/auth";
 import { auth } from "../../firebase/clientApp";
 import { FlexWrapper } from "../../components/FlexWrapper";
+import { DefaultInput } from "../../components/DefaultInput";
+import { SubmitButton } from "../../components/SubmitButton";
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
 
@@ -118,14 +120,14 @@ export default function Login() {
       >
         <StyledForm onSubmit={login ? handleLogin : handleFormSubmit}>
           <FlexWrapper $flexDirection="column" $gap="20px">
-            <StyledInput id="email" type="email" placeholder="El.Paštas" />
-            <StyledInput
+            <DefaultInput id="email" type="email" placeholder="El.Paštas" />
+            <DefaultInput
               id="password"
               type="password"
               placeholder="Slaptažodis"
             />
             {!login && (
-              <StyledInput
+              <DefaultInput
                 id="password_copy"
                 type="password"
                 placeholder="Pakartokite slaptažodį"
@@ -134,9 +136,9 @@ export default function Login() {
             {!success && <ErrorMsg>Neteisingi prisijungimo duomenis</ErrorMsg>}
             {wrongPass && <ErrorMsg>Slaptažodžiai nesutampa</ErrorMsg>}
             {emailUsed && <ErrorMsg>El.pašto adresas yra užimtas</ErrorMsg>}
-            <LoginButton type="submit">
+            <SubmitButton type="submit">
               {login ? "Prisijungti" : "Registruotis"}
-            </LoginButton>
+            </SubmitButton>
             {login && (
               <FlexWrapper
                 $cursor="pointer"
@@ -176,17 +178,6 @@ const StyledWrap = styled.div`
   height: 100vh;
 `;
 
-const StyledInput = styled.input`
-  border: none;
-  border-bottom: 1px solid ${COLORS.gray};
-  padding: 10px;
-  font-size: 16px;
-  &:focus {
-    border: none;
-    border-bottom: 1px solid ${COLORS.gray};
-  }
-`;
-
 const QuestionBlock = styled.div`
   font-size: 12px;
   color: ${COLORS.black};
@@ -205,21 +196,6 @@ const StyledAction = styled.a`
 const ErrorMsg = styled.div`
   font-size: 12px;
   color: ${COLORS.red};
-`;
-
-const LoginButton = styled.button`
-  background-color: ${COLORS.saladGreen};
-  color: ${COLORS.white};
-  padding: 14px 0;
-  border: none;
-  font-weight: 600;
-  font-size: 16px;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: 0.3s ease-in-out;
-  &:hover {
-    background-color: ${COLORS.hoverGreen};
-  }
 `;
 
 const GoogleImg = styled.img`
