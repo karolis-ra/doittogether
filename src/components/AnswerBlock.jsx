@@ -2,59 +2,32 @@ import { OptionBlock } from "./OptionBlock";
 import { FlexWrapper } from "./FlexWrapper";
 import styled from "styled-components";
 import { useState } from "react";
-import { updateProfile } from "firebase/auth";
+import { setUserActivities } from "../state/profileForm/reducer";
+import { useDispatch, useSelector } from "react-redux";
+import { profileFormSelector } from "../state/profileForm/selector";
 
 export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   const [options, setOption] = useState({});
-  const [answers, setAnswers] = useState([]);
+  const dispatch = useDispatch();
 
-  const handleChange = (e, singleQuestion, singleDisc) => {
-    const newValue = e.target.value;
+  const { userInfo } = useSelector(profileFormSelector);
+
+  const handleChange = (e, singleQuestion, discipline) => {
+    let user_answer = {};
+    user_answer.title = singleQuestion.title;
+    user_answer.discipline = discipline;
+    user_answer.value = e.target.value;
+    dispatch(setUserActivities(user_answer));
+
+    console.log("this is user info", userInfo);
     //option uniqueness function
     setOption((prevAnswers) => ({
       ...prevAnswers,
       [singleQuestion.title]: {
         ...prevAnswers[singleQuestion.title],
-        [singleDisc]: e.target.value,
+        [discipline]: e.target.value,
       },
     }));
-
-    setAnswers((prevAnswers) => {
-      const existingIndex = prevAnswers.findIndex(
-        (answer) =>
-          answer.title === singleQuestion.title &&
-          answer.discipline === singleDisc
-      );
-
-      if (existingIndex !== -1) {
-        // If the answer exists, update only that object
-        const updatedAnswers = prevAnswers.map((answer, index) => {
-          if (index === existingIndex) {
-            return {
-              ...answer,
-              answer: newValue,
-            };
-          }
-          return answer;
-        });
-        return updatedAnswers;
-      } else {
-        // If the answer doesn't exist, add a new object to the array
-        return [
-          ...prevAnswers,
-          {
-            title: singleQuestion.title,
-            discipline: singleDisc,
-            answer: newValue,
-          },
-        ];
-      }
-    });
-    console.log(answers);
-    // const updatedAnswers = {};
-    // updatedAnswers.title = singleQuestion.title;
-    // updatedAnswers.discipline = singleDisc;
-    // updatedAnswer.answer = e.target.value;
   };
 
   return (

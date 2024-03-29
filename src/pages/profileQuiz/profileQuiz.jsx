@@ -24,6 +24,11 @@ export const ProfileQuiz = () => {
     setCurrentQuestionIndex(currentQuestionIndex + 1);
   };
 
+  const handleBack = () => {
+    setAnswered([...answered, currentQuestionIndex]);
+    setCurrentQuestionIndex(currentQuestionIndex - 1);
+  };
+
   const handleInputOption = (e) => {
     const value = e.target.value;
     const discIndex = disciplines.indexOf(value);
@@ -89,7 +94,46 @@ export const ProfileQuiz = () => {
               </>
             )}
 
+            {currentQuestionIndex === 4 && (
+              <>
+                {
+                  <FlexWrapper>
+                    <StyledSubtitle>
+                      {questions[currentQuestionIndex].title}
+                    </StyledSubtitle>
+                    {questions[currentQuestionIndex].variants.map(
+                      (singleVariant) => {
+                        return (
+                          <label>
+                            <input type="radio" value={singleVariant} />
+                            {singleVariant}
+                          </label>
+                        );
+                      }
+                    )}
+                  </FlexWrapper>
+                }
+              </>
+            )}
+
+            {currentQuestionIndex >= 5 && currentQuestionIndex <= 6 && (
+              <>
+                {
+                  <FlexWrapper>
+                    <StyledSubtitle>
+                      {questions[currentQuestionIndex].title}
+                    </StyledSubtitle>
+                    <input
+                      key={questions[currentQuestionIndex].title}
+                      id={questions[currentQuestionIndex].title}
+                    />
+                  </FlexWrapper>
+                }
+              </>
+            )}
+
             <button onClick={handleAnswer}>Submit Answer</button>
+            <button onClick={handleBack}>back</button>
           </FlexWrapper>
         )}
       </FlexWrapper>
