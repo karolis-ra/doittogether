@@ -5,28 +5,31 @@ import { fetchQuestions } from "../../state/profileForm/reducer";
 import { CenterWrap } from "../../components/CenterWrap";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { AnswerBlock } from "../../components/AnswerBlock";
+import { setUserGender, setUserAgeCity } from "../../state/profileForm/reducer";
 import styled from "styled-components";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
+  const [cqIndex, setCurrentQuestionIndex] = useState(0);
   const [disciplines, setDisciplines] = useState([]);
+  const [selectedGender, setSelectedGender] = useState(null);
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(fetchQuestions());
   }, []);
 
-  const { questions } = useSelector(profileFormSelector);
+  const { questions, userInfo } = useSelector(profileFormSelector);
 
   const handleAnswer = () => {
-    setAnswered([...answered, currentQuestionIndex]);
-    setCurrentQuestionIndex(currentQuestionIndex + 1);
+    setAnswered([...answered, cqIndex]);
+    setCurrentQuestionIndex(cqIndex + 1);
   };
 
   const handleBack = () => {
-    setAnswered([...answered, currentQuestionIndex]);
-    setCurrentQuestionIndex(currentQuestionIndex - 1);
+    setAnswered([...answered, cqIndex]);
+    setCurrentQuestionIndex(cqIndex - 1);
   };
 
   const handleInputOption = (e) => {
@@ -41,7 +44,18 @@ export const ProfileQuiz = () => {
       updatedDisciplines.push(value);
       setDisciplines(updatedDisciplines);
     }
-    console.log(disciplines);
+  };
+
+  const handleGenderChange = (value) => {
+    setSelectedGender(value);
+    dispatch(setUserGender(value));
+  };
+
+  const handleCityAge = (e, title) => {
+    const user_answer = {};
+    user_answer.value = e.target.value;
+    user_answer.title = title;
+    dispatch(setUserAgeCity(user_answer));
   };
 
   return (
@@ -53,79 +67,85 @@ export const ProfileQuiz = () => {
         $maxWidth="480px"
         $gap="30px"
       >
-        {currentQuestionIndex < questions.length && (
+        {cqIndex < questions.length && (
           <FlexWrapper
-            key={currentQuestionIndex}
+            key={cqIndex}
             $width="100%"
             $alignItems="center"
             $flexDirection="column"
           >
-            {currentQuestionIndex === 0 && (
+            {cqIndex === 0 && (
               <>
-                <StyledTitle>
-                  {questions[currentQuestionIndex].title}
-                </StyledTitle>
-                {questions[currentQuestionIndex].variants.map(
-                  (variant, index) => {
-                    return (
-                      <label key={index}>
-                        <input
-                          key={variant}
-                          type="checkbox"
-                          id={variant}
-                          value={variant}
-                          onClick={handleInputOption}
-                        />
-                        {variant}
-                      </label>
-                    );
-                  }
-                )}
+                <StyledTitle>{questions[cqIndex].title}</StyledTitle>
+                {questions[cqIndex].variants.map((variant, index) => {
+                  return (
+                    <label key={index}>
+                      <input
+                        key={variant}
+                        type="checkbox"
+                        id={variant}
+                        value={variant}
+                        onClick={handleInputOption}
+                      />
+                      {variant}
+                    </label>
+                  );
+                })}
               </>
             )}
-            {currentQuestionIndex >= 1 && currentQuestionIndex <= 3 && (
+            {cqIndex >= 1 && cqIndex <= 3 && (
               <>
                 {
                   <AnswerBlock
-                    singleQuestion={questions[currentQuestionIndex]}
+                    singleQuestion={questions[cqIndex]}
                     disciplines={disciplines}
                   />
                 }
               </>
             )}
 
-            {currentQuestionIndex === 4 && (
+            {cqIndex === 4 && (
               <>
                 {
                   <FlexWrapper>
-                    <StyledSubtitle>
-                      {questions[currentQuestionIndex].title}
-                    </StyledSubtitle>
-                    {questions[currentQuestionIndex].variants.map(
-                      (singleVariant) => {
-                        return (
-                          <label>
-                            <input type="radio" value={singleVariant} />
-                            {singleVariant}
-                          </label>
-                        );
-                      }
-                    )}
+                    <StyledSubtitle>{questions[cqIndex].title}</StyledSubtitle>
+                    {questions[cqIndex].variants.map((singleVariant, index) => {
+                      return (
+                        <label key={index}>
+                          <input
+                            type="radio"
+                            name="gender"
+                            value={singleVariant}
+                            onChange={(e) => handleGenderChange(e.target.value)}
+                          />
+                          {singleVariant}
+                        </label>
+                      );
+                    })}
                   </FlexWrapper>
                 }
               </>
             )}
 
-            {currentQuestionIndex >= 5 && currentQuestionIndex <= 6 && (
+            {cqIndex >= 5 && cqIndex <= 6 && (
               <>
                 {
                   <FlexWrapper>
-                    <StyledSubtitle>
-                      {questions[currentQuestionIndex].title}
-                    </StyledSubtitle>
+                    <StyledSubtitle>{questions[cqIndex].title}</StyledSubtitle>
                     <input
-                      key={questions[currentQuestionIndex].title}
-                      id={questions[currentQuestionIndex].title}
+                      onChange={(e) =>
+                        handleCityAge(e, questions[cqIndex].title)
+                      }
+                      key={questions[cqIndex].title}
+                      id={questions[cqIndex].title}
+                      type={
+                        questions[cqIndex].title === "Amžius"
+                          ? "number"
+                          : "text"
+                      }
+                      maxLength={
+                        questions[cqIndex].title === "Amžius" ? "2" : "15"
+                      }
                     />
                   </FlexWrapper>
                 }

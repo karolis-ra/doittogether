@@ -42,6 +42,19 @@ export const profileForm = createSlice({
         userInfo.activities[discipline] = { [title]: value };
       }
     },
+    setUserGender: (state, { payload }) => {
+      const userInfo = state.userInfo;
+      userInfo.gender = payload;
+    },
+    setUserAgeCity: (state, { payload }) => {
+      const userInfo = state.userInfo;
+      const { value, title } = payload;
+      if (title === "Amžius") {
+        userInfo.age = value;
+      } else {
+        userInfo.city = value;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchQuestions.fulfilled, (state, { payload }) => {
@@ -51,6 +64,7 @@ export const profileForm = createSlice({
   },
 });
 
-export const { setUserActivities } = profileForm.actions;
+export const { setUserActivities, setUserGender, setUserAgeCity } =
+  profileForm.actions;
 
 export default profileForm.reducer;
