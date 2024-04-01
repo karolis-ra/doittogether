@@ -1,18 +1,27 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { profileFormSelector } from "../../state/profileForm/selector";
+import { loginSelector } from "../../state/login/selector";
 import { fetchQuestions } from "../../state/profileForm/reducer";
 import { CenterWrap } from "../../components/CenterWrap";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { AnswerBlock } from "../../components/AnswerBlock";
-import { setUserGender, setUserAgeCity } from "../../state/profileForm/reducer";
+import { Navigate } from "react-router";
+import {
+  setUserGender,
+  setUserAgeCity,
+  setCqIndex,
+  setQuizDone,
+  setUserPersonalInfo,
+} from "../../state/profileForm/reducer";
 import styled from "styled-components";
+import { AnswerBtn } from "../../components/AnswerBtn";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
-  const [cqIndex, setCurrentQuestionIndex] = useState(0);
   const [disciplines, setDisciplines] = useState([]);
   const [selectedGender, setSelectedGender] = useState(null);
+  const [cont, setCont] = useState();
 
   const dispatch = useDispatch();
 
@@ -20,33 +29,51 @@ export const ProfileQuiz = () => {
     dispatch(fetchQuestions());
   }, []);
 
-  const { questions, userInfo } = useSelector(profileFormSelector);
+  const { questions, cqIndex, quizDone } = useSelector(profileFormSelector);
+
+  const { loggedInUser } = useSelector(loginSelector);
 
   const handleAnswer = () => {
     setAnswered([...answered, cqIndex]);
-    setCurrentQuestionIndex(cqIndex + 1);
+    if (cont) {
+      dispatch(setCqIndex(1));
+      setCont(false);
+    }
+
+    if (cqIndex + 1 === questions.length) {
+      dispatch(setUserPersonalInfo(loggedInUser));
+      dispatch(setQuizDone(true));
+    }
   };
 
   const handleBack = () => {
     setAnswered([...answered, cqIndex]);
-    setCurrentQuestionIndex(cqIndex - 1);
+    dispatch(setCqIndex(-1));
+    setCont(true);
   };
 
   const handleInputOption = (e) => {
     const value = e.target.value;
     const discIndex = disciplines.indexOf(value);
-    if (discIndex !== -1) {
-      const updatedDisciplines = [...disciplines];
-      updatedDisciplines.splice(discIndex, 1);
-      setDisciplines(updatedDisciplines);
-    } else {
-      let updatedDisciplines = [...disciplines];
-      updatedDisciplines.push(value);
-      setDisciplines(updatedDisciplines);
+    if (value) {
+      if (discIndex !== -1) {
+        const updatedDisciplines = [...disciplines];
+        updatedDisciplines.splice(discIndex, 1);
+        setDisciplines(updatedDisciplines);
+        if (updatedDisciplines.length === 0) {
+          setCont(false);
+        }
+      } else {
+        let updatedDisciplines = [...disciplines];
+        updatedDisciplines.push(value);
+        setDisciplines(updatedDisciplines);
+        setCont(true);
+      }
     }
   };
 
   const handleGenderChange = (value) => {
+    setCont(true);
     setSelectedGender(value);
     dispatch(setUserGender(value));
   };
@@ -56,7 +83,12 @@ export const ProfileQuiz = () => {
     user_answer.value = e.target.value;
     user_answer.title = title;
     dispatch(setUserAgeCity(user_answer));
+    setCont(true);
   };
+
+  if (quizDone) {
+    return <Navigate to="/home" />;
+  }
 
   return (
     <CenterWrap>
@@ -86,6 +118,7 @@ export const ProfileQuiz = () => {
                         id={variant}
                         value={variant}
                         onClick={handleInputOption}
+                        defaultChecked={disciplines.includes(variant)}
                       />
                       {variant}
                     </label>
@@ -103,7 +136,6 @@ export const ProfileQuiz = () => {
                 }
               </>
             )}
-
             {cqIndex === 4 && (
               <>
                 {
@@ -126,7 +158,6 @@ export const ProfileQuiz = () => {
                 }
               </>
             )}
-
             {cqIndex >= 5 && cqIndex <= 6 && (
               <>
                 {
@@ -151,9 +182,16 @@ export const ProfileQuiz = () => {
                 }
               </>
             )}
-
-            <button onClick={handleAnswer}>Submit Answer</button>
-            <button onClick={handleBack}>back</button>
+            <div>
+              {[0, 4, 5, 6].includes(cqIndex) && (
+                <AnswerBtn onClick={handleAnswer} disabled={!cont}>
+                  PATEIKTI
+                </AnswerBtn>
+              )}
+              <button onClick={handleBack} disabled={cqIndex === 0}>
+                back
+              </button>
+            </div>
           </FlexWrapper>
         )}
       </FlexWrapper>

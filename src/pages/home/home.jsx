@@ -1,13 +1,16 @@
 import { auth } from "../../firebase/clientApp";
-
+import { useSelector } from "react-redux";
+import { profileFormSelector } from "../../state/profileForm/selector";
 export default function Home() {
   const logout = async () => {
     await auth.signOut();
   };
 
+  const { name } = useSelector(profileFormSelector);
+
   return (
     <div>
-      <div>this is home</div>
+      <div>Hello, {name} </div>
       <button onClick={logout}>logout</button>
     </div>
   );

@@ -99,6 +99,7 @@ export default function Login() {
     onAuthStateChanged(auth, (user) => {
       let userInfo = {};
       if (user) {
+        userInfo.ID = user.uid;
         userInfo.name = user.name;
         userInfo.email = user.email;
         userInfo.emailVerified = user.emailVerified;

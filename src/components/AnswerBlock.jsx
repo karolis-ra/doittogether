@@ -2,15 +2,14 @@ import { OptionBlock } from "./OptionBlock";
 import { FlexWrapper } from "./FlexWrapper";
 import styled from "styled-components";
 import { useState } from "react";
-import { setUserActivities } from "../state/profileForm/reducer";
+import { setUserActivities, setCqIndex } from "../state/profileForm/reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { profileFormSelector } from "../state/profileForm/selector";
+import { AnswerBtn } from "./AnswerBtn";
 
 export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   const [options, setOption] = useState({});
+  const [cont, setCont] = useState(false);
   const dispatch = useDispatch();
-
-  const { userInfo } = useSelector(profileFormSelector);
 
   const handleChange = (e, singleQuestion, discipline) => {
     let user_answer = {};
@@ -19,7 +18,6 @@ export const AnswerBlock = ({ singleQuestion, disciplines }) => {
     user_answer.value = e.target.value;
     dispatch(setUserActivities(user_answer));
 
-    console.log("this is user info", userInfo);
     //option uniqueness function
     setOption((prevAnswers) => ({
       ...prevAnswers,
@@ -28,6 +26,18 @@ export const AnswerBlock = ({ singleQuestion, disciplines }) => {
         [discipline]: e.target.value,
       },
     }));
+    const selectedDisciplines = Object.keys(
+      options[singleQuestion.title] || {}
+    );
+
+    setCont(
+      selectedDisciplines.length + 1 === disciplines.length ||
+        selectedDisciplines.length === disciplines.length
+    );
+  };
+
+  const handleAnswer = () => {
+    dispatch(setCqIndex(1));
   };
 
   return (
@@ -57,6 +67,7 @@ export const AnswerBlock = ({ singleQuestion, disciplines }) => {
           </FlexWrapper>
         );
       })}
+      <AnswerBtn disabled={!cont} onClick={handleAnswer} />
     </FlexWrapper>
   );
 };

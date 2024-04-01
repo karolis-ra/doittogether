@@ -19,6 +19,7 @@ const App = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const [email, setEmail] = useState(null);
   const [user, setUser] = useState();
+
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
@@ -50,13 +51,11 @@ const App = () => {
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route
-            path="/"
-            element={email ? <Home /> : <Navigate to="/login" />}
-          />
+          <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={emailVerification(emailVerified)} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
           <Route path="/profileQuiz" element={<ProfileQuiz />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </Provider>
