@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { doItTogether } from "../../firebase/clientApp";
-import { collection, getDocs } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  setDoc,
+  doc,
+  getDoc,
+} from "firebase/firestore";
 
 const initialState = {
   questions: [],
   test: [],
   cqIndex: 0,
-  quizSkipped: false,
-  quizDone: false,
   userInfo: {
     id: "",
     name: "",
@@ -17,6 +22,8 @@ const initialState = {
     city: "",
     age: "",
     activities: {},
+    quizDone: false,
+    quizSkipped: false,
   },
 };
 
@@ -31,22 +38,43 @@ export const fetchQuestions = createAsyncThunk("data/fetchData", async () => {
   return items;
 });
 
+export const fetchUser = createAsyncThunk(
+  "users/fetchUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const userDocRef = doc(doItTogether, "users", userId);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        return userDocSnap.data();
+      } else {
+        return rejectWithValue("User not found");
+      }
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 export const profileForm = createSlice({
   name: "profileForm",
   initialState,
   reducers: {
     setUserPersonalInfo: (state, { payload }) => {
       const { ID, name, email } = payload;
-      state.id = ID;
+      const userInfo = state.userInfo;
+      userInfo.id = ID;
+
       if (name) {
-        state.name = name;
+        userInfo.name = name;
       } else {
-        state.name = email;
+        userInfo.name = email;
       }
-      state.email = email;
+      userInfo.email = email;
+      userInfo.quizDone = true;
+      setDoc(doc(doItTogether, "users", ID), state.userInfo);
     },
     setCqIndex: (state, { payload }) => {
-      console.log("hello", payload);
       const currentQ = state.cqIndex;
       state.cqIndex = currentQ + payload;
     },
@@ -74,8 +102,8 @@ export const profileForm = createSlice({
         userInfo.city = value;
       }
     },
-    setQuizDone: (state, { payload }) => {
-      state.quizDone = payload;
+    setQuizSkipped: (state, { payload }) => {
+      state.userInfo.quizSkipped = payload;
     },
   },
   extraReducers: (builder) => {
@@ -83,6 +111,19 @@ export const profileForm = createSlice({
       console.log(payload.klausimai);
       state.questions = payload.klausimai;
     });
+    builder
+      // .addCase(fetchUser.pending, (state) => {
+      //   state.loading = true;
+      // })
+      .addCase(fetchUser.fulfilled, (state, { payload }) => {
+        // state.loading = false;
+        // state.user = payload;
+        state.userInfo = payload;
+        // state.error = null;
+      })
+      .addCase(fetchUser.rejected, (state, { payload }) => {
+        console.log("user not found");
+      });
   },
 });
 
@@ -91,7 +132,7 @@ export const {
   setUserGender,
   setUserAgeCity,
   setCqIndex,
-  setQuizDone,
+  setQuizSkipped,
   setUserPersonalInfo,
 } = profileForm.actions;
 

@@ -55,7 +55,7 @@ const App = () => {
           <Route path="/login" element={emailVerification(emailVerified)} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
           <Route path="/profileQuiz" element={<ProfileQuiz />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
         </Routes>
       </BrowserRouter>
     </Provider>

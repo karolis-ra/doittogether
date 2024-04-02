@@ -3,14 +3,15 @@ import { useSelector } from "react-redux";
 import { profileFormSelector } from "../../state/profileForm/selector";
 export default function Home() {
   const logout = async () => {
+    console.log("logout");
     await auth.signOut();
   };
 
-  const { name } = useSelector(profileFormSelector);
-
+  const { userInfo } = useSelector(profileFormSelector);
+  console.log(userInfo);
   return (
     <div>
-      <div>Hello, {name} </div>
+      <div>Hello, {userInfo.name} </div>
       <button onClick={logout}>logout</button>
     </div>
   );

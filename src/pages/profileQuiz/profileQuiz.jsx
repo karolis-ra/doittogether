@@ -29,7 +29,7 @@ export const ProfileQuiz = () => {
     dispatch(fetchQuestions());
   }, []);
 
-  const { questions, cqIndex, quizDone } = useSelector(profileFormSelector);
+  const { questions, cqIndex, userInfo } = useSelector(profileFormSelector);
 
   const { loggedInUser } = useSelector(loginSelector);
 
@@ -42,7 +42,6 @@ export const ProfileQuiz = () => {
 
     if (cqIndex + 1 === questions.length) {
       dispatch(setUserPersonalInfo(loggedInUser));
-      dispatch(setQuizDone(true));
     }
   };
 
@@ -86,7 +85,7 @@ export const ProfileQuiz = () => {
     setCont(true);
   };
 
-  if (quizDone) {
+  if (userInfo.quizDone) {
     return <Navigate to="/home" />;
   }
 

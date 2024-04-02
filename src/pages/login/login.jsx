@@ -17,6 +17,8 @@ import { DefaultInput } from "../../components/DefaultInput";
 import { SubmitButton } from "../../components/SubmitButton";
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
+import { setExistingUser } from "../../state/profileForm/reducer";
+import { fetchUser } from "../../state/profileForm/reducer";
 
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
@@ -103,6 +105,7 @@ export default function Login() {
         userInfo.name = user.name;
         userInfo.email = user.email;
         userInfo.emailVerified = user.emailVerified;
+        dispatch(fetchUser(user.uid));
       }
       dispatch(loginUser(userInfo));
     });
