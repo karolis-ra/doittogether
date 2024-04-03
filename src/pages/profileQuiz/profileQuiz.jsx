@@ -16,6 +16,9 @@ import {
 } from "../../state/profileForm/reducer";
 import styled from "styled-components";
 import { AnswerBtn } from "../../components/AnswerBtn";
+import { COLORS } from "../../styles/colors";
+import { SubmitButton } from "../../components/SubmitButton";
+import { StyledRadio } from "../../components/StyledRadio";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
@@ -99,99 +102,126 @@ export const ProfileQuiz = () => {
         $gap="30px"
       >
         {cqIndex < questions.length && (
-          <FlexWrapper
-            key={cqIndex}
-            $width="100%"
-            $alignItems="center"
-            $flexDirection="column"
-          >
-            {cqIndex === 0 && (
-              <>
-                <StyledTitle>{questions[cqIndex].title}</StyledTitle>
-                {questions[cqIndex].variants.map((variant, index) => {
-                  return (
-                    <label key={index}>
-                      <input
-                        key={variant}
-                        type="checkbox"
-                        id={variant}
-                        value={variant}
-                        onClick={handleInputOption}
-                        defaultChecked={disciplines.includes(variant)}
-                      />
-                      {variant}
-                    </label>
-                  );
-                })}
-              </>
-            )}
-            {cqIndex >= 1 && cqIndex <= 3 && (
-              <>
-                {
-                  <AnswerBlock
-                    singleQuestion={questions[cqIndex]}
-                    disciplines={disciplines}
-                  />
-                }
-              </>
-            )}
-            {cqIndex === 4 && (
-              <>
-                {
-                  <FlexWrapper>
-                    <StyledSubtitle>{questions[cqIndex].title}</StyledSubtitle>
-                    {questions[cqIndex].variants.map((singleVariant, index) => {
-                      return (
-                        <label key={index}>
-                          <input
-                            type="radio"
-                            name="gender"
-                            value={singleVariant}
-                            onChange={(e) => handleGenderChange(e.target.value)}
-                          />
-                          {singleVariant}
-                        </label>
-                      );
-                    })}
-                  </FlexWrapper>
-                }
-              </>
-            )}
-            {cqIndex >= 5 && cqIndex <= 6 && (
-              <>
-                {
-                  <FlexWrapper>
-                    <StyledSubtitle>{questions[cqIndex].title}</StyledSubtitle>
-                    <input
-                      onChange={(e) =>
-                        handleCityAge(e, questions[cqIndex].title)
-                      }
-                      key={questions[cqIndex].title}
-                      id={questions[cqIndex].title}
-                      type={
-                        questions[cqIndex].title === "Amžius"
-                          ? "number"
-                          : "text"
-                      }
-                      maxLength={
-                        questions[cqIndex].title === "Amžius" ? "2" : "15"
-                      }
-                    />
-                  </FlexWrapper>
-                }
-              </>
-            )}
-            <div>
-              {[0, 4, 5, 6].includes(cqIndex) && (
-                <AnswerBtn onClick={handleAnswer} disabled={!cont}>
-                  PATEIKTI
-                </AnswerBtn>
+          <>
+            <FlexWrapper
+              key={cqIndex}
+              $width="100%"
+              $alignItems="center"
+              $flexDirection="column"
+              $gap="15px"
+            >
+              {cqIndex === 0 && (
+                <>
+                  <StyledTitle>{questions[cqIndex].title}</StyledTitle>
+                  {questions[cqIndex].variants.map((variant, index) => {
+                    return (
+                      <FlexWrapper
+                        $border="1px solid gray"
+                        $width="220px"
+                        $padding="14px 8px"
+                        $borderRadius="5px"
+                        $gap="10px"
+                      >
+                        <StyledInput
+                          key={variant}
+                          type="checkbox"
+                          id={variant}
+                          value={variant}
+                          onClick={handleInputOption}
+                          defaultChecked={disciplines.includes(variant)}
+                        />
+                        <label key={index}>{variant}</label>
+                      </FlexWrapper>
+                    );
+                  })}
+                </>
               )}
-              <button onClick={handleBack} disabled={cqIndex === 0}>
-                back
-              </button>
-            </div>
-          </FlexWrapper>
+              {cqIndex >= 1 && cqIndex <= 3 && (
+                <>
+                  {
+                    <AnswerBlock
+                      singleQuestion={questions[cqIndex]}
+                      disciplines={disciplines}
+                    />
+                  }
+                </>
+              )}
+              {cqIndex === 4 && (
+                <>
+                  {
+                    <FlexWrapper
+                      $flexDirection="column"
+                      $alignSelf="flex-start"
+                      $gap="20px"
+                    >
+                      <StyledSubtitle>
+                        {questions[cqIndex].title}
+                      </StyledSubtitle>
+                      {questions[cqIndex].variants.map(
+                        (singleVariant, index) => {
+                          return (
+                            <FlexWrapper
+                              $border="1px solid gray"
+                              $width="220px"
+                              $padding="14px 8px"
+                              $borderRadius="5px"
+                              gap="10px"
+                            >
+                              <StyledRadioInput
+                                type="radio"
+                                name="gender"
+                                value={singleVariant}
+                                onChange={(e) =>
+                                  handleGenderChange(e.target.value)
+                                }
+                              />
+                              <label key={index}>{singleVariant}</label>
+                            </FlexWrapper>
+                          );
+                        }
+                      )}
+                    </FlexWrapper>
+                  }
+                </>
+              )}
+              {cqIndex >= 5 && cqIndex <= 6 && (
+                <>
+                  {
+                    <FlexWrapper $flexDirection="column">
+                      <StyledSubtitle>
+                        {questions[cqIndex].title}
+                      </StyledSubtitle>
+                      <StyledAgeCityInput
+                        onChange={(e) =>
+                          handleCityAge(e, questions[cqIndex].title)
+                        }
+                        key={questions[cqIndex].title}
+                        id={questions[cqIndex].title}
+                        type={
+                          questions[cqIndex].title === "Amžius"
+                            ? "number"
+                            : "text"
+                        }
+                        maxLength={
+                          questions[cqIndex].title === "Amžius" ? "2" : "15"
+                        }
+                      />
+                    </FlexWrapper>
+                  }
+                </>
+              )}
+            </FlexWrapper>
+            <FlexWrapper $width="220px" $flexDirection="column" $gap="20px">
+              {[0, 4, 5, 6].includes(cqIndex) && (
+                <SubmitButton onClick={handleAnswer} disabled={!cont}>
+                  PATEIKTI
+                </SubmitButton>
+              )}
+              <SubmitButton onClick={handleBack} disabled={cqIndex === 0}>
+                ATGAL
+              </SubmitButton>
+            </FlexWrapper>
+          </>
         )}
       </FlexWrapper>
     </CenterWrap>
@@ -210,4 +240,44 @@ const StyledSubtitle = styled.div`
   font-weight: 600;
   color: #000;
   font-size: 16px;
+`;
+
+const StyledInput = styled.input`
+  appearance: none;
+  width: 15px;
+  border: 1px solid ${COLORS.gray};
+  border-radius: 5px;
+  &:checked {
+    background-color: ${COLORS.saladGreen};
+    border: none;
+    transform-origin: bottom left;
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+`;
+
+const StyledRadioInput = styled.input`
+  appearance: none;
+  background-color: #fff;
+  font: inherit;
+  color: currentColor;
+  border: 1px solid ${COLORS.gray};
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  &:checked {
+    background-color: ${COLORS.saladGreen};
+    outline: max(2px, 2px) solid ${COLORS.gray};
+    outline-offset: max(2px, 2px);
+  }
+`;
+
+const StyledAgeCityInput = styled.input`
+  border: none;
+  border-bottom: 1px solid ${COLORS.gray};
+  padding: 10px;
+  font-size: 16px;
+  &:focus {
+    border: none;
+    border-bottom: 1px solid ${COLORS.gray};
+  }
 `;

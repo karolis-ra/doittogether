@@ -1,8 +1,12 @@
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 
-export const SubmitButton = ({ children, type, onClick }) => {
-  return <StyledButton type={type} onClick={onClick}>{children}</StyledButton>;
+export const SubmitButton = ({ children, type, onClick, disabled, margin }) => {
+  return (
+    <StyledButton type={type} onClick={onClick} disabled={disabled}>
+      {children}
+    </StyledButton>
+  );
 };
 
 const StyledButton = styled.button`
@@ -17,5 +21,8 @@ const StyledButton = styled.button`
   transition: 0.3s ease-in-out;
   &:hover {
     background-color: ${COLORS.hoverGreen};
+  }
+  &:disabled {
+    background-color: ${COLORS.gray};
   }
 `;

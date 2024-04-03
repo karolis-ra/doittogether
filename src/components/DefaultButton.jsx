@@ -6,7 +6,7 @@ export const DefaultButton = styled(Link)`
   padding: 10px 18px;
   border-radius: 8px;
   text-decoration: none;
-  width:${(props) => props.width};;
+  width:${(props) => props.width};
   text-align: center;
   color: ${(props) =>
     props.$reverse === 1 ? COLORS.saladGreen : COLORS.white};

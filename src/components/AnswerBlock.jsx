@@ -5,6 +5,7 @@ import { useState } from "react";
 import { setUserActivities, setCqIndex } from "../state/profileForm/reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { AnswerBtn } from "./AnswerBtn";
+import { SubmitButton } from "./SubmitButton";
 
 export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   const [options, setOption] = useState({});
@@ -41,14 +42,14 @@ export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   };
 
   return (
-    <FlexWrapper $flexDirection="column" $width="100%">
+    <FlexWrapper $flexDirection="column" $width="100%" $margin="0 0 -10px 0">
       <StyledTitle>{singleQuestion.title}</StyledTitle>
       {disciplines.map((singleDisc, index) => {
         const selected = options[singleQuestion.title]?.[singleDisc];
         return (
-          <FlexWrapper $flexDirection="column" key={index}>
+          <FlexWrapper $flexDirection="column" key={index} $margin="0 0 25px 0">
             <StyledSubtitle>{singleDisc}</StyledSubtitle>
-            <FlexWrapper $flexDirection="column">
+            <FlexWrapper $flexDirection="column" $gap="15px">
               {singleQuestion.variants.map((singleVariant, variantIndex) => (
                 <OptionBlock
                   key={variantIndex}
@@ -67,7 +68,13 @@ export const AnswerBlock = ({ singleQuestion, disciplines }) => {
           </FlexWrapper>
         );
       })}
-      <AnswerBtn disabled={!cont} onClick={handleAnswer} />
+      <SubmitButton
+        disabled={!cont}
+        onClick={handleAnswer}
+        $margin="30px 0 0 0"
+      >
+        PATEIKTI
+      </SubmitButton>
     </FlexWrapper>
   );
 };
