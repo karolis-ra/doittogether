@@ -5,6 +5,7 @@ import "./index.css";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
 import VerifyEmail from "./pages/verifyEmail/verifyEmail";
+import CreateEvent from "./pages/createEvent/createEvent";
 import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
@@ -55,6 +56,7 @@ const App = () => {
           <Route path="/login" element={emailVerification(emailVerified)} />
           <Route path="/verifyEmail" element={<VerifyEmail />} />
           <Route path="/profileQuiz" element={<ProfileQuiz />} />
+          <Route path="/createEvent" element={<CreateEvent />} />
           <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
         </Routes>
       </BrowserRouter>

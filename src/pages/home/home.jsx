@@ -1,5 +1,5 @@
 import { auth } from "../../firebase/clientApp";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { profileFormSelector } from "../../state/profileForm/selector";
 export default function Home() {
   const logout = async () => {
