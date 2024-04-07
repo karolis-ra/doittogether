@@ -6,8 +6,8 @@ export const SubmitButton = ({
   type,
   onClick,
   disabled,
-  margin,
-  color, // Include color prop here
+  hover,
+  color,
 }) => {
   return (
     <StyledButton
@@ -15,6 +15,7 @@ export const SubmitButton = ({
       onClick={onClick}
       disabled={disabled}
       color={color}
+      hover={hover}
     >
       {children}
     </StyledButton>
@@ -32,7 +33,7 @@ const StyledButton = styled.button`
   cursor: pointer;
   transition: 0.3s ease-in-out;
   &:hover {
-    background-color: ${COLORS.hoverGreen};
+    background-color: ${(props) => props.hover || COLORS.hoverGreen}};
   }
   &:disabled {
     background-color: ${COLORS.gray};

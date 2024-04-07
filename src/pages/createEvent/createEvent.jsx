@@ -9,9 +9,11 @@ import { SubmitButton } from "../../components/SubmitButton";
 import { useEffect } from "react";
 import { registerEvent } from "../../state/events/reducer";
 import { COLORS } from "../../styles/colors";
+import { useNavigate } from "react-router";
 
 export default function CreateEvent() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [extraQuestions, setExtraQuestions] = useState(false);
   const [loading, setLoading] = useState(true);
   const [event, setEvent] = useState({});
@@ -30,13 +32,14 @@ export default function CreateEvent() {
   }, []);
 
   const handleExtraQ = () => {
+    console.log(event.questionList);
     setExtraQuestions(true);
   };
 
   const handleCancelQ = () => {
     const updatedEvent = event;
     if (updatedEvent.questionList) {
-      updatedEvent.questionList = [];
+      updatedEvent.questionList = null;
       setQuestion("");
       setEvent(updatedEvent);
       setExtraQuestions(false);
@@ -61,28 +64,29 @@ export default function CreateEvent() {
   };
 
   const handleQuestionInput = (e) => {
-    if (e.target.value.length > 0) {
-      setQuestion(e.target.value);
-    }
+    setQuestion(e.target.value);
   };
 
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
     const target = e.target.question;
+    console.log(question.length);
 
     const updatedEvent = event;
     const key = "questionList";
-    if (updatedEvent[key]) {
+    if (updatedEvent[key] && question.length > 0) {
       updatedEvent.questionList.push(question);
     } else {
-      updatedEvent[key] = [];
-      updatedEvent.questionList.push(question);
+      if (question.length > 0) {
+        updatedEvent[key] = [];
+        updatedEvent.questionList.push(question);
+      }
     }
 
     setEvent(updatedEvent);
     setQuestion("");
     target.value = "";
-    target.placeholder = "Įrašykite kitą klausimą";
+    target.placeholder = "Įrašykite klausimą";
   };
 
   const handleEventSubmit = () => {
@@ -90,7 +94,6 @@ export default function CreateEvent() {
       "location",
       "date",
       "time_from",
-      "time_to",
       "discipline",
       "price",
       "max_members",
@@ -104,8 +107,10 @@ export default function CreateEvent() {
       setEvent(updatedEvent);
       dispatch(registerEvent(updatedEvent));
     } else {
+      console.log("neatsakyta");
       setAnswered(false);
     }
+    navigate("/home");
   };
 
   return (
@@ -128,7 +133,7 @@ export default function CreateEvent() {
           <DefaultInput
             id="location"
             type="text"
-            placeholder="Lokacija"
+            placeholder="Miestas"
             onChange={handleInputChange}
             required
           />
@@ -141,18 +146,12 @@ export default function CreateEvent() {
           />
           <DefaultInput
             id="time_from"
-            type="text"
+            type="time"
             placeholder="Nuo"
             onChange={handleInputChange}
             required
           />
-          <DefaultInput
-            id="time_to"
-            type="text"
-            placeholder="Iki"
-            onChange={handleInputChange}
-            required
-          />
+
           <StyledSelect
             id="discipline"
             type="text"
@@ -190,7 +189,7 @@ export default function CreateEvent() {
             required
           >
             <option value="" disabled selected hidden>
-              Fizinis pajėgumas
+              Fizinis parengtumas
             </option>
             {!loading &&
               questions[1].variants.map((singleVariant) => {
@@ -207,13 +206,13 @@ export default function CreateEvent() {
 
         {!extraQuestions && (
           <SubmitButton type="button" onClick={handleExtraQ}>
-            Pridėti klausimyną
+            {event.questionList ? "Papildyti " : "Pridėti "} klausimyną
           </SubmitButton>
         )}
         {extraQuestions && (
           <form onSubmit={handleSubmitQuestion}>
             <FlexWrapper $flexDirection="column" $gap="20px">
-              {event.questionList.length > 0 && (
+              {event.questionList && (
                 <StyledSubtitle>Jūsų klausimai:</StyledSubtitle>
               )}
               {event.questionList &&
@@ -225,7 +224,7 @@ export default function CreateEvent() {
                 placeholder="Įrašykite klausimą"
                 onChange={handleQuestionInput}
               ></DefaultInput>
-              <SubmitButton color={COLORS.darkCreme}>
+              <SubmitButton color={COLORS.darkCreme} hover={COLORS.brown}>
                 Pridėti klausimą
               </SubmitButton>
               <SubmitButton
@@ -234,8 +233,12 @@ export default function CreateEvent() {
               >
                 Saugoti
               </SubmitButton>
-              <SubmitButton onClick={handleCancelQ} color={COLORS.red}>
-                Atšaukti
+              <SubmitButton
+                onClick={handleCancelQ}
+                color={COLORS.red}
+                hover={COLORS.redHover}
+              >
+                Trinti
               </SubmitButton>
             </FlexWrapper>
           </form>

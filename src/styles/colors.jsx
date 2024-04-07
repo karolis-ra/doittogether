@@ -10,4 +10,5 @@ export const COLORS = {
   blue: "#0070E0",
   hoverBlue: "#034a91",
   red: "#E50914",
+  redHover: "#ba0710",
 };
