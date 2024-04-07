@@ -1,6 +1,9 @@
 import { auth } from "../../firebase/clientApp";
 import { useSelector, useDispatch } from "react-redux";
 import { profileFormSelector } from "../../state/profileForm/selector";
+import { DefaultInput } from "../../components/DefaultInput";
+import { DefaultButton } from "../../components/DefaultButton";
+
 export default function Home() {
   const logout = async () => {
     console.log("logout");
@@ -13,6 +16,7 @@ export default function Home() {
     <div>
       <div>Hello, {userInfo.name} </div>
       <button onClick={logout}>logout</button>
+      <DefaultButton to={"/createEvent"}>Sukurti įvykį</DefaultButton>
     </div>
   );
 }

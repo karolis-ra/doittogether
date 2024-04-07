@@ -1,16 +1,28 @@
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 
-export const SubmitButton = ({ children, type, onClick, disabled, margin }) => {
+export const SubmitButton = ({
+  children,
+  type,
+  onClick,
+  disabled,
+  margin,
+  color, // Include color prop here
+}) => {
   return (
-    <StyledButton type={type} onClick={onClick} disabled={disabled}>
+    <StyledButton
+      type={type}
+      onClick={onClick}
+      disabled={disabled}
+      color={color}
+    >
       {children}
     </StyledButton>
   );
 };
 
 const StyledButton = styled.button`
-  background-color: ${COLORS.saladGreen};
+  background-color: ${(props) => props.color || COLORS.saladGreen};
   color: ${COLORS.white};
   padding: 14px 0;
   border: none;
