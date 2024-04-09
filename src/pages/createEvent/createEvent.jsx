@@ -10,6 +10,7 @@ import { useEffect } from "react";
 import { registerEvent } from "../../state/events/reducer";
 import { COLORS } from "../../styles/colors";
 import { useNavigate } from "react-router";
+import { Image } from "../../components/Image";
 
 export default function CreateEvent() {
   const dispatch = useDispatch();
@@ -32,7 +33,6 @@ export default function CreateEvent() {
   }, []);
 
   const handleExtraQ = () => {
-    console.log(event.questionList);
     setExtraQuestions(true);
   };
 
@@ -60,7 +60,6 @@ export default function CreateEvent() {
 
     updatedEvent[key] = value;
     setEvent(updatedEvent);
-    console.log(event);
   };
 
   const handleQuestionInput = (e) => {
@@ -70,7 +69,6 @@ export default function CreateEvent() {
   const handleSubmitQuestion = (e) => {
     e.preventDefault();
     const target = e.target.question;
-    console.log(question.length);
 
     const updatedEvent = event;
     const key = "questionList";
@@ -107,21 +105,39 @@ export default function CreateEvent() {
       setEvent(updatedEvent);
       dispatch(registerEvent(updatedEvent));
     } else {
-      console.log("neatsakyta");
       setAnswered(false);
     }
+    navigate("/home");
+  };
+
+  const handleBack = () => {
     navigate("/home");
   };
 
   return (
     <StyledWrap>
       <FlexWrapper
+        $justifyContent="flex-start"
+        $alignItems="center"
+        $gap="5px"
+        $padding="10px 0 0 20px"
+        $cursor="pointer"
+        onClick={handleBack}
+      >
+        <Image
+          src="./images/arrow-back.PNG"
+          $width="20px"
+          $margin="-5px 0 0 0"
+        />
+        <StyledSubtitle>atgal</StyledSubtitle>
+      </FlexWrapper>
+      <FlexWrapper
         $flexDirection="column"
         $width="280px"
         $justifyContent="center"
         $margin="0 auto"
         $gap="20px"
-        $padding="50px 0"
+        $padding="20px 0"
       >
         <StyledSubtitle>Naujas įvykis</StyledSubtitle>
         <FlexWrapper
@@ -263,6 +279,7 @@ const StyledSubtitle = styled.div`
 
 const StyledWrap = styled.div`
   display: flex;
+  flex-direction: column;
 `;
 
 const StyledSelect = styled.select`

@@ -108,7 +108,6 @@ export const profileForm = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(fetchQuestions.fulfilled, (state, { payload }) => {
-      console.log(payload.klausimai);
       state.questions = payload.klausimai;
     });
     builder

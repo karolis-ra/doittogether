@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/clientApp";
 import { Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "react-query";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -51,14 +52,19 @@ const App = () => {
   return (
     <Provider store={store}>
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Navigate to="/login" />} />
-          <Route path="/login" element={emailVerification(emailVerified)} />
-          <Route path="/verifyEmail" element={<VerifyEmail />} />
-          <Route path="/profileQuiz" element={<ProfileQuiz />} />
-          <Route path="/createEvent" element={<CreateEvent />} />
-          <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
-        </Routes>
+        <QueryClientProvider client={new QueryClient()}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/login" element={emailVerification(emailVerified)} />
+            <Route path="/verifyEmail" element={<VerifyEmail />} />
+            <Route path="/profileQuiz" element={<ProfileQuiz />} />
+            <Route path="/createEvent" element={<CreateEvent />} />
+            <Route
+              path="/home"
+              element={user ? <Home /> : <Navigate to="/" />}
+            />
+          </Routes>
+        </QueryClientProvider>
       </BrowserRouter>
     </Provider>
   );

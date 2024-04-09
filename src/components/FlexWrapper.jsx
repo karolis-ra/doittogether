@@ -19,6 +19,7 @@ export const FlexWrapper = styled.div`
   padding: ${(props) => props.$padding};
   align-items: ${(props) => props.$alignItems};
   align-self: ${(props) => props.$alignSelf};
+  text-align: ${(props) => props.$textAlign};
   border-radius: ${(props) => props.$borderRadius};
   border-bottom-left-radius: ${(props) => props.$borderBottomLeftRadius};
   border-bottom-right-radius: ${(props) => props.$borderBottomRightRadius};
