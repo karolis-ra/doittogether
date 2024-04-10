@@ -35,6 +35,8 @@ export default function Home() {
                 price,
                 questionList,
                 time_from,
+                participants,
+                document_id,
               },
               index
             ) => {
@@ -50,6 +52,8 @@ export default function Home() {
                   price={price}
                   questionList={questionList}
                   from={time_from}
+                  participants={participants}
+                  document_id={document_id}
                   key={`event-${index}`}
                 />
               );

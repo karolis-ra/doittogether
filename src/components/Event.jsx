@@ -2,6 +2,13 @@ import { COLORS } from "../styles/colors";
 import { FlexWrapper } from "./FlexWrapper";
 import { Image } from "./Image";
 import styled from "styled-components";
+import { SubmitButton } from "./SubmitButton";
+import { useState } from "react";
+import { QuestionModal } from "./QuestionModal";
+import { useSelector, useDispatch } from "react-redux";
+import { eventsSelector } from "../state/events/selector";
+import { openModal } from "../state/events/reducer";
+
 export const Event = ({
   date,
   discipline,
@@ -13,13 +20,24 @@ export const Event = ({
   id,
   price,
   questionList,
+  participants,
+  document_id,
 }) => {
+  const { showModal, doc_id } = useSelector(eventsSelector);
+  const dispatch = useDispatch();
+  const handleJoinEvent = () => {
+    if (questionList) {
+      dispatch(openModal(document_id));
+    } else {
+      console.log("klausimu nera");
+    }
+  };
   return (
     <FlexWrapper
       $width="340px"
       $flexDirection="column"
       $border={`1px solid ${COLORS.saladGreen}`}
-      $padding="5px 15px"
+      $padding="5px 15px 15px 15px"
       $borderRadius="4px"
     >
       <FlexWrapper $justifyContent="space-between">
@@ -57,9 +75,16 @@ export const Event = ({
         </FlexWrapper>
         <FlexWrapper $gap="10px" $width="100px">
           <Image src="./images/events/users.png" $width="25px" />
-          <Text>{max_members}</Text>
+          <Text>{`${
+            participants ? participants.length : 0
+          }/${max_members}`}</Text>
         </FlexWrapper>
       </FlexWrapper>
+      <FlexWrapper>{info}</FlexWrapper>
+      <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
+      {showModal && doc_id === document_id && (
+        <QuestionModal questions={questionList} />
+      )}
     </FlexWrapper>
   );
 };

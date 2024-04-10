@@ -12,10 +12,10 @@ export const fetchEvents = createAsyncThunk("data/fetchEvents", async () => {
   let items = [];
   await getDocs(colRef).then((snapshot) => {
     snapshot.docs.forEach((doc) => {
-      items.push(doc.data());
+      const currentObject = { ...doc.data(), document_id: doc.id };
+      items.push(currentObject);
     });
   });
-  console.log("fetchEvents", items);
   return items;
 });
 
