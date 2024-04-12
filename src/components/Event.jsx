@@ -83,7 +83,7 @@ export const Event = ({
       <FlexWrapper>{info}</FlexWrapper>
       <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
       {showModal && doc_id === document_id && (
-        <QuestionModal questions={questionList} />
+        <QuestionModal questions={questionList} doc_id={doc_id} />
       )}
     </FlexWrapper>
   );

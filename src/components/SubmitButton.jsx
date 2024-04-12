@@ -8,6 +8,7 @@ export const SubmitButton = ({
   disabled,
   hover,
   color,
+  width,
 }) => {
   return (
     <StyledButton
@@ -16,6 +17,7 @@ export const SubmitButton = ({
       disabled={disabled}
       color={color}
       hover={hover}
+      width={width}
     >
       {children}
     </StyledButton>
@@ -23,6 +25,7 @@ export const SubmitButton = ({
 };
 
 const StyledButton = styled.button`
+width: ${(props) => props.width || "100%"};
   background-color: ${(props) => props.color || COLORS.saladGreen};
   color: ${COLORS.white};
   padding: 14px 0;

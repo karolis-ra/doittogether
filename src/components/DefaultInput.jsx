@@ -14,6 +14,7 @@ export const DefaultInput = ({ id, type, placeholder, onChange, required }) => {
 };
 
 const StyledInput = styled.input`
+  background-color: #f2f2f2;
   border: none;
   border-bottom: 1px solid ${COLORS.gray};
   padding: 10px;

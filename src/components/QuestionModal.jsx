@@ -2,19 +2,42 @@ import React from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 import { FlexWrapper } from "./FlexWrapper";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { hideModal } from "../state/events/reducer";
 import { Image } from "./Image";
 import { DefaultInput } from "./DefaultInput";
+import { SubmitButton } from "./SubmitButton";
+import { useState } from "react";
+import { profileFormSelector } from "../state/profileForm/selector";
 
-export const QuestionModal = ({ questions }) => {
+export const QuestionModal = ({ questions, doc_id }) => {
   const dispatch = useDispatch();
-  console.log(questions);
-  const answers = {};
+  const [answers, setAnswers] = useState({});
+  const { userInfo } = useSelector(profileFormSelector);
+
   const handleAnswerInput = (e) => {
     const question = e.target.id;
     const answer = e.target.value;
-    answers[question] = answer;
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [question]: answer,
+    }));
+
+    console.log(answers);
+  };
+
+  const handleSubmitForm = () => {
+    console.log(doc_id);
+    console.log(userInfo);
+    const allQuestionsAnswered = questions.every(
+      (question) => answers[question]
+    );
+
+    if (allQuestionsAnswered) {
+      dispatch(hideModal());
+    } else {
+      alert("Please answer all questions.");
+    }
   };
 
   const handleBack = () => {
@@ -23,21 +46,6 @@ export const QuestionModal = ({ questions }) => {
 
   return (
     <StyledWrapper $flexDirection="column">
-      <FlexWrapper
-        $justifyContent="flex-start"
-        $alignItems="center"
-        $gap="5px"
-        $padding="10px 0 0 20px"
-        $cursor="pointer"
-        onClick={handleBack}
-      >
-        <Image
-          src="./images/arrow-back.PNG"
-          $width="20px"
-          $margin="-5px 0 0 0"
-        />
-        <StyledSubtitle>atgal</StyledSubtitle>
-      </FlexWrapper>
       <FlexWrapper $flexDirection="column" $gap="30px">
         {questions.map((singleQ, index) => {
           return (
@@ -48,6 +56,12 @@ export const QuestionModal = ({ questions }) => {
           );
         })}
       </FlexWrapper>
+      <FlexWrapper $margin="20px 0 0 0 " $gap="20px">
+        <SubmitButton color={COLORS.black} width="120px" onClick={handleBack}>
+          ATGAL
+        </SubmitButton>
+        <SubmitButton onClick={handleSubmitForm}>PRISIJUNGTI</SubmitButton>
+      </FlexWrapper>
     </StyledWrapper>
   );
 };
@@ -56,7 +70,7 @@ const StyledWrapper = styled(FlexWrapper)`
   position: absolute;
   width: 100vw;
   height: 100%;
-  background-color: ${COLORS.saladGreen};
+  background-color: ${COLORS.bgGray};
   position: fixed;
   top: 0;
   left: 0;

@@ -11,4 +11,5 @@ export const COLORS = {
   hoverBlue: "#034a91",
   red: "#E50914",
   redHover: "#ba0710",
+  bgGray: "#F2F2F2",
 };
