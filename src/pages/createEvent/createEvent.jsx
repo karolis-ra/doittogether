@@ -11,6 +11,7 @@ import { registerEvent } from "../../state/events/reducer";
 import { COLORS } from "../../styles/colors";
 import { useNavigate } from "react-router";
 import { Image } from "../../components/Image";
+import { auth } from "../../firebase/clientApp";
 
 export default function CreateEvent() {
   const dispatch = useDispatch();
@@ -94,14 +95,13 @@ export default function CreateEvent() {
       "time_from",
       "discipline",
       "price",
-      "max_members",
       "physical_level",
     ];
     const isValid = requiredFields.every((field) => event[field]);
 
     if (isValid) {
       setAnswered(true);
-      const updatedEvent = { ...event, id: userInfo.id };
+      const updatedEvent = { ...event, id: auth.currentUser.uid };
       setEvent(updatedEvent);
       dispatch(registerEvent(updatedEvent));
     } else {
@@ -125,7 +125,7 @@ export default function CreateEvent() {
         onClick={handleBack}
       >
         <Image
-          src="./images/arrow-back.PNG"
+          src="./images/arrow-back.png"
           $width="20px"
           $margin="-5px 0 0 0"
         />
@@ -190,13 +190,13 @@ export default function CreateEvent() {
             onChange={handleInputChange}
             required
           />
-          <DefaultInput
+          {/* <DefaultInput
             id="max_members"
             type="text"
             placeholder="Dalyvių skaičius"
             onChange={handleInputChange}
             required
-          />
+          /> */}
           <StyledSelect
             id="physical_level"
             type="text"

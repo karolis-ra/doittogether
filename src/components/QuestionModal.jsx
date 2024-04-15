@@ -4,7 +4,7 @@ import { COLORS } from "../styles/colors";
 import { FlexWrapper } from "./FlexWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { hideModal } from "../state/events/reducer";
-import { Image } from "./Image";
+import { registerUser } from "../state/events/reducer";
 import { DefaultInput } from "./DefaultInput";
 import { SubmitButton } from "./SubmitButton";
 import { useState } from "react";
@@ -14,6 +14,7 @@ export const QuestionModal = ({ questions, doc_id }) => {
   const dispatch = useDispatch();
   const [answers, setAnswers] = useState({});
   const { userInfo } = useSelector(profileFormSelector);
+  const event_id = doc_id;
 
   const handleAnswerInput = (e) => {
     const question = e.target.id;
@@ -27,8 +28,12 @@ export const QuestionModal = ({ questions, doc_id }) => {
   };
 
   const handleSubmitForm = () => {
-    console.log(doc_id);
-    console.log(userInfo);
+    const participant = { ...userInfo };
+    participant.event_id = event_id;
+    participant.answers = answers;
+
+    dispatch(registerUser(participant));
+
     const allQuestionsAnswered = questions.every(
       (question) => answers[question]
     );

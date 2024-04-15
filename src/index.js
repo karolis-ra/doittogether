@@ -6,6 +6,7 @@ import Home from "./pages/home/home";
 import Login from "./pages/login/login";
 import VerifyEmail from "./pages/verifyEmail/verifyEmail";
 import CreateEvent from "./pages/createEvent/createEvent";
+import Profile from "./pages/profile/profile";
 import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
@@ -21,6 +22,8 @@ const App = () => {
   const [emailVerified, setEmailVerified] = useState(false);
   const [email, setEmail] = useState(null);
   const [user, setUser] = useState();
+
+  console.log(auth.currentUser);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -59,10 +62,8 @@ const App = () => {
             <Route path="/verifyEmail" element={<VerifyEmail />} />
             <Route path="/profileQuiz" element={<ProfileQuiz />} />
             <Route path="/createEvent" element={<CreateEvent />} />
-            <Route
-              path="/home"
-              element={user ? <Home /> : <Navigate to="/" />}
-            />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/home" element={<Home />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

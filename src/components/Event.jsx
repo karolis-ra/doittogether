@@ -22,6 +22,7 @@ export const Event = ({
   questionList,
   participants,
   document_id,
+  pending_users,
 }) => {
   const { showModal, doc_id } = useSelector(eventsSelector);
   const dispatch = useDispatch();
@@ -34,53 +35,74 @@ export const Event = ({
   };
   return (
     <FlexWrapper
-      $width="340px"
+      $maxWidth="340px"
       $flexDirection="column"
       $border={`1px solid ${COLORS.saladGreen}`}
       $padding="5px 15px 15px 15px"
       $borderRadius="4px"
+      $justifyContent="space-between"
     >
-      <FlexWrapper $justifyContent="space-between">
-        <StyledDisc>{discipline}</StyledDisc>
-        <Text $textAlign="right">{physical_level}</Text>
+      <FlexWrapper $flexDirection="column">
+        <FlexWrapper $justifyContent="space-between">
+          <StyledDisc>{discipline}</StyledDisc>
+          <Text $textAlign="right">{physical_level}</Text>
+        </FlexWrapper>
+        <FlexWrapper>
+          <FlexWrapper $gap="10px" $width="240px">
+            <Image src="./images/events/pin.png" $width="20px" />
+            <Text>{location}</Text>
+          </FlexWrapper>
+        </FlexWrapper>
+        <FlexWrapper>
+          <FlexWrapper $gap="10px" $width="240px">
+            <Image src="./images/events/calendar.png" $width="20px" />
+            <Text>{date}</Text>
+          </FlexWrapper>
+          <FlexWrapper $gap="10px" $width="100px">
+            <Image
+              $margin="0 0 0 -6px"
+              src="./images/events/eur.png"
+              $width="30px"
+            />
+            <Text>{price}</Text>
+          </FlexWrapper>
+        </FlexWrapper>
+        <FlexWrapper>
+          <FlexWrapper $gap="10px" $width="240px">
+            <Image
+              $margin="0 0 0 -4px"
+              src="./images/events/clock.png"
+              $width="26px"
+            />
+            <Text>{from}</Text>
+          </FlexWrapper>
+          <FlexWrapper $gap="10px" $width="100px">
+            <Image src="./images/events/users.png" $width="25px" />
+            <Text>{`${
+              participants ? participants.length + 1 : 0 + 1
+            }/${max_members}`}</Text>
+          </FlexWrapper>
+        </FlexWrapper>
+        <FlexWrapper>{info}</FlexWrapper>
+        {!pending_users
+          ? null
+          : pending_users.map((singleUser) => {
+              return (
+                <FlexWrapper $flexDirection="column">
+                  <div>{singleUser.name}</div>
+                  {Object.entries(singleUser.answers).map(([key, value]) => {
+                    return (
+                      <FlexWrapper $flexDirection="column">
+                        <div>{key}</div>
+                        <div>{value}</div>
+                      </FlexWrapper>
+                    );
+                  })}
+                </FlexWrapper>
+              );
+            })}
       </FlexWrapper>
-      <FlexWrapper>
-        <FlexWrapper $gap="10px" $width="240px">
-          <Image src="./images/events/pin.png" $width="20px" />
-          <Text>{location}</Text>
-        </FlexWrapper>
-      </FlexWrapper>
-      <FlexWrapper>
-        <FlexWrapper $gap="10px" $width="240px">
-          <Image src="./images/events/calendar.png" $width="20px" />
-          <Text>{date}</Text>
-        </FlexWrapper>
-        <FlexWrapper $gap="10px" $width="100px">
-          <Image
-            $margin="0 0 0 -6px"
-            src="./images/events/eur.png"
-            $width="30px"
-          />
-          <Text>{price}</Text>
-        </FlexWrapper>
-      </FlexWrapper>
-      <FlexWrapper>
-        <FlexWrapper $gap="10px" $width="240px">
-          <Image
-            $margin="0 0 0 -4px"
-            src="./images/events/clock.png"
-            $width="26px"
-          />
-          <Text>{from}</Text>
-        </FlexWrapper>
-        <FlexWrapper $gap="10px" $width="100px">
-          <Image src="./images/events/users.png" $width="25px" />
-          <Text>{`${
-            participants ? participants.length : 0
-          }/${max_members}`}</Text>
-        </FlexWrapper>
-      </FlexWrapper>
-      <FlexWrapper>{info}</FlexWrapper>
+
       <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
       {showModal && doc_id === document_id && (
         <QuestionModal questions={questionList} doc_id={doc_id} />

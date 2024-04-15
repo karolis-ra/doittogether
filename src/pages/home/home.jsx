@@ -5,8 +5,10 @@ import { useEffect } from "react";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { homeSelector } from "../../state/home/selector";
 import { Event } from "../../components/Event";
+import { useQuery } from "../../styles/breakpoints";
 
 export default function Home() {
+  const { isTablet, isSmDesktop } = useQuery();
   const dispatch = useDispatch();
   const { events } = useSelector(homeSelector);
   useEffect(() => {
@@ -17,10 +19,13 @@ export default function Home() {
       <Navigation />
       {
         <FlexWrapper
-          $flexDirection="column"
-          $alignItems="center"
+          // $flexDirection="column"
+          $alignItems="stretch"
           $gap="30px"
-          $margin="30px 0"
+          $margin="50px auto"
+          $maxWidth="710px"
+          $flexWrap="wrap"
+          $justifyContent={!isTablet && "center"}
         >
           {events.map(
             (
@@ -46,7 +51,7 @@ export default function Home() {
                   discipline={discipline}
                   physical_level={physical_level}
                   location={location}
-                  max_members={max_members}
+                  max_members="2"
                   info={info}
                   id={id}
                   price={price}

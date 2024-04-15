@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  doc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 import { doItTogether } from "../../firebase/clientApp";
 
 const initialState = {
@@ -7,6 +13,7 @@ const initialState = {
   user: "",
   showModal: false,
   doc_id: "",
+  participant: {},
 };
 
 export const eventsSlice = createSlice({
@@ -16,6 +23,12 @@ export const eventsSlice = createSlice({
     registerEvent: (state, { payload }) => {
       const eventsCol = collection(doItTogether, "events");
       addDoc(eventsCol, payload);
+    },
+    registerUser: (state, { payload }) => {
+      const eventDocRef = doc(doItTogether, "events", payload.event_id);
+      updateDoc(eventDocRef, {
+        pending_users: arrayUnion(payload),
+      });
     },
     openModal: (state, { payload }) => {
       state.showModal = true;
@@ -27,6 +40,7 @@ export const eventsSlice = createSlice({
   },
 });
 
-export const { registerEvent, openModal, hideModal } = eventsSlice.actions;
+export const { registerEvent, openModal, hideModal, registerUser } =
+  eventsSlice.actions;
 
 export default eventsSlice.reducer;

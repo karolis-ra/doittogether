@@ -12,19 +12,23 @@ import { useSelector } from "react-redux";
 import { NavModal } from "./NavModal";
 import { useQuery } from "../styles/breakpoints";
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const Navigation = () => {
   const { isTablet, isSmDesktop } = useQuery();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const openNavModal = () => {
     dispatch(openModal());
   };
 
   const logout = () => {
+    console.log("hello");
     const auth = getAuth();
     signOut(auth)
       .then(() => {
+        navigate("/login");
         // Sign-out successful.
       })
       .catch((error) => {

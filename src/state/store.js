@@ -4,6 +4,7 @@ import profileFormReducer from "./profileForm/reducer";
 import eventsReducer from "./events/reducer";
 import navigationReducer from "./navigation/reducer";
 import homeReducer from "./home/reducer";
+import profileReducer from "./profile/reducer";
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     events: eventsReducer,
     navigation: navigationReducer,
     home: homeReducer,
+    profile: profileReducer,
   },
 });

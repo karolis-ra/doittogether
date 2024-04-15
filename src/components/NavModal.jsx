@@ -8,9 +8,11 @@ import { useDispatch } from "react-redux";
 import { hideModal } from "../state/navigation/reducer";
 import { Image } from "./Image";
 import { getAuth, signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const NavModal = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const closeNavModal = () => {
     dispatch(hideModal());
@@ -20,6 +22,7 @@ export const NavModal = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
+        navigate("/login");
         // Sign-out successful.
       })
       .catch((error) => {
