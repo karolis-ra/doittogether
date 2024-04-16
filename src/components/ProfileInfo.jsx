@@ -1,59 +1,87 @@
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 import { FlexWrapper } from "./FlexWrapper";
-
+import { SubmitButton } from "./SubmitButton";
+import { Navigate } from "react-router";
+import { DefaultButton } from "./DefaultButton";
+import { useDispatch } from "react-redux";
+import { setQuizNotDone } from "../state/profileForm/reducer";
 export const ProfileInfo = ({ user }) => {
   const activities = { ...user.activities };
-  console.log(user);
+  const dispatch = useDispatch();
+
+  const handleChangeProfileInfo = () => {
+    dispatch(setQuizNotDone(false));
+  };
+
   return (
     <>
       <FlexWrapper
-        $width="100%"
-        $borderBottom={`1px solid ${COLORS.gray}`}
-        $margin="20px 0"
-        $padding="0 0 20px 20px"
+        $flexDirection="column"
+        $backgroundColor={COLORS.white}
+        $width="340px"
+        $margin="0 auto"
+        $padding="20px 10px"
+        $borderRadius="5px"
       >
-        <div>{user.name}</div>
-      </FlexWrapper>
-      <FlexWrapper $flexDirection="column">
-        <div>Mano anketa</div>
-        <FlexWrapper>
-          <div>amzius</div>
-          <div>{user.age}</div>
-        </FlexWrapper>
-        <FlexWrapper>
-          <div>lytis</div>
-          <div>{user.gender}</div>
-        </FlexWrapper>
-        <FlexWrapper>
-          <div>miestas</div>
-          <div>{user.city}</div>
-        </FlexWrapper>
-        {Object.entries(activities).map(([activity, values]) => (
-          <FlexWrapper key={activity} $flexDirection="column">
-            <div>{activity}</div>
-            {Object.entries(values).map(([key, value]) => (
-              <div key={key}>{`${key}: ${value}`}</div>
-            ))}
+        <StyledText>Asmenine informacija</StyledText>
+        <FlexWrapper $flexDirection="column" $gap="10px">
+          <FlexWrapper $justifyContent="space-between" $width="300px">
+            <FlexWrapper $flex="1">Amžius</FlexWrapper>
+            <FlexWrapper $flex="1">{user.age}</FlexWrapper>
           </FlexWrapper>
-        ))}
+          <FlexWrapper
+            $justifyContent="space-between"
+            $width="300px"
+            $textAlign="left"
+          >
+            <FlexWrapper $flex="1">Lytis</FlexWrapper>
+            <FlexWrapper $flex="1">{user.gender}</FlexWrapper>
+          </FlexWrapper>
+          <FlexWrapper $justifyContent="space-between" $width="300px">
+            <FlexWrapper $flex="1">Miestas</FlexWrapper>
+            <FlexWrapper $flex="1">{user.city}</FlexWrapper>
+          </FlexWrapper>
+        </FlexWrapper>
+        <FlexWrapper $flexDirection="column" $padding="0 0 20px 0">
+          <StyledText>Sportas</StyledText>
+          {Object.entries(activities).map(([activity, values]) => (
+            <FlexWrapper key={activity} $flexDirection="column" $gap="8px">
+              <StyledDisc>{activity}</StyledDisc>
+              {Object.entries(values).map(([key, value]) => (
+                <FlexWrapper
+                  key={key}
+                  $justifyContent="space-between"
+                  $textAlign="left"
+                  $borderBottom={`2px solid ${COLORS.gray}`}
+                >
+                  <FlexWrapper $flex="1">{key}</FlexWrapper>
+                  <FlexWrapper $flex="1">{value}</FlexWrapper>
+                </FlexWrapper>
+              ))}
+            </FlexWrapper>
+          ))}
+        </FlexWrapper>
+        <DefaultButton onClick={handleChangeProfileInfo} to="/profileQuiz">
+          KEISTI
+        </DefaultButton>
       </FlexWrapper>
     </>
   );
 };
 
-const StyledInput = styled.input`
-  appearance: none;
-  background-color: #fff;
-  font: inherit;
-  color: currentColor;
-  border: 1px solid ${COLORS.gray};
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  &:checked {
-    background-color: ${COLORS.saladGreen};
-    outline: max(2px, 2px) solid ${COLORS.gray};
-    outline-offset: max(2px, 2px);
-  }
+const StyledText = styled.div`
+  padding: 10px 0 15px 0;
+  font-weight: 600;
+  color: #000;
+  font-size: 24px;
+  text-align: center;
+`;
+
+const StyledDisc = styled.div`
+  padding: 10px 0 15px 0;
+  font-weight: 600;
+  color: #000;
+  font-size: 16px;
+  text-align: center;
 `;

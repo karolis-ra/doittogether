@@ -14,6 +14,7 @@ const initialState = {
   questions: [],
   test: [],
   cqIndex: 0,
+  reDo: false,
   userInfo: {
     id: "",
     name: "",
@@ -80,13 +81,11 @@ export const profileForm = createSlice({
     },
     setUserActivities: (state, { payload }) => {
       const { discipline, title, value } = payload;
-      const userInfo = state.userInfo;
-      const activities = { ...userInfo.activities };
-
-      if (activities[discipline]) {
-        userInfo.activities[discipline][title] = value;
+      state.userInfo.activities = state.userInfo.activities || {};
+      if (state.userInfo.activities[discipline]) {
+        state.userInfo.activities[discipline][title] = value;
       } else {
-        userInfo.activities[discipline] = { [title]: value };
+        state.userInfo.activities[discipline] = { [title]: value };
       }
     },
     setUserGender: (state, { payload }) => {
@@ -104,6 +103,16 @@ export const profileForm = createSlice({
     },
     setQuizSkipped: (state, { payload }) => {
       state.userInfo.quizSkipped = payload;
+    },
+    setQuizNotDone: (state, { payload }) => {
+      console.log("not done");
+      state.userInfo.activities = {};
+      state.userInfo.quizDone = payload;
+      state.cqIndex = 0;
+      state.reDo = true;
+    },
+    setQuizDone: (state, { payload }) => {
+      state.userInfo.quizDone = payload;
     },
   },
   extraReducers: (builder) => {
@@ -133,6 +142,8 @@ export const {
   setCqIndex,
   setQuizSkipped,
   setUserPersonalInfo,
+  setQuizDone,
+  setQuizNotDone,
 } = profileForm.actions;
 
 export default profileForm.reducer;

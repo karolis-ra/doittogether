@@ -8,7 +8,7 @@ import { Event } from "../../components/Event";
 import { useQuery } from "../../styles/breakpoints";
 
 export default function Home() {
-  const { isTablet, isSmDesktop } = useQuery();
+  const { isTablet } = useQuery();
   const dispatch = useDispatch();
   const { events } = useSelector(homeSelector);
   useEffect(() => {

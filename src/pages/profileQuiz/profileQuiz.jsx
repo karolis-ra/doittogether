@@ -11,14 +11,14 @@ import {
   setUserGender,
   setUserAgeCity,
   setCqIndex,
-  setQuizDone,
   setUserPersonalInfo,
 } from "../../state/profileForm/reducer";
 import styled from "styled-components";
-import { AnswerBtn } from "../../components/AnswerBtn";
 import { COLORS } from "../../styles/colors";
 import { SubmitButton } from "../../components/SubmitButton";
-import { StyledRadio } from "../../components/StyledRadio";
+import { DefaultButton } from "../../components/DefaultButton";
+import { Image } from "../../components/Image";
+import { setQuizDone } from "../../state/profileForm/reducer";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
@@ -28,11 +28,12 @@ export const ProfileQuiz = () => {
 
   const dispatch = useDispatch();
 
+  const { questions, cqIndex, userInfo, reDo } =
+    useSelector(profileFormSelector);
+
   useEffect(() => {
     dispatch(fetchQuestions());
   }, []);
-
-  const { questions, cqIndex, userInfo } = useSelector(profileFormSelector);
 
   const { loggedInUser } = useSelector(loginSelector);
 
@@ -88,141 +89,165 @@ export const ProfileQuiz = () => {
     setCont(true);
   };
 
+  const handleCancel = () => {
+    dispatch(setQuizDone(true));
+  };
+
   if (userInfo.quizDone) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/profile" />;
   }
 
   return (
     <CenterWrap>
-      <FlexWrapper
-        $flexDirection="column"
-        $margin="0 auto"
-        $alignItems="center"
-        $maxWidth="480px"
-        $gap="30px"
-      >
-        {cqIndex < questions.length && (
-          <>
-            <FlexWrapper
-              key={cqIndex}
-              $width="100%"
-              $alignItems="center"
-              $flexDirection="column"
-              $gap="15px"
-            >
-              {cqIndex === 0 && (
-                <>
-                  <StyledTitle>{questions[cqIndex].title}</StyledTitle>
-                  {questions[cqIndex].variants.map((variant, index) => {
-                    return (
-                      <FlexWrapper
-                        $border="1px solid gray"
-                        $width="220px"
-                        $padding="14px 8px"
-                        $borderRadius="5px"
-                        $gap="10px"
-                      >
-                        <StyledInput
-                          key={variant}
-                          type="checkbox"
-                          id={variant}
-                          value={variant}
-                          onClick={handleInputOption}
-                          defaultChecked={disciplines.includes(variant)}
-                        />
-                        <label key={index}>{variant}</label>
-                      </FlexWrapper>
-                    );
-                  })}
-                </>
-              )}
-              {cqIndex >= 1 && cqIndex <= 3 && (
-                <>
-                  {
-                    <AnswerBlock
-                      singleQuestion={questions[cqIndex]}
-                      disciplines={disciplines}
-                    />
-                  }
-                </>
-              )}
-              {cqIndex === 4 && (
-                <>
-                  {
-                    <FlexWrapper
-                      $flexDirection="column"
-                      $alignSelf="flex-start"
-                      $gap="20px"
-                    >
-                      <StyledSubtitle>
-                        {questions[cqIndex].title}
-                      </StyledSubtitle>
-                      {questions[cqIndex].variants.map(
-                        (singleVariant, index) => {
-                          return (
-                            <FlexWrapper
-                              $border="1px solid gray"
-                              $width="220px"
-                              $padding="14px 8px"
-                              $borderRadius="5px"
-                              gap="10px"
-                            >
-                              <StyledRadioInput
-                                type="radio"
-                                name="gender"
-                                value={singleVariant}
-                                onChange={(e) =>
-                                  handleGenderChange(e.target.value)
-                                }
-                              />
-                              <label key={index}>{singleVariant}</label>
-                            </FlexWrapper>
-                          );
-                        }
-                      )}
-                    </FlexWrapper>
-                  }
-                </>
-              )}
-              {cqIndex >= 5 && cqIndex <= 6 && (
-                <>
-                  {
-                    <FlexWrapper $flexDirection="column">
-                      <StyledSubtitle>
-                        {questions[cqIndex].title}
-                      </StyledSubtitle>
-                      <StyledAgeCityInput
-                        onChange={(e) =>
-                          handleCityAge(e, questions[cqIndex].title)
-                        }
-                        key={questions[cqIndex].title}
-                        id={questions[cqIndex].title}
-                        type={
-                          questions[cqIndex].title === "Amžius"
-                            ? "number"
-                            : "text"
-                        }
-                        maxLength={
-                          questions[cqIndex].title === "Amžius" ? "2" : "15"
-                        }
-                      />
-                    </FlexWrapper>
-                  }
-                </>
-              )}
-            </FlexWrapper>
-            <FlexWrapper $width="220px" $flexDirection="column" $gap="20px">
-              {[0, 4, 5, 6].includes(cqIndex) && (
-                <SubmitButton onClick={handleAnswer} disabled={!cont}>
-                  PATEIKTI
-                </SubmitButton>
-              )}
-              <SubmitButton onClick={handleBack} disabled={cqIndex === 0}>
-                ATGAL
-              </SubmitButton>
-            </FlexWrapper>
-          </>
+      <FlexWrapper $flexDirection="column" $width="100%">
+        {reDo && (
+          <FlexWrapper
+            $justifyContent="flex-start"
+            $alignItems="center"
+            $gap="5px"
+            $padding="10px 0 0 20px"
+            $cursor="pointer"
+            onClick={handleCancel}
+            $width="100%"
+          >
+            <Image
+              src="./images/arrow-back.png"
+              $width="20px"
+              $margin="-5px 0 0 0"
+            />
+            <StyledSubtitle>atgal</StyledSubtitle>
+          </FlexWrapper>
         )}
+        <FlexWrapper
+          $flexDirection="column"
+          $margin="0 auto"
+          $alignItems="center"
+          $maxWidth="480px"
+          $gap="30px"
+        >
+          {cqIndex < questions.length && (
+            <>
+              <FlexWrapper
+                key={cqIndex}
+                $width="100%"
+                $alignItems="center"
+                $flexDirection="column"
+                $gap="15px"
+              >
+                {cqIndex === 0 && (
+                  <>
+                    <StyledTitle>{questions[cqIndex].title}</StyledTitle>
+                    {questions[cqIndex].variants.map((variant, index) => {
+                      return (
+                        <FlexWrapper
+                          $border="1px solid gray"
+                          $width="220px"
+                          $padding="14px 8px"
+                          $borderRadius="5px"
+                          $gap="10px"
+                        >
+                          <StyledInput
+                            key={variant}
+                            type="checkbox"
+                            id={variant}
+                            value={variant}
+                            onClick={handleInputOption}
+                            defaultChecked={disciplines.includes(variant)}
+                          />
+                          <label key={index}>{variant}</label>
+                        </FlexWrapper>
+                      );
+                    })}
+                  </>
+                )}
+                {cqIndex >= 1 && cqIndex <= 3 && (
+                  <>
+                    {
+                      <AnswerBlock
+                        singleQuestion={questions[cqIndex]}
+                        disciplines={disciplines}
+                      />
+                    }
+                  </>
+                )}
+                {cqIndex === 4 && (
+                  <>
+                    {
+                      <FlexWrapper
+                        $flexDirection="column"
+                        $alignSelf="flex-start"
+                        $gap="20px"
+                      >
+                        <StyledSubtitle>
+                          {questions[cqIndex].title}
+                        </StyledSubtitle>
+                        {questions[cqIndex].variants.map(
+                          (singleVariant, index) => {
+                            return (
+                              <FlexWrapper
+                                $border="1px solid gray"
+                                $width="220px"
+                                $padding="14px 8px"
+                                $borderRadius="5px"
+                                gap="10px"
+                              >
+                                <StyledRadioInput
+                                  type="radio"
+                                  name="gender"
+                                  value={singleVariant}
+                                  onChange={(e) =>
+                                    handleGenderChange(e.target.value)
+                                  }
+                                />
+                                <label key={index}>{singleVariant}</label>
+                              </FlexWrapper>
+                            );
+                          }
+                        )}
+                      </FlexWrapper>
+                    }
+                  </>
+                )}
+                {cqIndex >= 5 && cqIndex <= 6 && (
+                  <>
+                    {
+                      <FlexWrapper $flexDirection="column">
+                        <StyledSubtitle>
+                          {questions[cqIndex].title}
+                        </StyledSubtitle>
+                        <StyledAgeCityInput
+                          onChange={(e) =>
+                            handleCityAge(e, questions[cqIndex].title)
+                          }
+                          key={questions[cqIndex].title}
+                          id={questions[cqIndex].title}
+                          type={
+                            questions[cqIndex].title === "Amžius"
+                              ? "number"
+                              : "text"
+                          }
+                          maxLength={
+                            questions[cqIndex].title === "Amžius" ? "2" : "15"
+                          }
+                        />
+                      </FlexWrapper>
+                    }
+                  </>
+                )}
+              </FlexWrapper>
+              <FlexWrapper $width="220px" $flexDirection="column" $gap="20px">
+                {[0, 4, 5, 6].includes(cqIndex) && (
+                  <SubmitButton onClick={handleAnswer} disabled={!cont}>
+                    PATEIKTI
+                  </SubmitButton>
+                )}
+                <SubmitButton onClick={handleBack} disabled={cqIndex === 0}>
+                  ATGAL
+                </SubmitButton>
+              </FlexWrapper>
+            </>
+          )}
+        </FlexWrapper>
       </FlexWrapper>
     </CenterWrap>
   );

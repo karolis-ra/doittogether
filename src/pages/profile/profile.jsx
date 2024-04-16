@@ -15,6 +15,7 @@ import { fetchCurrentUser } from "../../state/profile/reducer";
 import { useDispatch } from "react-redux";
 import { profileSelector } from "../../state/profile/selector";
 import { ProfileInfo } from "../../components/ProfileInfo";
+import { useQuery } from "../../styles/breakpoints";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ export default function Profile() {
   const [myEvents, setMyEvents] = useState([]);
   const [pendingEvents, setPendingEvents] = useState([]);
   const { events } = useSelector(homeSelector);
+  const { isTablet } = useQuery();
 
   useEffect(() => {
     if (events.length === 0) {
@@ -56,60 +58,147 @@ export default function Profile() {
   }, [auth.currentUser, events]);
 
   return (
-    <>
+    <FlexWrapper $flexDirection="column" $backgroundColor={COLORS.bgGray}>
       <Navigation />
+      <FlexWrapper
+        $width="100%"
+        $borderBottom={`1px solid ${COLORS.gray}`}
+        $margin="20px 0"
+        $padding="0 0 20px 20px"
+      >
+        <div>{user.name}</div>
+      </FlexWrapper>
       <ProfileInfo user={user} />
-      <FlexWrapper>
-        <StyledText>SUKURTI IVYKIAI:</StyledText>
-        <FlexWrapper $flexDirection="column">
-          {!userFound
-            ? "loading"
-            : myEvents.map(
-                (
-                  {
-                    date,
-                    discipline,
-                    physical_level,
-                    location,
-                    max_members,
-                    info,
-                    id,
-                    price,
-                    questionList,
-                    time_from,
-                    participants,
-                    document_id,
-                    pending_users,
-                  },
-                  index
-                ) => {
-                  return (
-                    <Event
-                      date={date}
-                      discipline={discipline}
-                      physical_level={physical_level}
-                      location={location}
-                      max_members="2"
-                      info={info}
-                      id={id}
-                      price={price}
-                      questionList={questionList}
-                      from={time_from}
-                      participants={participants}
-                      document_id={document_id}
-                      key={`event-${index}`}
-                      pending_users={pending_users}
-                    />
-                  );
-                }
-              )}
+      <FlexWrapper
+        $flexDirection="row"
+        $flexWrap="wrap"
+        $width={isTablet ? "50%" : "380px"}
+        $margin="0 auto"
+      >
+        <FlexWrapper
+          $flex="1"
+          $flexDirection="column"
+          $alignItems="center"
+          $margin="25px 0 0 0"
+        >
+          <StyledText>MANO ĮVYKIAI</StyledText>
+          <FlexWrapper
+            $alignItems="stretch"
+            $gap="30px"
+            $margin="25px auto"
+            $flexWrap="wrap"
+            $justifyContent="center"
+            $maxWidth="360px"
+          >
+            {!userFound
+              ? "loading"
+              : myEvents.map(
+                  (
+                    {
+                      date,
+                      discipline,
+                      physical_level,
+                      location,
+                      max_members,
+                      info,
+                      id,
+                      price,
+                      questionList,
+                      time_from,
+                      participants,
+                      document_id,
+                      pending_users,
+                    },
+                    index
+                  ) => {
+                    return (
+                      <Event
+                        date={date}
+                        discipline={discipline}
+                        physical_level={physical_level}
+                        location={location}
+                        max_members="2"
+                        info={info}
+                        id={id}
+                        price={price}
+                        questionList={questionList}
+                        from={time_from}
+                        participants={participants}
+                        document_id={document_id}
+                        key={`event-${index}`}
+                        pending_users={pending_users}
+                      />
+                    );
+                  }
+                )}
+          </FlexWrapper>
+        </FlexWrapper>
+        <FlexWrapper
+          $flex="1"
+          $flexDirection="column"
+          $alignItems="center"
+          $margin={isTablet && "25px 0 0 0"}
+        >
+          <StyledText>ĮVYKIAI, KURIUOSE AŠ DALYVIS</StyledText>
+          <FlexWrapper
+            $alignItems="stretch"
+            $gap="30px"
+            $margin="25px auto"
+            $maxWidth="380px"
+            $flexWrap="wrap"
+            $justifyContent="center"
+          >
+            {!userFound
+              ? "loading"
+              : myEvents.map(
+                  (
+                    {
+                      date,
+                      discipline,
+                      physical_level,
+                      location,
+                      max_members,
+                      info,
+                      id,
+                      price,
+                      questionList,
+                      time_from,
+                      participants,
+                      document_id,
+                      pending_users,
+                    },
+                    index
+                  ) => {
+                    return (
+                      <Event
+                        date={date}
+                        discipline={discipline}
+                        physical_level={physical_level}
+                        location={location}
+                        max_members="2"
+                        info={info}
+                        id={id}
+                        price={price}
+                        questionList={questionList}
+                        from={time_from}
+                        participants={participants}
+                        document_id={document_id}
+                        key={`event-${index}`}
+                        pending_users={pending_users}
+                      />
+                    );
+                  }
+                )}
+          </FlexWrapper>
         </FlexWrapper>
       </FlexWrapper>
-    </>
+    </FlexWrapper>
   );
 }
 
 const StyledText = styled.div`
   color: ${COLORS.black};
   text-align: center;
+  font-size: 24px;
+  font-weight: 700;
 `;
