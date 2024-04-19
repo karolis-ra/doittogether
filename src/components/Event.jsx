@@ -8,6 +8,9 @@ import { QuestionModal } from "./QuestionModal";
 import { useSelector, useDispatch } from "react-redux";
 import { eventsSelector } from "../state/events/selector";
 import { openModal } from "../state/events/reducer";
+import { InvitationModal } from "./InviteUserModal";
+import { profileSelector } from "../state/profile/selector";
+import { openInvitationModal } from "../state/profile/reducer";
 
 export const Event = ({
   date,
@@ -23,9 +26,16 @@ export const Event = ({
   participants,
   document_id,
   pending_users,
+  confirmed_users,
 }) => {
   const { showModal, doc_id } = useSelector(eventsSelector);
+  const { showInvitationModal, modal_id } = useSelector(profileSelector);
   const dispatch = useDispatch();
+
+  const openInvitationWin = () => {
+    dispatch(openInvitationModal(document_id));
+  };
+
   const handleJoinEvent = () => {
     if (questionList) {
       dispatch(openModal(document_id));
@@ -79,28 +89,27 @@ export const Event = ({
           <FlexWrapper $gap="10px" $width="100px">
             <Image src="./images/events/users.png" $width="25px" />
             <Text>{`${
-              participants ? participants.length + 1 : 0 + 1
+              confirmed_users ? confirmed_users.length + 1 : 0 + 1
             }/${max_members}`}</Text>
           </FlexWrapper>
         </FlexWrapper>
         <FlexWrapper>{info}</FlexWrapper>
-        {!pending_users
-          ? null
-          : pending_users.map((singleUser) => {
-              return (
-                <FlexWrapper $flexDirection="column">
-                  <div>{singleUser.name}</div>
-                  {Object.entries(singleUser.answers).map(([key, value]) => {
-                    return (
-                      <FlexWrapper $flexDirection="column">
-                        <div>{key}</div>
-                        <div>{value}</div>
-                      </FlexWrapper>
-                    );
-                  })}
-                </FlexWrapper>
-              );
-            })}
+        {!pending_users ? null : (
+          <FlexWrapper
+            $flexDirection="column"
+            $border="1px solid blue"
+            $padding="10px"
+          >
+            <div>{`Laukia patvirtinimo: ${pending_users.length}`}</div>
+            <SubmitButton onClick={openInvitationWin}>Perziurėti</SubmitButton>
+            {showInvitationModal && modal_id === document_id && (
+              <InvitationModal
+                pending_users={pending_users}
+                event_id={document_id}
+              />
+            )}
+          </FlexWrapper>
+        )}
       </FlexWrapper>
 
       <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>

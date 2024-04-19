@@ -30,6 +30,12 @@ export const eventsSlice = createSlice({
         pending_users: arrayUnion(payload),
       });
     },
+    confirmUser: (state, { payload }) => {
+      const eventDocRef = doc(doItTogether, "events", payload.event_id);
+      updateDoc(eventDocRef, {
+        confirmed_users: arrayUnion(payload.confirmed_user),
+      });
+    },
     openModal: (state, { payload }) => {
       state.showModal = true;
       state.doc_id = payload;
@@ -40,7 +46,12 @@ export const eventsSlice = createSlice({
   },
 });
 
-export const { registerEvent, openModal, hideModal, registerUser } =
-  eventsSlice.actions;
+export const {
+  registerEvent,
+  openModal,
+  hideModal,
+  registerUser,
+  confirmUser,
+} = eventsSlice.actions;
 
 export default eventsSlice.reducer;

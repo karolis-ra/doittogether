@@ -5,12 +5,13 @@ import { collection, getDoc, doc } from "firebase/firestore";
 
 const initialState = {
   user: {},
+  showInvitationModal: false,
+  modal_id: "",
 };
 
 export const fetchCurrentUser = createAsyncThunk(
   "data/fetchCurrentUser",
   async (user_id) => {
-    let user = {};
     try {
       const docRef = doc(doItTogether, "users", user_id); // Create a reference to the document
       const docSnap = await getDoc(docRef); // Fetch the document
@@ -20,7 +21,6 @@ export const fetchCurrentUser = createAsyncThunk(
         return docSnap.data();
       } else {
         // Document doesn't exist
-        console.log("No such document!");
         return null;
       }
     } catch (error) {
@@ -34,19 +34,21 @@ export const profile = createSlice({
   name: "profile",
   initialState,
   reducers: {
-    // setCqIndex: (state, { payload }) => {
-    //   const currentQ = state.cqIndex;
-    //   state.cqIndex = currentQ + payload;
-    // },
+    openInvitationModal: (state, { payload }) => {
+      state.showInvitationModal = true;
+      state.modal_id = payload;
+    },
+    hideInvitationModal: (state) => {
+      state.showInvitationModal = false;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
       state.user = payload;
-      console.log(payload);
     });
   },
 });
 
-export const {} = profile.actions;
+export const { openInvitationModal, hideInvitationModal } = profile.actions;
 
 export default profile.reducer;

@@ -53,7 +53,6 @@ export default function Profile() {
 
       setPendingEvents(filteredPendingEvents);
       setMyEvents(filteredEvents);
-      console.log(myEvents);
     }
   }, [auth.currentUser, events]);
 
@@ -108,6 +107,7 @@ export default function Profile() {
                       participants,
                       document_id,
                       pending_users,
+                      confirmed_users,
                     },
                     index
                   ) => {
@@ -127,6 +127,7 @@ export default function Profile() {
                         document_id={document_id}
                         key={`event-${index}`}
                         pending_users={pending_users}
+                        confirmed_users={confirmed_users}
                       />
                     );
                   }
@@ -166,6 +167,7 @@ export default function Profile() {
                       participants,
                       document_id,
                       pending_users,
+                      confirmed_users,
                     },
                     index
                   ) => {
@@ -185,6 +187,7 @@ export default function Profile() {
                         document_id={document_id}
                         key={`event-${index}`}
                         pending_users={pending_users}
+                        confirmed_users={confirmed_users}
                       />
                     );
                   }

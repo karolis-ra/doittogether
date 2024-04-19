@@ -42,6 +42,7 @@ export default function Home() {
                 time_from,
                 participants,
                 document_id,
+                confirmed_users,
               },
               index
             ) => {
@@ -60,6 +61,7 @@ export default function Home() {
                   participants={participants}
                   document_id={document_id}
                   key={`event-${index}`}
+                  confirmed_users={confirmed_users}
                 />
               );
             }

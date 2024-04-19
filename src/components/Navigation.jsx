@@ -24,7 +24,6 @@ export const Navigation = () => {
   };
 
   const logout = () => {
-    console.log("hello");
     const auth = getAuth();
     signOut(auth)
       .then(() => {

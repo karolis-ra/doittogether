@@ -105,7 +105,6 @@ export const profileForm = createSlice({
       state.userInfo.quizSkipped = payload;
     },
     setQuizNotDone: (state, { payload }) => {
-      console.log("not done");
       state.userInfo.activities = {};
       state.userInfo.quizDone = payload;
       state.cqIndex = 0;

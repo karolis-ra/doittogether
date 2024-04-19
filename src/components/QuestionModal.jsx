@@ -23,8 +23,6 @@ export const QuestionModal = ({ questions, doc_id }) => {
       ...prevAnswers,
       [question]: answer,
     }));
-
-    console.log(answers);
   };
 
   const handleSubmitForm = () => {

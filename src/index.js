@@ -23,8 +23,6 @@ const App = () => {
   const [email, setEmail] = useState(null);
   const [user, setUser] = useState();
 
-  console.log(auth.currentUser);
-
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       setUser(user);
