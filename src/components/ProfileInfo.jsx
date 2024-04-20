@@ -1,8 +1,6 @@
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 import { FlexWrapper } from "./FlexWrapper";
-import { SubmitButton } from "./SubmitButton";
-import { Navigate } from "react-router";
 import { DefaultButton } from "./DefaultButton";
 import { useDispatch } from "react-redux";
 import { setQuizNotDone } from "../state/profileForm/reducer";

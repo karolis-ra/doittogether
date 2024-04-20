@@ -9,6 +9,8 @@ import { DefaultInput } from "./DefaultInput";
 import { SubmitButton } from "./SubmitButton";
 import { useState } from "react";
 import { profileFormSelector } from "../state/profileForm/selector";
+import { auth } from "../firebase/clientApp";
+import { fetchEvents } from "../state/home/reducer";
 
 export const QuestionModal = ({ questions, doc_id }) => {
   const dispatch = useDispatch();
@@ -26,9 +28,11 @@ export const QuestionModal = ({ questions, doc_id }) => {
   };
 
   const handleSubmitForm = () => {
-    const participant = { ...userInfo };
+    const participant = {};
     participant.event_id = event_id;
     participant.answers = answers;
+    participant.id = auth.currentUser.uid;
+    participant.email = auth.currentUser.email;
 
     dispatch(registerUser(participant));
 
@@ -38,6 +42,7 @@ export const QuestionModal = ({ questions, doc_id }) => {
 
     if (allQuestionsAnswered) {
       dispatch(hideModal());
+      dispatch(fetchEvents());
     } else {
       alert("Please answer all questions.");
     }

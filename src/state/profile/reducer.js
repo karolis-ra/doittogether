@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { doItTogether } from "../../firebase/clientApp";
-import { collection, getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 
 const initialState = {
   user: {},
   showInvitationModal: false,
   modal_id: "",
+  confirmed: false,
 };
 
 export const fetchCurrentUser = createAsyncThunk(
@@ -41,6 +42,13 @@ export const profile = createSlice({
     hideInvitationModal: (state) => {
       state.showInvitationModal = false;
     },
+    setConfirmed: (state) => {
+      if (state.confirmed === true) {
+        state.confirmed = false;
+      } else {
+        state.confirmed = true;
+      }
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCurrentUser.fulfilled, (state, { payload }) => {
@@ -49,6 +57,7 @@ export const profile = createSlice({
   },
 });
 
-export const { openInvitationModal, hideInvitationModal } = profile.actions;
+export const { openInvitationModal, hideInvitationModal, setConfirmed } =
+  profile.actions;
 
 export default profile.reducer;

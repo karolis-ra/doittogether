@@ -7,6 +7,7 @@ import { SubmitButton } from "./SubmitButton";
 import { hideInvitationModal } from "../state/profile/reducer";
 import { useState } from "react";
 import { confirmUser } from "../state/events/reducer";
+import { fetchEvents } from "../state/home/reducer";
 
 export const InvitationModal = ({ pending_users, event_id }) => {
   const [userNum, setUsernNum] = useState(0);
@@ -28,8 +29,10 @@ export const InvitationModal = ({ pending_users, event_id }) => {
     const info_object = {};
     info_object["event_id"] = event_id;
     info_object["confirmed_user"] = pending_users[userNum].id;
-
+    console.log(info_object);
     dispatch(confirmUser(info_object));
+    dispatch(hideInvitationModal());
+    dispatch(fetchEvents());
   };
 
   return (

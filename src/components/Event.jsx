@@ -3,7 +3,6 @@ import { FlexWrapper } from "./FlexWrapper";
 import { Image } from "./Image";
 import styled from "styled-components";
 import { SubmitButton } from "./SubmitButton";
-import { useState } from "react";
 import { QuestionModal } from "./QuestionModal";
 import { useSelector, useDispatch } from "react-redux";
 import { eventsSelector } from "../state/events/selector";
@@ -11,6 +10,8 @@ import { openModal } from "../state/events/reducer";
 import { InvitationModal } from "./InviteUserModal";
 import { profileSelector } from "../state/profile/selector";
 import { openInvitationModal } from "../state/profile/reducer";
+import { deleteEvent } from "../state/events/reducer";
+import { fetchEvents } from "../state/home/reducer";
 
 export const Event = ({
   date,
@@ -20,13 +21,12 @@ export const Event = ({
   max_members,
   from,
   info,
-  id,
   price,
   questionList,
-  participants,
   document_id,
   pending_users,
   confirmed_users,
+  myEvent,
 }) => {
   const { showModal, doc_id } = useSelector(eventsSelector);
   const { showInvitationModal, modal_id } = useSelector(profileSelector);
@@ -42,6 +42,11 @@ export const Event = ({
     } else {
       console.log("klausimu nera");
     }
+  };
+
+  const handleDeleteEvent = () => {
+    dispatch(deleteEvent(document_id));
+    dispatch(fetchEvents());
   };
   return (
     <FlexWrapper
@@ -111,8 +116,18 @@ export const Event = ({
           </FlexWrapper>
         )}
       </FlexWrapper>
+      {myEvent ? (
+        <SubmitButton
+          onClick={handleDeleteEvent}
+          color={COLORS.red}
+          $hover={COLORS.redHover}
+        >
+          TRINTI
+        </SubmitButton>
+      ) : (
+        <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
+      )}
 
-      <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
       {showModal && doc_id === document_id && (
         <QuestionModal questions={questionList} doc_id={doc_id} />
       )}

@@ -5,6 +5,8 @@ import {
   doc,
   updateDoc,
   arrayUnion,
+  deleteField,
+  deleteDoc,
 } from "firebase/firestore";
 import { doItTogether } from "../../firebase/clientApp";
 
@@ -34,7 +36,12 @@ export const eventsSlice = createSlice({
       const eventDocRef = doc(doItTogether, "events", payload.event_id);
       updateDoc(eventDocRef, {
         confirmed_users: arrayUnion(payload.confirmed_user),
+        pending_users: deleteField(),
       });
+    },
+    deleteEvent: (state, { payload }) => {
+      const eventDocRef = doc(doItTogether, "events", payload);
+      deleteDoc(eventDocRef);
     },
     openModal: (state, { payload }) => {
       state.showModal = true;
@@ -52,6 +59,7 @@ export const {
   hideModal,
   registerUser,
   confirmUser,
+  deleteEvent,
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

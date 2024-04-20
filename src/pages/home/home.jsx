@@ -14,60 +14,60 @@ export default function Home() {
   useEffect(() => {
     dispatch(fetchEvents());
   }, []);
+
+  const filteredEvents = events.filter((event) => !event.confirmed_users);
+
   return (
     <>
       <Navigation />
-      {
-        <FlexWrapper
-          // $flexDirection="column"
-          $alignItems="stretch"
-          $gap="30px"
-          $margin="50px auto"
-          $maxWidth="710px"
-          $flexWrap="wrap"
-          $justifyContent={!isTablet && "center"}
-        >
-          {events.map(
-            (
-              {
-                date,
-                discipline,
-                physical_level,
-                location,
-                max_members,
-                info,
-                id,
-                price,
-                questionList,
-                time_from,
-                participants,
-                document_id,
-                confirmed_users,
-              },
-              index
-            ) => {
-              return (
-                <Event
-                  date={date}
-                  discipline={discipline}
-                  physical_level={physical_level}
-                  location={location}
-                  max_members="2"
-                  info={info}
-                  id={id}
-                  price={price}
-                  questionList={questionList}
-                  from={time_from}
-                  participants={participants}
-                  document_id={document_id}
-                  key={`event-${index}`}
-                  confirmed_users={confirmed_users}
-                />
-              );
-            }
-          )}
-        </FlexWrapper>
-      }
+      <FlexWrapper
+        $alignItems="stretch"
+        $gap="30px"
+        $margin="50px auto"
+        $maxWidth="710px"
+        $flexWrap="wrap"
+        $justifyContent={!isTablet && "center"}
+      >
+        {filteredEvents.map(
+          (
+            {
+              date,
+              discipline,
+              physical_level,
+              location,
+              max_members,
+              info,
+              id,
+              price,
+              questionList,
+              time_from,
+              participants,
+              document_id,
+              confirmed_users,
+            },
+            index
+          ) => {
+            return (
+              <Event
+                date={date}
+                discipline={discipline}
+                physical_level={physical_level}
+                location={location}
+                max_members="2"
+                info={info}
+                id={id}
+                price={price}
+                questionList={questionList}
+                from={time_from}
+                participants={participants}
+                document_id={document_id}
+                key={`event-${index}`}
+                confirmed_users={confirmed_users}
+              />
+            );
+          }
+        )}
+      </FlexWrapper>
     </>
   );
 }

@@ -1,4 +1,3 @@
-import { CenterWrap } from "../../components/CenterWrap";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { COLORS } from "../../styles/colors";
 import styled from "styled-components";
@@ -19,11 +18,11 @@ import { useQuery } from "../../styles/breakpoints";
 
 export default function Profile() {
   const dispatch = useDispatch();
-  const { user } = useSelector(profileSelector);
+  const { user, confirmed } = useSelector(profileSelector);
   const [userFound, setUserFound] = useState(false);
   const [eventsFetched, setEventsFetched] = useState(false);
   const [myEvents, setMyEvents] = useState([]);
-  const [pendingEvents, setPendingEvents] = useState([]);
+  const [guestEvents, setGuestEvents] = useState([]);
   const { events } = useSelector(homeSelector);
   const { isTablet } = useQuery();
 
@@ -42,16 +41,15 @@ export default function Profile() {
         return event.id === auth.currentUser.uid;
       });
 
-      const filteredPendingEvents = events.filter((event) => {
-        if (event.pending_users && Array.isArray(event.pending_users)) {
-          return event.pending_users.some(
+      let filteredGuestEvents = events.filter((event) => {
+        if (event.confirmed_users && Array.isArray(event.confirmed_users)) {
+          return event.confirmed_users.filter(
             (user) => user.id === auth.currentUser.uid
           );
         }
         return false;
       });
-
-      setPendingEvents(filteredPendingEvents);
+      setGuestEvents(filteredGuestEvents);
       setMyEvents(filteredEvents);
     }
   }, [auth.currentUser, events]);
@@ -128,6 +126,7 @@ export default function Profile() {
                         key={`event-${index}`}
                         pending_users={pending_users}
                         confirmed_users={confirmed_users}
+                        myEvent={true}
                       />
                     );
                   }
@@ -151,7 +150,7 @@ export default function Profile() {
           >
             {!userFound
               ? "loading"
-              : myEvents.map(
+              : guestEvents.map(
                   (
                     {
                       date,

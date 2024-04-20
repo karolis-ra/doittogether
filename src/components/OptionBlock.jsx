@@ -1,5 +1,4 @@
 import { FlexWrapper } from "./FlexWrapper";
-import { useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 import { StyledRadio } from "./StyledRadio";

@@ -170,17 +170,20 @@ export default function CreateEvent() {
 
           <StyledSelect
             id="discipline"
-            type="text"
-            placeholder="Sporto šaka"
+            defaultValue="" // Set the defaultValue to an empty string or the default value you prefer
             onChange={handleInputChange}
             required
           >
-            <option value="" disabled selected hidden>
+            <option value="" disabled hidden>
               Sporto šaka
             </option>
             {!loading &&
               questions[0].variants.map((singleVariant) => {
-                return <option value={singleVariant}>{singleVariant}</option>;
+                return (
+                  <option key={singleVariant} value={singleVariant}>
+                    {singleVariant}
+                  </option>
+                );
               })}
           </StyledSelect>
           <DefaultInput
@@ -199,17 +202,20 @@ export default function CreateEvent() {
           /> */}
           <StyledSelect
             id="physical_level"
-            type="text"
-            placeholder="Fizinis pasiruošimas"
+            defaultValue="" // Set the defaultValue to an empty string or the default value you prefer
             onChange={handleInputChange}
             required
           >
-            <option value="" disabled selected hidden>
+            <option value="" disabled hidden>
               Fizinis parengtumas
             </option>
             {!loading &&
               questions[1].variants.map((singleVariant) => {
-                return <option value={singleVariant}>{singleVariant}</option>;
+                return (
+                  <option key={singleVariant} value={singleVariant}>
+                    {singleVariant}
+                  </option>
+                );
               })}
           </StyledSelect>
           {!answered && <StyledDiv>Užpildykite visus laukelius</StyledDiv>}
@@ -233,7 +239,7 @@ export default function CreateEvent() {
               )}
               {event.questionList &&
                 event.questionList.map((singleQ, index) => {
-                  return <div>{`${index + 1}. ${singleQ}`}</div>;
+                  return <div key={index}>{`${index + 1}. ${singleQ}`}</div>;
                 })}
               <DefaultInput
                 id="question"
