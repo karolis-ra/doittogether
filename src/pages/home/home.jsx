@@ -6,6 +6,7 @@ import { FlexWrapper } from "../../components/FlexWrapper";
 import { homeSelector } from "../../state/home/selector";
 import { Event } from "../../components/Event";
 import { useQuery } from "../../styles/breakpoints";
+import { CenterWrap } from "../../components/CenterWrap";
 
 export default function Home() {
   const { isTablet } = useQuery();
@@ -20,54 +21,59 @@ export default function Home() {
   return (
     <>
       <Navigation />
-      <FlexWrapper
-        $alignItems="stretch"
-        $gap="30px"
-        $margin="50px auto"
-        $maxWidth="710px"
-        $flexWrap="wrap"
-        $justifyContent={!isTablet && "center"}
-      >
-        {filteredEvents.map(
-          (
-            {
-              date,
-              discipline,
-              physical_level,
-              location,
-              max_members,
-              info,
-              id,
-              price,
-              questionList,
-              time_from,
-              participants,
-              document_id,
-              confirmed_users,
-            },
-            index
-          ) => {
-            return (
-              <Event
-                date={date}
-                discipline={discipline}
-                physical_level={physical_level}
-                location={location}
-                max_members="2"
-                info={info}
-                id={id}
-                price={price}
-                questionList={questionList}
-                from={time_from}
-                participants={participants}
-                document_id={document_id}
-                key={`event-${index}`}
-                confirmed_users={confirmed_users}
-              />
-            );
-          }
-        )}
-      </FlexWrapper>
+      <CenterWrap >
+        <FlexWrapper
+          $alignItems="stretch"
+          $gap="30px"
+          $margin="50px auto"
+          $maxWidth="710px"
+          $flexWrap="wrap"
+          $justifyContent={!isTablet && "center"}
+        >
+          {filteredEvents.map(
+            (
+              {
+                date,
+                discipline,
+                physical_level,
+                location,
+                max_members,
+                info,
+                id,
+                price,
+                questionList,
+                time_from,
+                participants,
+                document_id,
+                confirmed_users,
+                pending_users,
+              },
+              index
+            ) => {
+              return (
+                <Event
+                  date={date}
+                  discipline={discipline}
+                  physical_level={physical_level}
+                  location={location}
+                  max_members="2"
+                  info={info}
+                  id={id}
+                  price={price}
+                  questionList={questionList}
+                  from={time_from}
+                  participants={participants}
+                  document_id={document_id}
+                  key={`event-${index}`}
+                  confirmed_users={confirmed_users}
+                  joinEvent={true}
+                  pending_users={pending_users}
+                />
+              );
+            }
+          )}
+        </FlexWrapper>
+      </CenterWrap>
     </>
   );
 }

@@ -39,42 +39,62 @@ export const InvitationModal = ({ pending_users, event_id }) => {
     <StyledWrapper $flexDirection="column">
       <FlexWrapper
         $flexDirection="column"
-        $gap="30px"
+        $gap="15px"
         $width="340px"
         $alignItems="center"
+        $backgroundColor="white"
+        $borderRadius="5px"
+        $padding="0 0 30px 0"
       >
-        <FlexWrapper $flexDirection="column" $alignItems="" $width="340px">
-          <div>{pending_users[userNum].name}</div>
-          {Object.entries(pending_users[userNum].answers).map(
-            ([key, value]) => {
-              return (
-                <FlexWrapper $flexDirection="column" key={key}>
-                  <div>{key}</div>
-                  <div>{value}</div>
-                </FlexWrapper>
-              );
-            }
-          )}
+        <FlexWrapper
+          $flexDirection="column"
+          $alignItems=""
+          $width="340px"
+          $padding="15px"
+        >
+          <FlexWrapper
+            $alignItems=" center"
+            $justifyContent="flex-start"
+            $gap="15px"
+          >
+            <StyledSubtitle>Dalyvis:</StyledSubtitle>
+            <StyledSubtitle>{pending_users[userNum].email}</StyledSubtitle>
+          </FlexWrapper>
+          <FlexWrapper gap="15px" $flexDirection="column">
+            {Object.entries(pending_users[userNum].answers).map(
+              ([key, value]) => {
+                return (
+                  <FlexWrapper $flexDirection="column" key={key} $gap="5px">
+                    <StyledQuestionTitle>{key}</StyledQuestionTitle>
+                    <StyledAnswer>{value}</StyledAnswer>
+                  </FlexWrapper>
+                );
+              }
+            )}
+          </FlexWrapper>
         </FlexWrapper>
-        <SubmitButton
-          onClick={handleUserNumber}
-          color={COLORS.creme}
-          hover={COLORS.brown}
-          width="240px"
-        >
-          KITAS
-        </SubmitButton>
-      </FlexWrapper>
-      <FlexWrapper $margin="20px 0 0 0 " $gap="20px">
-        <SubmitButton
-          color={COLORS.black}
-          width="120px"
-          onClick={handleBack}
-          hover={COLORS.gray}
-        >
-          ATGAL
-        </SubmitButton>
-        <SubmitButton onClick={handleConfirmUser}>PATVIRTINTI</SubmitButton>
+        {pending_users.length > 1 && (
+          <SubmitButton
+            onClick={handleUserNumber}
+            color={COLORS.creme}
+            hover={COLORS.brown}
+            width="240px"
+          >
+            KITAS DALYVIS
+          </SubmitButton>
+        )}
+
+        <FlexWrapper $margin="0 0 0 0 " $gap="20px">
+          <SubmitButton
+            color={COLORS.black}
+            width="120px"
+            onClick={handleBack}
+            hover={COLORS.gray}
+          >
+            GRĮŽTI
+          </SubmitButton>
+          <SubmitButton onClick={handleConfirmUser}>PATVIRTINTI</SubmitButton>
+        </FlexWrapper>
       </FlexWrapper>
     </StyledWrapper>
   );
@@ -101,4 +121,14 @@ const StyledSubtitle = styled.div`
   color: #000;
   font-size: 16px;
   text-align: center;
+`;
+
+const StyledQuestionTitle = styled.div`
+  color: ${COLORS.saladGreen};
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const StyledAnswer = styled.div`
+  font-size: 14px;
 `;

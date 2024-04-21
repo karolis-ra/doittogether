@@ -43,6 +43,12 @@ export const eventsSlice = createSlice({
       const eventDocRef = doc(doItTogether, "events", payload);
       deleteDoc(eventDocRef);
     },
+    leaveCurrentEvent: (state, { payload }) => {
+      const eventDocRef = doc(doItTogether, "events", payload);
+      updateDoc(eventDocRef, {
+        confirmed_users: deleteField(),
+      });
+    },
     openModal: (state, { payload }) => {
       state.showModal = true;
       state.doc_id = payload;
@@ -60,6 +66,7 @@ export const {
   registerUser,
   confirmUser,
   deleteEvent,
+  leaveCurrentEvent,
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

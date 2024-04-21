@@ -43,12 +43,11 @@ export default function Profile() {
 
       let filteredGuestEvents = events.filter((event) => {
         if (event.confirmed_users && Array.isArray(event.confirmed_users)) {
-          return event.confirmed_users.filter(
-            (user) => user.id === auth.currentUser.uid
-          );
+          return event.confirmed_users.includes(auth.currentUser.uid);
         }
         return false;
       });
+
       setGuestEvents(filteredGuestEvents);
       setMyEvents(filteredEvents);
     }
@@ -78,7 +77,7 @@ export default function Profile() {
           $alignItems="center"
           $margin="25px 0 0 0"
         >
-          <StyledText>MANO ĮVYKIAI</StyledText>
+          <StyledText>MANO SUKURTI ĮVYKIAI</StyledText>
           <FlexWrapper
             $alignItems="stretch"
             $gap="30px"
@@ -187,6 +186,7 @@ export default function Profile() {
                         key={`event-${index}`}
                         pending_users={pending_users}
                         confirmed_users={confirmed_users}
+                        leaveEvent={true}
                       />
                     );
                   }

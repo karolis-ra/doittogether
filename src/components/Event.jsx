@@ -11,6 +11,7 @@ import { InvitationModal } from "./InviteUserModal";
 import { profileSelector } from "../state/profile/selector";
 import { openInvitationModal } from "../state/profile/reducer";
 import { deleteEvent } from "../state/events/reducer";
+import { leaveCurrentEvent } from "../state/events/reducer";
 import { fetchEvents } from "../state/home/reducer";
 
 export const Event = ({
@@ -27,6 +28,8 @@ export const Event = ({
   pending_users,
   confirmed_users,
   myEvent,
+  leaveEvent,
+  joinEvent,
 }) => {
   const { showModal, doc_id } = useSelector(eventsSelector);
   const { showInvitationModal, modal_id } = useSelector(profileSelector);
@@ -48,6 +51,13 @@ export const Event = ({
     dispatch(deleteEvent(document_id));
     dispatch(fetchEvents());
   };
+
+  const handleLeaveEvent = () => {
+    console.log("leave");
+    dispatch(leaveCurrentEvent(document_id));
+    dispatch(fetchEvents());
+  };
+
   return (
     <FlexWrapper
       $maxWidth="340px"
@@ -55,7 +65,8 @@ export const Event = ({
       $border={`1px solid ${COLORS.saladGreen}`}
       $padding="5px 15px 15px 15px"
       $borderRadius="4px"
-      $justifyContent="space-between"
+      $justifyContent="space-around"
+      $backgroundColor={COLORS.white}
     >
       <FlexWrapper $flexDirection="column">
         <FlexWrapper $justifyContent="space-between">
@@ -98,34 +109,68 @@ export const Event = ({
             }/${max_members}`}</Text>
           </FlexWrapper>
         </FlexWrapper>
-        <FlexWrapper>{info}</FlexWrapper>
-        {!pending_users ? null : (
+        {info && (
           <FlexWrapper
             $flexDirection="column"
-            $border="1px solid blue"
-            $padding="10px"
+            $borderBottom={`1px solid ${COLORS.saladGreen}`}
+            $margin="0 0 15px 0"
+            $padding="0 0 5px 0"
           >
-            <div>{`Laukia patvirtinimo: ${pending_users.length}`}</div>
-            <SubmitButton onClick={openInvitationWin}>Perziurėti</SubmitButton>
-            {showInvitationModal && modal_id === document_id && (
-              <InvitationModal
-                pending_users={pending_users}
-                event_id={document_id}
-              />
-            )}
+            <StyledDisc>Papildoma informacija</StyledDisc>
+            <FlexWrapper>{info}</FlexWrapper>
           </FlexWrapper>
         )}
+
+        {!pending_users ? null : (
+          <>
+            {" "}
+            {myEvent && (
+              <FlexWrapper
+                $alignItems="center"
+                $justifyContent="space-between"
+                $margin="0 0 15px 0"
+              >
+                <div>{`Laukia patvirtinimo: ${pending_users.length}`}</div>
+                <SubmitButton width="100px" onClick={openInvitationWin}>
+                  Perziurėti
+                </SubmitButton>
+                {showInvitationModal && modal_id === document_id && (
+                  <InvitationModal
+                    pending_users={pending_users}
+                    event_id={document_id}
+                  />
+                )}
+              </FlexWrapper>
+            )}
+          </>
+        )}
       </FlexWrapper>
-      {myEvent ? (
+      {myEvent && (
         <SubmitButton
           onClick={handleDeleteEvent}
           color={COLORS.red}
-          $hover={COLORS.redHover}
+          hover={COLORS.redHover}
         >
-          TRINTI
+          TRINTI ĮVYKĮ
         </SubmitButton>
-      ) : (
-        <SubmitButton onClick={handleJoinEvent}>PRISIJUNGTI</SubmitButton>
+      )}
+      {leaveEvent && (
+        <SubmitButton
+          onClick={handleLeaveEvent}
+          color={COLORS.red}
+          hover={COLORS.redHover}
+        >
+          PALIKTI ĮVYKĮ
+        </SubmitButton>
+      )}
+      {joinEvent && (
+        <SubmitButton
+          onClick={pending_users ? null : handleJoinEvent}
+          color={pending_users ? COLORS.black : COLORS.saladGreen}
+          hover={pending_users ? COLORS.black : COLORS.hoverGreen}
+        >
+          {pending_users ? "LAUKIAMA ATSAKYMO" : "PRISIJUNGTI"}
+        </SubmitButton>
       )}
 
       {showModal && doc_id === document_id && (
