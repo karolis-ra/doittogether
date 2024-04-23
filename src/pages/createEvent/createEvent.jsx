@@ -96,6 +96,7 @@ export default function CreateEvent() {
       "discipline",
       "price",
       "physical_level",
+      "info",
     ];
     const isValid = requiredFields.every((field) => event[field]);
 
@@ -104,10 +105,10 @@ export default function CreateEvent() {
       const updatedEvent = { ...event, id: auth.currentUser.uid };
       setEvent(updatedEvent);
       dispatch(registerEvent(updatedEvent));
+      navigate("/home");
     } else {
       setAnswered(false);
     }
-    navigate("/home");
   };
 
   const handleBack = () => {
@@ -218,14 +219,13 @@ export default function CreateEvent() {
                 );
               })}
           </StyledSelect>
-          {!answered && <StyledDiv>Užpildykite visus laukelius</StyledDiv>}
           <StyledTextArea
             id="info"
             placeholder="Papildoma informacija"
             onChange={handleInputChange}
           ></StyledTextArea>
         </FlexWrapper>
-
+        {!answered && <StyledDiv>Užpildykite visus laukelius</StyledDiv>}
         {!extraQuestions && (
           <SubmitButton type="button" onClick={handleExtraQ}>
             {event.questionList ? "Papildyti " : "Pridėti "} klausimyną

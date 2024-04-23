@@ -17,8 +17,9 @@ import { DefaultInput } from "../../components/DefaultInput";
 import { SubmitButton } from "../../components/SubmitButton";
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
-import { setExistingUser } from "../../state/profileForm/reducer";
 import { fetchUser } from "../../state/profileForm/reducer";
+import { useSelector } from "react-redux";
+import { profileFormSelector } from "../../state/profileForm/selector";
 
 export default function Login() {
   const googleProvider = new GoogleAuthProvider();
@@ -27,6 +28,9 @@ export default function Login() {
   const [success, setSuccess] = useState(true);
   const [wrongPass, setWrongPass] = useState(false);
   const [emailUsed, setEmailUsed] = useState(false);
+
+  const { userInfo } = useSelector(profileFormSelector);
+
   const dispatch = useDispatch();
 
   const setSignUp = () => {

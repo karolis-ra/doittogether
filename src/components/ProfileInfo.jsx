@@ -8,6 +8,8 @@ export const ProfileInfo = ({ user }) => {
   const activities = { ...user.activities };
   const dispatch = useDispatch();
 
+  const orderedKeys = ["Koks Tavo lygis?", "Koks tavo tikslas?", "Ko ieškai?"];
+
   const handleChangeProfileInfo = () => {
     dispatch(setQuizNotDone(false));
   };
@@ -46,7 +48,7 @@ export const ProfileInfo = ({ user }) => {
           {Object.entries(activities).map(([activity, values]) => (
             <FlexWrapper key={activity} $flexDirection="column" $gap="8px">
               <StyledDisc>{activity}</StyledDisc>
-              {Object.entries(values).map(([key, value]) => (
+              {orderedKeys.map((key) => (
                 <FlexWrapper
                   key={key}
                   $justifyContent="space-between"
@@ -54,7 +56,7 @@ export const ProfileInfo = ({ user }) => {
                   $borderBottom={`2px solid ${COLORS.gray}`}
                 >
                   <FlexWrapper $flex="1">{key}</FlexWrapper>
-                  <FlexWrapper $flex="1">{value}</FlexWrapper>
+                  <FlexWrapper $flex="1">{values[key]}</FlexWrapper>
                 </FlexWrapper>
               ))}
             </FlexWrapper>

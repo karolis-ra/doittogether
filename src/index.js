@@ -7,6 +7,7 @@ import Login from "./pages/login/login";
 import VerifyEmail from "./pages/verifyEmail/verifyEmail";
 import CreateEvent from "./pages/createEvent/createEvent";
 import Profile from "./pages/profile/profile";
+import Hello from "./pages/hello/hello";
 import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
@@ -38,8 +39,8 @@ const App = () => {
   }, []);
 
   const emailVerification = (emailVerified) => {
-    if (emailVerified) {
-      return <Navigate to="/profileQuiz" />;
+    if (user && emailVerified) {
+      return <Navigate to="/home" />;
     }
     if (user && !emailVerified) {
       auth.signOut();
@@ -55,7 +56,7 @@ const App = () => {
       <BrowserRouter>
         <QueryClientProvider client={new QueryClient()}>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />} />
+            <Route path="/" element={<Hello />} />
             <Route path="/login" element={emailVerification(emailVerified)} />
             <Route path="/verifyEmail" element={<VerifyEmail />} />
             <Route path="/profileQuiz" element={<ProfileQuiz />} />

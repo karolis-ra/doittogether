@@ -67,6 +67,7 @@ export const Event = ({
       $borderRadius="4px"
       $justifyContent="space-around"
       $backgroundColor={COLORS.white}
+      $maxHeight="450px"
     >
       <FlexWrapper $flexDirection="column">
         <FlexWrapper $justifyContent="space-between">

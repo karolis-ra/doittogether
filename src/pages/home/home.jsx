@@ -7,21 +7,49 @@ import { homeSelector } from "../../state/home/selector";
 import { Event } from "../../components/Event";
 import { useQuery } from "../../styles/breakpoints";
 import { CenterWrap } from "../../components/CenterWrap";
+import { auth } from "../../firebase/clientApp";
+import { fetchUser } from "../../state/profileForm/reducer";
+import { profileFormSelector } from "../../state/profileForm/selector";
+import { onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router";
+import { useState } from "react";
 
 export default function Home() {
   const { isTablet } = useQuery();
-  const dispatch = useDispatch();
+  const { userInfo } = useSelector(profileFormSelector);
   const { events } = useSelector(homeSelector);
+  const [userFetched, setUserFetched] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(fetchEvents());
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUserFetched(true);
+        dispatch(fetchUser(auth.currentUser.uid));
+        if (!userFetched) {
+          console.log(userFetched);
+        }
+      } else {
+        console.log("user not found");
+      }
+    });
+
+    if (!userInfo.quizDone) {
+      navigate("/profileQuiz");
+    }
   }, []);
 
-  const filteredEvents = events.filter((event) => !event.confirmed_users);
+  const filteredEvents = events.filter(
+    (event) => !event.confirmed_users && !event.pending_users
+  );
 
   return (
     <>
       <Navigation />
-      <CenterWrap >
+      <CenterWrap>
         <FlexWrapper
           $alignItems="stretch"
           $gap="30px"

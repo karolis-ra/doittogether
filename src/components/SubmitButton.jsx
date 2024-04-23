@@ -9,6 +9,7 @@ export const SubmitButton = ({
   hover,
   color,
   width,
+  zIndex,
 }) => {
   return (
     <StyledButton
@@ -25,7 +26,7 @@ export const SubmitButton = ({
 };
 
 const StyledButton = styled.button`
-width: ${(props) => props.width || "100%"};
+  width: ${(props) => props.width || "100%"};
   background-color: ${(props) => props.color || COLORS.saladGreen};
   color: ${COLORS.white};
   padding: 14px 0;
@@ -35,6 +36,7 @@ width: ${(props) => props.width || "100%"};
   border-radius: 5px;
   cursor: pointer;
   transition: 0.3s ease-in-out;
+  z-index: 99;
   &:hover {
     background-color: ${(props) => props.hover || COLORS.hoverGreen}};
   }

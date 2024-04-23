@@ -42,6 +42,7 @@ export const fetchQuestions = createAsyncThunk("data/fetchData", async () => {
 export const fetchUser = createAsyncThunk(
   "users/fetchUser",
   async (userId, { rejectWithValue }) => {
+    console.log("user fetched");
     try {
       const userDocRef = doc(doItTogether, "users", userId);
       const userDocSnap = await getDoc(userDocRef);

@@ -31,6 +31,7 @@ export const FlexWrapper = styled.div`
   background-size: cover;
   background-position: center;
   background-color: ${(props) => props.$bgColor};
+  background: ${(props) => props.$background}
   z-index: ${(props) => props.$zIndex};
   cursor: ${(props) => props.$cursor};
   max-height: ${(props) => props.$maxHeight};

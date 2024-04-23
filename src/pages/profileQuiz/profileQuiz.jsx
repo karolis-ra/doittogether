@@ -94,7 +94,7 @@ export const ProfileQuiz = () => {
   };
 
   if (userInfo.quizDone) {
-    return <Navigate to="/profile" />;
+    return <Navigate to="/home" />;
   }
 
   return (

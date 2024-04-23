@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { profileSelector } from "../../state/profile/selector";
 import { ProfileInfo } from "../../components/ProfileInfo";
 import { useQuery } from "../../styles/breakpoints";
+import { fetchUser } from "../../state/profileForm/reducer";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -54,7 +55,11 @@ export default function Profile() {
   }, [auth.currentUser, events]);
 
   return (
-    <FlexWrapper $flexDirection="column" $backgroundColor={COLORS.bgGray}>
+    <FlexWrapper
+      $flexDirection="column"
+      $backgroundColor={COLORS.bgGray}
+      $height="100vh"
+    >
       <Navigation />
       <FlexWrapper
         $width="100%"
@@ -78,6 +83,7 @@ export default function Profile() {
           $margin="25px 0 0 0"
         >
           <StyledText>MANO SUKURTI ĮVYKIAI</StyledText>
+          {myEvents.length === 0 && <div>ivykiu nera</div>}
           <FlexWrapper
             $alignItems="stretch"
             $gap="30px"
@@ -139,6 +145,7 @@ export default function Profile() {
           $margin={isTablet && "25px 0 0 0"}
         >
           <StyledText>ĮVYKIAI, KURIUOSE AŠ DALYVIS</StyledText>
+          {guestEvents.length === 0 && <div>ivykiu nera</div>}
           <FlexWrapper
             $alignItems="stretch"
             $gap="30px"
