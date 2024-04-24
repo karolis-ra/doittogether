@@ -32,6 +32,13 @@ export const eventsSlice = createSlice({
         pending_users: arrayUnion(payload),
       });
     },
+    straightConfirmUser: (state, { payload }) => {
+      const eventDocRef = doc(doItTogether, "events", payload.event_id);
+      updateDoc(eventDocRef, {
+        confirmed_users: arrayUnion(payload.confirmed_user),
+        pending_users: deleteField(),
+      });
+    },
     confirmUser: (state, { payload }) => {
       const eventDocRef = doc(doItTogether, "events", payload.event_id);
       updateDoc(eventDocRef, {
@@ -67,6 +74,7 @@ export const {
   confirmUser,
   deleteEvent,
   leaveCurrentEvent,
+  straightConfirmUser,
 } = eventsSlice.actions;
 
 export default eventsSlice.reducer;

@@ -98,6 +98,9 @@ export const profileForm = createSlice({
       const { value, title } = payload;
       if (title === "Amžius") {
         userInfo.age = value;
+      }
+      if (title === "Vardas") {
+        userInfo.name = value;
       } else {
         userInfo.city = value;
       }

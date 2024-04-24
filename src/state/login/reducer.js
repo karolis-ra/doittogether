@@ -1,7 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import { doItTogether } from "../../firebase/clientApp";
-import { collection, getDocs } from "firebase/firestore";
 
 const initialState = {
   userSetUp: false,

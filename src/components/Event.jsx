@@ -13,6 +13,9 @@ import { openInvitationModal } from "../state/profile/reducer";
 import { deleteEvent } from "../state/events/reducer";
 import { leaveCurrentEvent } from "../state/events/reducer";
 import { fetchEvents } from "../state/home/reducer";
+import { straightConfirmUser } from "../state/events/reducer";
+import { auth } from "../firebase/clientApp";
+import { useNavigate } from "react-router";
 
 export const Event = ({
   date,
@@ -34,6 +37,7 @@ export const Event = ({
   const { showModal, doc_id } = useSelector(eventsSelector);
   const { showInvitationModal, modal_id } = useSelector(profileSelector);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const openInvitationWin = () => {
     dispatch(openInvitationModal(document_id));
@@ -43,7 +47,13 @@ export const Event = ({
     if (questionList) {
       dispatch(openModal(document_id));
     } else {
-      console.log("klausimu nera");
+      const participant = {};
+      participant.event_id = document_id;
+      participant.confirmed_user = auth.currentUser.uid;
+      participant.email = auth.currentUser.email;
+      dispatch(straightConfirmUser(participant));
+      dispatch(fetchEvents());
+      navigate("/profile");
     }
   };
 
@@ -67,7 +77,6 @@ export const Event = ({
       $borderRadius="4px"
       $justifyContent="space-around"
       $backgroundColor={COLORS.white}
-      $maxHeight="450px"
     >
       <FlexWrapper $flexDirection="column">
         <FlexWrapper $justifyContent="space-between">

@@ -1,7 +1,13 @@
 import styled from "styled-components";
 import { COLORS } from "../styles/colors";
 
-export const DefaultInput = ({ id, type, placeholder, onChange, required }) => {
+export const DefaultInput = ({
+  id,
+  type,
+  placeholder,
+  onChange,
+  required,
+}) => {
   return (
     <StyledInput
       id={id}

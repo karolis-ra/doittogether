@@ -35,10 +35,14 @@ export default function Login() {
 
   const setSignUp = () => {
     setLogin(false);
+    setWrongPass(false);
+    setSuccess(true);
   };
 
   const setLogIn = () => {
     setLogin(true);
+    setWrongPass(false);
+    setEmailUsed(false);
   };
 
   const handleLogin = async (e) => {
@@ -128,7 +132,12 @@ export default function Login() {
       >
         <StyledForm onSubmit={login ? handleLogin : handleFormSubmit}>
           <FlexWrapper $flexDirection="column" $gap="20px">
-            <DefaultInput id="email" type="email" placeholder="El.Paštas" />
+            <DefaultInput
+              id="email"
+              type="email"
+              placeholder="El.Paštas"
+              autocomplete="off"
+            />
             <DefaultInput
               id="password"
               type="password"

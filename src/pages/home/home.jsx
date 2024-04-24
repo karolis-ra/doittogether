@@ -6,7 +6,6 @@ import { FlexWrapper } from "../../components/FlexWrapper";
 import { homeSelector } from "../../state/home/selector";
 import { Event } from "../../components/Event";
 import { useQuery } from "../../styles/breakpoints";
-import { CenterWrap } from "../../components/CenterWrap";
 import { auth } from "../../firebase/clientApp";
 import { fetchUser } from "../../state/profileForm/reducer";
 import { profileFormSelector } from "../../state/profileForm/selector";
@@ -19,11 +18,17 @@ export default function Home() {
   const { userInfo } = useSelector(profileFormSelector);
   const { events } = useSelector(homeSelector);
   const [userFetched, setUserFetched] = useState(false);
+  const [eventsToShow, setEventsToShow] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const physicalLevels = ["Pradedantysis", "Pažengęs", "Ekspertas"];
 
   useEffect(() => {
     dispatch(fetchEvents());
+    const filteredEvents = events.filter(
+      (event) => !event.confirmed_users && !event.pending_users
+    );
+    setEventsToShow(filteredEvents);
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -42,66 +47,92 @@ export default function Home() {
     }
   }, []);
 
-  const filteredEvents = events.filter(
-    (event) => !event.confirmed_users && !event.pending_users
-  );
+  const handlePhysicalFilter = (e) => {
+    const physicalLevel = e.target.value;
+    const filteredEvents = events.filter(
+      (event) =>
+        !event.confirmed_users &&
+        !event.pending_users &&
+        event.physical_level === physicalLevel
+    );
+    if (physicalLevel === "all") {
+      const filteredEvents = events.filter(
+        (event) => !event.confirmed_users && !event.pending_users
+      );
+      console.log(filteredEvents);
+      setEventsToShow(filteredEvents);
+    } else {
+      setEventsToShow(filteredEvents);
+    }
+  };
 
   return (
     <>
       <Navigation />
-      <CenterWrap>
-        <FlexWrapper
-          $alignItems="stretch"
-          $gap="30px"
-          $margin="50px auto"
-          $maxWidth="710px"
-          $flexWrap="wrap"
-          $justifyContent={!isTablet && "center"}
-        >
-          {filteredEvents.map(
-            (
-              {
-                date,
-                discipline,
-                physical_level,
-                location,
-                max_members,
-                info,
-                id,
-                price,
-                questionList,
-                time_from,
-                participants,
-                document_id,
-                confirmed_users,
-                pending_users,
-              },
-              index
-            ) => {
-              return (
-                <Event
-                  date={date}
-                  discipline={discipline}
-                  physical_level={physical_level}
-                  location={location}
-                  max_members="2"
-                  info={info}
-                  id={id}
-                  price={price}
-                  questionList={questionList}
-                  from={time_from}
-                  participants={participants}
-                  document_id={document_id}
-                  key={`event-${index}`}
-                  confirmed_users={confirmed_users}
-                  joinEvent={true}
-                  pending_users={pending_users}
-                />
-              );
-            }
-          )}
-        </FlexWrapper>
-      </CenterWrap>
+      <FlexWrapper $justifyContent="center">
+        <select onChange={handlePhysicalFilter}>
+          <option>FIZINIS PASIRUOŠIMAS</option>
+          {physicalLevels.map((singleLevel, index) => {
+            return (
+              <option key={`${index} + 1`} value={singleLevel}>
+                {singleLevel}
+              </option>
+            );
+          })}
+          <option value="all">Rodyti visus</option>
+        </select>
+      </FlexWrapper>
+      <FlexWrapper
+        $alignItems="stretch"
+        $gap="30px"
+        $margin="50px auto"
+        $maxWidth="710px"
+        $flexWrap="wrap"
+        $justifyContent={!isTablet && "center"}
+      >
+        {eventsToShow.map(
+          (
+            {
+              date,
+              discipline,
+              physical_level,
+              location,
+              max_members,
+              info,
+              id,
+              price,
+              questionList,
+              time_from,
+              participants,
+              document_id,
+              confirmed_users,
+              pending_users,
+            },
+            index
+          ) => {
+            return (
+              <Event
+                date={date}
+                discipline={discipline}
+                physical_level={physical_level}
+                location={location}
+                max_members="2"
+                info={info}
+                id={id}
+                price={price}
+                questionList={questionList}
+                from={time_from}
+                participants={participants}
+                document_id={document_id}
+                key={`event-${index}`}
+                confirmed_users={confirmed_users}
+                joinEvent={true}
+                pending_users={pending_users}
+              />
+            );
+          }
+        )}
+      </FlexWrapper>
     </>
   );
 }

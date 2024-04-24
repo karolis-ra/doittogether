@@ -16,9 +16,9 @@ import {
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
 import { SubmitButton } from "../../components/SubmitButton";
-import { DefaultButton } from "../../components/DefaultButton";
 import { Image } from "../../components/Image";
 import { setQuizDone } from "../../state/profileForm/reducer";
+import { auth } from "../../firebase/clientApp";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
@@ -45,8 +45,15 @@ export const ProfileQuiz = () => {
     }
 
     if (cqIndex + 1 === questions.length) {
-      dispatch(setUserPersonalInfo(loggedInUser));
+      const userInfo = {};
+      userInfo.ID = auth.currentUser.uid;
+      userInfo.name = auth.currentUser.name;
+      userInfo.email = auth.currentUser.email;
+      userInfo.emailVerified = auth.currentUser.emailVerified;
+      dispatch(setUserPersonalInfo(userInfo));
     }
+
+    console.log(auth.currentUser);
   };
 
   const handleBack = () => {
@@ -94,7 +101,7 @@ export const ProfileQuiz = () => {
   };
 
   if (userInfo.quizDone) {
-    return <Navigate to="/home" />;
+    return <Navigate to="/profile" />;
   }
 
   return (
@@ -208,7 +215,7 @@ export const ProfileQuiz = () => {
                     }
                   </>
                 )}
-                {cqIndex >= 5 && cqIndex <= 6 && (
+                {cqIndex >= 5 && cqIndex <= 7 && (
                   <>
                     {
                       <FlexWrapper $flexDirection="column">
@@ -236,7 +243,7 @@ export const ProfileQuiz = () => {
                 )}
               </FlexWrapper>
               <FlexWrapper $width="220px" $flexDirection="column" $gap="20px">
-                {[0, 4, 5, 6].includes(cqIndex) && (
+                {[0, 4, 5, 6, 7].includes(cqIndex) && (
                   <SubmitButton onClick={handleAnswer} disabled={!cont}>
                     PATEIKTI
                   </SubmitButton>

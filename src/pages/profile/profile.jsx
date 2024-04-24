@@ -1,7 +1,6 @@
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { COLORS } from "../../styles/colors";
 import styled from "styled-components";
-import { DefaultButton } from "../../components/DefaultButton";
 import { Navigation } from "../../components/Navigation";
 import { useSelector } from "react-redux";
 import { homeSelector } from "../../state/home/selector";
@@ -15,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { profileSelector } from "../../state/profile/selector";
 import { ProfileInfo } from "../../components/ProfileInfo";
 import { useQuery } from "../../styles/breakpoints";
-import { fetchUser } from "../../state/profileForm/reducer";
+import { Image } from "../../components/Image";
 
 export default function Profile() {
   const dispatch = useDispatch();
@@ -26,7 +25,7 @@ export default function Profile() {
   const [guestEvents, setGuestEvents] = useState([]);
   const { events } = useSelector(homeSelector);
   const { isTablet } = useQuery();
-
+  console.log(user);
   useEffect(() => {
     if (events.length === 0) {
       dispatch(fetchEvents());
@@ -58,32 +57,47 @@ export default function Profile() {
     <FlexWrapper
       $flexDirection="column"
       $backgroundColor={COLORS.bgGray}
-      $height="100vh"
+      $height="100%"
     >
       <Navigation />
       <FlexWrapper
         $width="100%"
         $borderBottom={`1px solid ${COLORS.gray}`}
         $margin="20px 0"
-        $padding="0 0 20px 20px"
+        $padding="0 20px 20px 20px"
+        $justifyContent="flex-end"
       >
-        <div>{user.name}</div>
+        <FlexWrapper $gap="15px" $alignItems="center">
+          <Image
+            src={
+              user.gender === "Vyras"
+                ? "/images/profile/male.png"
+                : "/images/profile/female.png"
+            }
+            $width="30px"
+          />
+          {user.name}
+        </FlexWrapper>
       </FlexWrapper>
       <ProfileInfo user={user} />
       <FlexWrapper
         $flexDirection="row"
         $flexWrap="wrap"
         $width={isTablet ? "50%" : "380px"}
-        $margin="0 auto"
+        $margin="25px auto"
+        gap="25px"
       >
         <FlexWrapper
           $flex="1"
           $flexDirection="column"
           $alignItems="center"
           $margin="25px 0 0 0"
+          $backgroundColor={COLORS.white}
+          $borderRadius="5px"
+          $minWidth="360px"
         >
           <StyledText>MANO SUKURTI ĮVYKIAI</StyledText>
-          {myEvents.length === 0 && <div>ivykiu nera</div>}
+          {myEvents.length === 0 && <StyledNote>Įvykių nėra</StyledNote>}
           <FlexWrapper
             $alignItems="stretch"
             $gap="30px"
@@ -143,9 +157,12 @@ export default function Profile() {
           $flexDirection="column"
           $alignItems="center"
           $margin={isTablet && "25px 0 0 0"}
+          $backgroundColor={COLORS.white}
+          $borderRadius="5px"
+          $minWidth="360px"
         >
           <StyledText>ĮVYKIAI, KURIUOSE AŠ DALYVIS</StyledText>
-          {guestEvents.length === 0 && <div>ivykiu nera</div>}
+          {guestEvents.length === 0 && <StyledNote>Įvykių nėra</StyledNote>}
           <FlexWrapper
             $alignItems="stretch"
             $gap="30px"
@@ -210,4 +227,12 @@ const StyledText = styled.div`
   text-align: center;
   font-size: 24px;
   font-weight: 700;
+  padding: 10px 0;
+  border-bottom: 2px solid ${COLORS.saladGreen};
+`;
+
+const StyledNote = styled.div`
+  padding: 25px 0;
+  color: ${COLORS.hoverGreen};
+  font-weight: 600;
 `;
