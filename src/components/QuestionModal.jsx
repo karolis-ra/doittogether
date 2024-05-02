@@ -10,10 +10,11 @@ import { SubmitButton } from "./SubmitButton";
 import { useState } from "react";
 import { profileFormSelector } from "../state/profileForm/selector";
 import { auth } from "../firebase/clientApp";
-import { fetchEvents } from "../state/home/reducer";
+import { useNavigate } from "react-router";
 
 export const QuestionModal = ({ questions, doc_id }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
   const { userInfo } = useSelector(profileFormSelector);
   const event_id = doc_id;
@@ -42,7 +43,7 @@ export const QuestionModal = ({ questions, doc_id }) => {
 
     if (allQuestionsAnswered) {
       dispatch(hideModal());
-      dispatch(fetchEvents());
+      window.location.reload();
     } else {
       alert("Please answer all questions.");
     }

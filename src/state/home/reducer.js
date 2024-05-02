@@ -8,6 +8,7 @@ const initialState = {
 };
 
 export const fetchEvents = createAsyncThunk("data/fetchEvents", async () => {
+  console.log("fetching");
   const colRef = collection(doItTogether, "events");
   let items = [];
   await getDocs(colRef).then((snapshot) => {

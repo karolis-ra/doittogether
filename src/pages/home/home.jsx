@@ -9,6 +9,7 @@ import { useQuery } from "../../styles/breakpoints";
 import { auth } from "../../firebase/clientApp";
 import { fetchUser } from "../../state/profileForm/reducer";
 import { profileFormSelector } from "../../state/profileForm/selector";
+import { eventsSelector } from "../../state/events/selector";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
@@ -22,12 +23,17 @@ export default function Home() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const physicalLevels = ["Pradedantysis", "Pažengęs", "Ekspertas"];
+  const sport_disciplines = [
+    "Bėgimas",
+    "Fitnesas",
+    "Mtb dviračiai",
+    "Gravel dviračiai",
+    "Plento dviračiai",
+  ];
 
   useEffect(() => {
     dispatch(fetchEvents());
-    const filteredEvents = events.filter(
-      (event) => !event.confirmed_users && !event.pending_users
-    );
+    const filteredEvents = events.filter((event) => !event.confirmed_users);
     setEventsToShow(filteredEvents);
 
     onAuthStateChanged(auth, (user) => {
@@ -50,15 +56,26 @@ export default function Home() {
   const handlePhysicalFilter = (e) => {
     const physicalLevel = e.target.value;
     const filteredEvents = events.filter(
-      (event) =>
-        !event.confirmed_users &&
-        !event.pending_users &&
-        event.physical_level === physicalLevel
+      (event) => !event.confirmed_users && event.physical_level === physicalLevel
     );
     if (physicalLevel === "all") {
-      const filteredEvents = events.filter(
-        (event) => !event.confirmed_users && !event.pending_users
-      );
+      const filteredEvents = events.filter((event) => !event.confirmed_users);
+      console.log(filteredEvents);
+      setEventsToShow(filteredEvents);
+    } else {
+      setEventsToShow(filteredEvents);
+    }
+  };
+
+  const handleDisciplineFilter = (e) => {
+    const sport_disc = e.target.value;
+    const filteredEvents = events.filter(
+      (event) =>
+        !event.confirmed_users &&
+        event.discipline === sport_disc
+    );
+    if (sport_disc === "all") {
+      const filteredEvents = events.filter((event) => !event.confirmed_users);
       console.log(filteredEvents);
       setEventsToShow(filteredEvents);
     } else {
@@ -71,11 +88,24 @@ export default function Home() {
       <Navigation />
       <FlexWrapper $justifyContent="center">
         <select onChange={handlePhysicalFilter}>
-          <option>FIZINIS PASIRUOŠIMAS</option>
+          <option value="all">FIZINIS PASIRUOŠIMAS</option>
           {physicalLevels.map((singleLevel, index) => {
             return (
               <option key={`${index} + 1`} value={singleLevel}>
                 {singleLevel}
+              </option>
+            );
+          })}
+          <option value="all">Rodyti visus</option>
+        </select>
+      </FlexWrapper>
+      <FlexWrapper $justifyContent="center">
+        <select onChange={handleDisciplineFilter}>
+          <option value="all">SPORTO ŠAKA</option>
+          {sport_disciplines.map((singleDisc, index) => {
+            return (
+              <option key={`${index} + 1`} value={singleDisc}>
+                {singleDisc}
               </option>
             );
           })}

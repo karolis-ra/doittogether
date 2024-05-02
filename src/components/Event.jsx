@@ -38,7 +38,12 @@ export const Event = ({
   const { showInvitationModal, modal_id } = useSelector(profileSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  let isCurrentUserPending = false;
+  if (pending_users && pending_users.length > 0) {
+    isCurrentUserPending = pending_users.some(
+      (user) => user.id === auth.currentUser.uid
+    );
+  }
   const openInvitationWin = () => {
     dispatch(openInvitationModal(document_id));
   };
@@ -175,11 +180,11 @@ export const Event = ({
       )}
       {joinEvent && (
         <SubmitButton
-          onClick={pending_users ? null : handleJoinEvent}
-          color={pending_users ? COLORS.black : COLORS.saladGreen}
-          hover={pending_users ? COLORS.black : COLORS.hoverGreen}
+          onClick={isCurrentUserPending ? null : handleJoinEvent}
+          color={isCurrentUserPending ? COLORS.black : COLORS.saladGreen}
+          hover={isCurrentUserPending ? COLORS.black : COLORS.hoverGreen}
         >
-          {pending_users ? "LAUKIAMA ATSAKYMO" : "PRISIJUNGTI"}
+          {isCurrentUserPending ? "LAUKIAMA ATSAKYMO" : "PRISIJUNGTI"}
         </SubmitButton>
       )}
 
