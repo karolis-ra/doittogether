@@ -15,4 +15,5 @@ export const Image = styled.img`
   position: ${(props) => props.$position};
   transform: ${(props) => props.$transform};
   z-index: ${(props) => props.$zIndex};
+  cursor: ${(props) => props.$cursor};
 `;

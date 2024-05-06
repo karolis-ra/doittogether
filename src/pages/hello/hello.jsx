@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { SubmitButton } from "../../components/SubmitButton";
 import { Image } from "../../components/Image";
 import { useNavigate } from "react-router";
+import { HelloNav } from "../../components/helloNavigation";
 
 export default function Hello() {
   const navigate = useNavigate();
@@ -12,10 +13,12 @@ export default function Hello() {
   };
   return (
     <>
-      <CenterWrap>
+      <CenterWrap flexDirection="column">
+        <FlexWrapper>
+          <HelloNav />
+        </FlexWrapper>
         <FlexWrapper
           $margin="0 auto"
-          $maxWidth="1440px"
           $width="100%"
           $height="100vh"
           $bgImage="/images/cyclers.png"

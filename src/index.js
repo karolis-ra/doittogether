@@ -8,6 +8,10 @@ import VerifyEmail from "./pages/verifyEmail/verifyEmail";
 import CreateEvent from "./pages/createEvent/createEvent";
 import Profile from "./pages/profile/profile";
 import Hello from "./pages/hello/hello";
+import Caliesthenics from "./pages/caliesthenics/caliesthenics";
+import MTB from "./pages/mtb/mtb";
+import Gravel from "./pages/gravel/gravel";
+import Road from "./pages/road/road";
 import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
@@ -16,6 +20,8 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/clientApp";
 import { Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
+import Fitness from "./pages/fitness/fitness";
+import Run from "./pages/run/run";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -63,6 +69,12 @@ const App = () => {
             <Route path="/createEvent" element={<CreateEvent />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/home" element={<Home />} />
+            <Route path="/road" element={<Road />} />
+            <Route path="/mtb" element={<MTB />} />
+            <Route path="/gravel" element={<Gravel />} />
+            <Route path="/fitness" element={<Fitness />} />
+            <Route path="/caliesthenics" element={<Caliesthenics />} />
+            <Route path="/run" element={<Run />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

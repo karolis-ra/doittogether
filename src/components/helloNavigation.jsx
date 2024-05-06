@@ -2,9 +2,8 @@ import styled from "styled-components";
 import React from "react";
 import { FlexWrapper } from "./FlexWrapper";
 import { COLORS } from "../styles/colors";
-import { navOptions } from "../assets/navOptions";
+import { helloNavOptions } from "../assets/helloNavOptions";
 import { Link } from "react-router-dom";
-import { DefaultButton } from "./DefaultButton";
 import { useDispatch } from "react-redux";
 import { openModal } from "../state/navigation/reducer";
 import { navigationSelector } from "../state/navigation/selector";
@@ -15,7 +14,7 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Image } from "./Image";
 
-export const Navigation = () => {
+export const HelloNav = () => {
   const { isTablet, isSmDesktop } = useQuery();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -24,20 +23,12 @@ export const Navigation = () => {
     dispatch(openModal());
   };
 
-  const logout = () => {
-    const auth = getAuth();
-    signOut(auth)
-      .then(() => {
-        navigate("/");
-        // Sign-out successful.
-      })
-      .catch((error) => {
-        // An error happened.
-      });
+  const login = () => {
+    navigate("/login");
   };
 
   const handleLogoClick = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const { showModal } = useSelector(navigationSelector);
@@ -58,14 +49,14 @@ export const Navigation = () => {
             $alignItems="center"
             $gap={isTablet ? "36px" : "8px"}
           >
-            {navOptions.map((singleOption, index) => {
+            {helloNavOptions.map((singleOption, index) => {
               return (
                 <Link to={singleOption.link} key={`link-${index}`}>
                   <StyledOption>{singleOption.title}</StyledOption>
                 </Link>
               );
             })}
-            <StyledOption onClick={logout}>ATSIJUNGTI</StyledOption>
+            <StyledOption onClick={login}>Prisijungti</StyledOption>
           </FlexWrapper>
         </NavWrapper>
       ) : (
@@ -74,6 +65,7 @@ export const Navigation = () => {
             <FlexWrapper
               $justifyContent="flex-end"
               $backgroundColor={COLORS.saladGreen}
+              $width="100%"
             >
               <FlexWrapper $justifyContent="space-between" $padding="25px 15px">
                 <FlexWrapper
