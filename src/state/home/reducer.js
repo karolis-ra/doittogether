@@ -17,6 +17,7 @@ export const fetchEvents = createAsyncThunk("data/fetchEvents", async () => {
       items.push(currentObject);
     });
   });
+  console.log(items);
   return items;
 });
 

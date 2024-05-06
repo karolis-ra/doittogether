@@ -9,7 +9,6 @@ import { useQuery } from "../../styles/breakpoints";
 import { auth } from "../../firebase/clientApp";
 import { fetchUser } from "../../state/profileForm/reducer";
 import { profileFormSelector } from "../../state/profileForm/selector";
-import { eventsSelector } from "../../state/events/selector";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
@@ -20,8 +19,11 @@ export default function Home() {
   const { events } = useSelector(homeSelector);
   const [userFetched, setUserFetched] = useState(false);
   const [eventsToShow, setEventsToShow] = useState([]);
+  const [physicalFilter, setPhysicalFilter] = useState("all");
+  const [disciplineFilter, setDisciplineFilter] = useState("all");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const physicalLevels = ["Pradedantysis", "Pažengęs", "Ekspertas"];
   const sport_disciplines = [
     "Bėgimas",
@@ -33,8 +35,6 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(fetchEvents());
-    const filteredEvents = events.filter((event) => !event.confirmed_users);
-    setEventsToShow(filteredEvents);
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -51,36 +51,27 @@ export default function Home() {
     if (!userInfo.quizDone) {
       navigate("/profileQuiz");
     }
-  }, []);
+
+    const filteredEvents = events.filter((event) => {
+      const passPhysicalFilter =
+        physicalFilter === "all" || event.physical_level === physicalFilter;
+      const passDisciplineFilter =
+        disciplineFilter === "all" || event.discipline === disciplineFilter;
+      return (
+        passPhysicalFilter && passDisciplineFilter && !event.confirmed_users
+      );
+    });
+    setEventsToShow(filteredEvents);
+  }, [userFetched, physicalFilter, disciplineFilter]);
 
   const handlePhysicalFilter = (e) => {
     const physicalLevel = e.target.value;
-    const filteredEvents = events.filter(
-      (event) => !event.confirmed_users && event.physical_level === physicalLevel
-    );
-    if (physicalLevel === "all") {
-      const filteredEvents = events.filter((event) => !event.confirmed_users);
-      console.log(filteredEvents);
-      setEventsToShow(filteredEvents);
-    } else {
-      setEventsToShow(filteredEvents);
-    }
+    setPhysicalFilter(physicalLevel);
   };
 
   const handleDisciplineFilter = (e) => {
     const sport_disc = e.target.value;
-    const filteredEvents = events.filter(
-      (event) =>
-        !event.confirmed_users &&
-        event.discipline === sport_disc
-    );
-    if (sport_disc === "all") {
-      const filteredEvents = events.filter((event) => !event.confirmed_users);
-      console.log(filteredEvents);
-      setEventsToShow(filteredEvents);
-    } else {
-      setEventsToShow(filteredEvents);
-    }
+    setDisciplineFilter(sport_disc);
   };
 
   return (
