@@ -73,7 +73,7 @@ const App = () => {
             <Route path="/mtb" element={<MTB />} />
             <Route path="/gravel" element={<Gravel />} />
             <Route path="/fitness" element={<Fitness />} />
-            <Route path="/caliesthenics" element={<Caliesthenics />} />
+            <Route path="/calisthenics" element={<Caliesthenics />} />
             <Route path="/run" element={<Run />} />
           </Routes>
         </QueryClientProvider>

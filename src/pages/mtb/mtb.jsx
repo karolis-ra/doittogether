@@ -5,6 +5,8 @@ import { SubmitButton } from "../../components/SubmitButton";
 import { Image } from "../../components/Image";
 import { useNavigate } from "react-router";
 import { HelloNav } from "../../components/helloNavigation";
+import { COLORS } from "../../styles/colors";
+import { DefaultButton } from "../../components/DefaultButton";
 
 export default function MTB() {
   const navigate = useNavigate();
@@ -17,16 +19,60 @@ export default function MTB() {
         <FlexWrapper>
           <HelloNav />
         </FlexWrapper>
+        <FlexWrapper
+          $height="340px"
+          $bgImage="/images/mtb.jpg"
+          $justifyContent="center"
+          $alignItems="center"
+        >
+          {" "}
+          <StyledTitle>MTB DVIRAČIAI</StyledTitle>
+        </FlexWrapper>
         <FlexWrapper>
           <FlexWrapper
             $flexDirection="column"
             $alignItems="center"
             $gap="50px"
             $alignSelf="center"
+            $width="100%"
+            $minHeight="100vh"
           >
             <StyledText $zIndex="2">
-              cia bus info apie MTB sporta
+              Dažnas tokius dviračius vadina tiesiog „MTB“ (angl. Mountain
+              Terrain Bike). Pagal savo paskirtį ir konstrukciją kalnų dviračiai
+              skirti važinėti kalnuotomis ir nelygiomis vietovėmis. Tai vienas
+              populiariausių dviračio tipų jaunimo ir dviračiais sportuojančių
+              asmenų tarpe. <br />
+              <br />
+              Kalnų dviračiai dažniausiai būna sustiprintu rėmu, myniklio
+              velenas yra aukščiau nuo žemės nei kito tipo dviračiuose, tai
+              padidina dviračio pravažumą, tiesus ir platus vairas, galingi
+              stabdžiai – dažniausiai naudojami diskiniai. Šio tipo dviračiai
+              komplektuojami su priekine amortizuojančia šake, o pilnos
+              amortizatoriaus kalnų dviračiai turi ir galinį amortizatorių.
+              Standartiškai ratai būna 26“ dydžio. Nors pastaraisiais metais
+              populiarėja kalnų dviračiai turintys 27,5″ arba net 29″ ratus.
+              Padangos plačios, su grubiu protektoriumi dėl to dviratis lengviau
+              valdomas ir manevringesnis važiuojant bekelėje. MTB dviračiai
+              dažnai turi didelį pavarų skaičių (24-30) ir komplektuojami su
+              priekiniu ir galinių pavarų perjungikliais. Šiuo metu
+              brangesniuose dviračiuose tapo madinga naudoti vieną priekinę
+              žvaigždę. Kai nėra priekinio pavarų perjungėjo, pavarų rankenėlės,
+              taip santykinai galima sutaupyti dviračio svorį. Šiuolaikinis
+              kalnų dviratis sveria nuo 9 iki 14 kg. <br />
+              <br />
+              Pagal dviračio amortizaciją MTB dviračiai dar skirstomi į: <br />
+              1. Kalnų dviračiai kieta važiuokle, be amortizatorių (angl.
+              Rigid);
+              <br />
+              2. Standžios galinės pakabos kalnų dviratis, su priekiniu
+              amortizatoriumi (angl. Hardtail); <br />
+              3. Pilnos amortizacijos kalnų dviratis (angl. Full suspension).
             </StyledText>
+            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+              <DefaultButton to="/login">Prisijunk</DefaultButton>
+              <JoinText>prie MTB dviratininkų!</JoinText>
+            </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
       </CenterWrap>
@@ -35,10 +81,24 @@ export default function MTB() {
 }
 
 const StyledText = styled.div`
-  padding: 0 20px;
+  max-width: 1080px;
+  padding: 40px 40px 0 40px;
   position: relative;
-  max-width: 360px;
-  color: white;
+  color: black;
   font-weight: 600;
   z-index: 2;
+  text-align: justify;
+`;
+
+const StyledTitle = styled.div`
+  font-weight: 700;
+  font-size: 35px;
+  color: ${COLORS.saladGreen};
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
+`;
+
+const JoinText = styled.div`
+  color: ${COLORS.saladGreen};
+  font-weight: 600;
 `;

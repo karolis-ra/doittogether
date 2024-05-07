@@ -28,6 +28,7 @@ export const FlexWrapper = styled.div`
   border-left: ${(props) => props.$borderLeft};
   border-right: ${(props) => props.$borderRight};
   height: ${(props) => props.$height};
+  min-height: ${(props) => props.$minHeight};
   flex-wrap: ${(props) => props.$flexWrap};
   background-image: url(${(props) => props.$bgImage});
   background-size: cover;

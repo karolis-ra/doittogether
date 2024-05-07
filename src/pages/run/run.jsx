@@ -5,14 +5,27 @@ import { SubmitButton } from "../../components/SubmitButton";
 import { Image } from "../../components/Image";
 import { useNavigate } from "react-router";
 import { HelloNav } from "../../components/helloNavigation";
+import { COLORS } from "../../styles/colors";
+import { DefaultButton } from "../../components/DefaultButton";
 
-export default function Run() {
+export default function MTB() {
   const navigate = useNavigate();
+  const handleJoinBtn = () => {
+    navigate("/login");
+  };
   return (
     <>
       <CenterWrap flexDirection="column">
         <FlexWrapper>
           <HelloNav />
+        </FlexWrapper>
+        <FlexWrapper
+          $height="340px"
+          $bgImage="/images/run.jpg"
+          $justifyContent="center"
+          $alignItems="center"
+        >
+          <StyledTitle>BĖGIMAS</StyledTitle>
         </FlexWrapper>
         <FlexWrapper>
           <FlexWrapper
@@ -20,8 +33,43 @@ export default function Run() {
             $alignItems="center"
             $gap="50px"
             $alignSelf="center"
+            $width="100%"
+            $minHeight="60vh"
           >
-            <StyledText $zIndex="2">cia bus info apie begima</StyledText>
+            <StyledText $zIndex="2">
+              Bėgiojimas – viena populiariausių treniruočių formų. Bėgiojimui
+              nereikia specialios įrangos, bėgioti galima bet kur ir bet kada.
+              Be to, bėgimas yra sveika. Kokia bėgimo nauda sveikatai?
+              <br /> <br />
+              1. Geresnė širdies ir kraujagyslių sistemos būklė. Bėgimas yra
+              viena geriausių kardio treniruočių. Bėgiojimas bent 10 minučių per
+              dieną gali reikšmingai sumažinti kardiovaskulinių ligų riziką.
+              Bėgimas taip pat sumažina širdies susitraukimų dažnį ramybės
+              būsenoje. Šis rodiklis yra svarbus bendros sveikatos būklės ir
+              fizinio pasirengimo rodmuo. Kuo jis mažesnis, tuo širdies raumuo
+              stipresnis, fizinis pasirengimas geresnis.
+              <br /> <br />
+              2. Normalaus kūno svorio palaikymas. Bėgimas yra efektyvus būdas
+              deginti kalorijas ir išlaikyti normalų kūno svorį. <br /> <br />
+              3. Stipresni raumenys, geresnė kaulų būklė. Bėgimo metu dirba
+              įvairios raumenų grupės – kojos, juosmuo, viršutinė kūno dalis.
+              Tvirtėja raumenys, didėja ištvermė, didėja kaulų tankis, mažėja
+              osteoporozės rizika. <br /> <br />
+              4. Geresnis miegas. Kokybiškas miegas yra labai svarbus sveikatai.
+              Miego metu organizme vyksta atkuriamieji procesai. Visgi
+              rekomenduojama nebėgioti labai vėlai vakare, nes aerobiniai
+              pratimai paskatina endorfinų išsiskyrimą. Tai suaktyvina smegenis
+              ir gali būti sunkiau užmigti. <br /> <br />
+              5. Geresnė nuotaika ir daugiau energijos. Daug žmonių bėgioja, nes
+              tiesiog nori pasijusti geriau. Bėgiojimas padeda pagerinti
+              nuotaiką, koncentraciją, bendrą gyvenimo kokybę. Reiškiniui, kai
+              bėgimo metu išsiskiria endorfinai, yra specialus terminas –
+              „bėgiko euforija“.
+            </StyledText>
+            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+              <DefaultButton to="/login">Prisijunk</DefaultButton>
+              <JoinText>prie bėgikų!</JoinText>
+            </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
       </CenterWrap>
@@ -30,10 +78,24 @@ export default function Run() {
 }
 
 const StyledText = styled.div`
-  padding: 0 20px;
+  max-width: 1080px;
+  padding: 40px 40px 0 40px;
   position: relative;
-  max-width: 360px;
-  color: white;
+  color: black;
   font-weight: 600;
   z-index: 2;
+  text-align: justify;
+`;
+
+const StyledTitle = styled.div`
+  font-weight: 700;
+  font-size: 35px;
+  color: ${COLORS.saladGreen};
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
+`;
+
+const JoinText = styled.div`
+  color: ${COLORS.saladGreen};
+  font-weight: 600;
 `;

@@ -13,6 +13,7 @@ import { useQuery } from "../styles/breakpoints";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { Image } from "./Image";
+import { HelloNavModal } from "./helloNavModal";
 
 export const HelloNav = () => {
   const { isTablet, isSmDesktop } = useQuery();
@@ -56,7 +57,7 @@ export const HelloNav = () => {
                 </Link>
               );
             })}
-            <StyledOption onClick={login}>Prisijungti</StyledOption>
+            <StyledOption onClick={login}>PRISIJUNGTI</StyledOption>
           </FlexWrapper>
         </NavWrapper>
       ) : (
@@ -81,7 +82,7 @@ export const HelloNav = () => {
               </FlexWrapper>
             </FlexWrapper>
           )}
-          {showModal && <NavModal visibility={showModal} />}
+          {showModal && <HelloNavModal visibility={showModal} />}
         </>
       )}
     </>
