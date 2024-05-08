@@ -69,8 +69,6 @@ export const profileForm = createSlice({
 
       if (name) {
         userInfo.name = name;
-      } else {
-        userInfo.name = email;
       }
       userInfo.email = email;
       userInfo.quizDone = true;
@@ -96,11 +94,13 @@ export const profileForm = createSlice({
     setUserAgeCity: (state, { payload }) => {
       const userInfo = state.userInfo;
       const { value, title } = payload;
+      console.log("this is vardas", payload);
       if (title === "Amžius") {
         userInfo.age = value;
       }
       if (title === "Vardas") {
         userInfo.name = value;
+        console.log(userInfo);
       } else {
         userInfo.city = value;
       }

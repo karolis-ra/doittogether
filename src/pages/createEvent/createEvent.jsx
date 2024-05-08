@@ -97,6 +97,7 @@ export default function CreateEvent() {
       "price",
       "physical_level",
       "info",
+      "contacts",
     ];
     const isValid = requiredFields.every((field) => event[field]);
 
@@ -203,7 +204,7 @@ export default function CreateEvent() {
           /> */}
           <StyledSelect
             id="physical_level"
-            defaultValue="" // Set the defaultValue to an empty string or the default value you prefer
+            defaultValue=""
             onChange={handleInputChange}
             required
           >
@@ -219,6 +220,14 @@ export default function CreateEvent() {
                 );
               })}
           </StyledSelect>
+          <DefaultInput
+            id="contacts"
+            type="text"
+            placeholder="Kontaktai"
+            onChange={handleInputChange}
+            required
+          />
+          <StyledText>*kontaktai rodomi, tik įvykio nariams</StyledText>
           <StyledTextArea
             id="info"
             placeholder="Papildoma informacija"
@@ -313,5 +322,9 @@ const StyledTextArea = styled.textarea`
 
 const StyledDiv = styled.div`
   color: ${COLORS.red};
+  font-size: 12px;
+`;
+
+const StyledText = styled.div`
   font-size: 12px;
 `;

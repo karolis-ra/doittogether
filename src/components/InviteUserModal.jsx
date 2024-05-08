@@ -29,6 +29,8 @@ export const InvitationModal = ({ pending_users, event_id }) => {
     const info_object = {};
     info_object["event_id"] = event_id;
     info_object["confirmed_user"] = pending_users[userNum].id;
+    info_object["member_contacts"] =
+      pending_users[userNum].answers["Kontaktai"];
     console.log(info_object);
     dispatch(confirmUser(info_object));
     dispatch(hideInvitationModal());
@@ -58,11 +60,14 @@ export const InvitationModal = ({ pending_users, event_id }) => {
             $gap="15px"
           >
             <StyledSubtitle>Dalyvis:</StyledSubtitle>
-            <StyledSubtitle>{pending_users[userNum].email}</StyledSubtitle>
+            <StyledSubtitle>{pending_users[userNum].name}</StyledSubtitle>
           </FlexWrapper>
           <FlexWrapper gap="15px" $flexDirection="column">
             {Object.entries(pending_users[userNum].answers).map(
               ([key, value]) => {
+                if (key === "Kontaktai") {
+                  return null;
+                }
                 return (
                   <FlexWrapper $flexDirection="column" key={key} $gap="5px">
                     <StyledQuestionTitle>{key}</StyledQuestionTitle>

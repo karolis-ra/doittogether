@@ -43,7 +43,10 @@ export default function Profile() {
 
       let filteredGuestEvents = events.filter((event) => {
         if (event.confirmed_users && Array.isArray(event.confirmed_users)) {
-          return event.confirmed_users.includes(auth.currentUser.uid);
+          // Check if any confirmed user has the same user_id as the current user
+          return event.confirmed_users.some(
+            (user) => user.user_id === auth.currentUser.uid
+          );
         }
         return false;
       });

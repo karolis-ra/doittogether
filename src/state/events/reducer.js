@@ -41,8 +41,12 @@ export const eventsSlice = createSlice({
     },
     confirmUser: (state, { payload }) => {
       const eventDocRef = doc(doItTogether, "events", payload.event_id);
+      const confirmed_user = {
+        user_id: payload.confirmed_user,
+        member_contacts: payload.member_contacts,
+      };
       updateDoc(eventDocRef, {
-        confirmed_users: arrayUnion(payload.confirmed_user),
+        confirmed_users: arrayUnion(confirmed_user),
         pending_users: deleteField(),
       });
     },

@@ -25,7 +25,6 @@ export default function MTB() {
           $justifyContent="center"
           $alignItems="center"
         >
-          {" "}
           <StyledTitle>MTB DVIRAČIAI</StyledTitle>
         </FlexWrapper>
         <FlexWrapper>
@@ -35,7 +34,7 @@ export default function MTB() {
             $gap="50px"
             $alignSelf="center"
             $width="100%"
-            $minHeight="100vh"
+            $minHeight="60vh"
           >
             <StyledText $zIndex="2">
               Dažnas tokius dviračius vadina tiesiog „MTB“ (angl. Mountain
@@ -59,9 +58,9 @@ export default function MTB() {
               brangesniuose dviračiuose tapo madinga naudoti vieną priekinę
               žvaigždę. Kai nėra priekinio pavarų perjungėjo, pavarų rankenėlės,
               taip santykinai galima sutaupyti dviračio svorį. Šiuolaikinis
-              kalnų dviratis sveria nuo 9 iki 14 kg. <br />
+              kalnų dviratis sveria nuo 9 iki 14 kg. <br /> <br />
+              Pagal dviračio amortizaciją MTB dviračiai dar skirstomi į: <br />{" "}
               <br />
-              Pagal dviračio amortizaciją MTB dviračiai dar skirstomi į: <br />
               1. Kalnų dviračiai kieta važiuokle, be amortizatorių (angl.
               Rigid);
               <br />

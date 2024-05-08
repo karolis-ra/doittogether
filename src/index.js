@@ -12,6 +12,7 @@ import Caliesthenics from "./pages/caliesthenics/caliesthenics";
 import MTB from "./pages/mtb/mtb";
 import Gravel from "./pages/gravel/gravel";
 import Road from "./pages/road/road";
+import Project from "./pages/project/project";
 import { ProfileQuiz } from "./pages/profileQuiz/profileQuiz";
 import { store } from "./state/store";
 import { Provider } from "react-redux";
@@ -75,6 +76,7 @@ const App = () => {
             <Route path="/fitness" element={<Fitness />} />
             <Route path="/calisthenics" element={<Caliesthenics />} />
             <Route path="/run" element={<Run />} />
+            <Route path="/project" element={<Project />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

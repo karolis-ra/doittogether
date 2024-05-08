@@ -28,14 +28,14 @@ export const QuestionModal = ({ questions, doc_id }) => {
     }));
   };
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async () => {
     const participant = {};
     participant.event_id = event_id;
     participant.answers = answers;
     participant.id = auth.currentUser.uid;
     participant.email = auth.currentUser.email;
-
-    dispatch(registerUser(participant));
+    participant.name = userInfo.name;
+    await dispatch(registerUser(participant));
 
     const allQuestionsAnswered = questions.every(
       (question) => answers[question]
@@ -43,7 +43,9 @@ export const QuestionModal = ({ questions, doc_id }) => {
 
     if (allQuestionsAnswered) {
       dispatch(hideModal());
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } else {
       alert("Please answer all questions.");
     }
@@ -64,6 +66,17 @@ export const QuestionModal = ({ questions, doc_id }) => {
             </FlexWrapper>
           );
         })}
+        <FlexWrapper $flexDirection="column">
+          <FlexWrapper $flexDirection="column">
+            <div>Kontaktai</div>
+          </FlexWrapper>
+
+          <DefaultInput id="Kontaktai" onChange={handleAnswerInput} />
+          <StyledText>
+            *kontaktai bus rodomi tik gavus patvirtinimą prisijungti
+            <br /> **kontaktai bus rodomi tik įvykio nariams
+          </StyledText>
+        </FlexWrapper>
       </FlexWrapper>
       <FlexWrapper $margin="20px 0 0 0 " $gap="20px">
         <SubmitButton color={COLORS.black} width="120px" onClick={handleBack}>
@@ -96,4 +109,8 @@ const StyledSubtitle = styled.div`
   color: #000;
   font-size: 16px;
   text-align: center;
+`;
+
+const StyledText = styled.div`
+  font-size: 12px;
 `;
