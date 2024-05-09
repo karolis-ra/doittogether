@@ -123,14 +123,8 @@ export const profileForm = createSlice({
       state.questions = payload.klausimai;
     });
     builder
-      // .addCase(fetchUser.pending, (state) => {
-      //   state.loading = true;
-      // })
       .addCase(fetchUser.fulfilled, (state, { payload }) => {
-        // state.loading = false;
-        // state.user = payload;
         state.userInfo = payload;
-        // state.error = null;
       })
       .addCase(fetchUser.rejected, (state, { payload }) => {
         console.log("user not found");

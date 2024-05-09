@@ -40,4 +40,5 @@ export const FlexWrapper = styled.div`
   max-height: ${(props) => props.$maxHeight};
   overflow: ${(props) => props.$overflow};
   color: ${(props) => props.$color};
+  word-break: ${(props) => props.$wordBreak}
 `;

@@ -25,7 +25,6 @@ export default function Profile() {
   const [guestEvents, setGuestEvents] = useState([]);
   const { events } = useSelector(homeSelector);
   const { isTablet } = useQuery();
-  console.log(user);
   useEffect(() => {
     if (events.length === 0) {
       dispatch(fetchEvents());
@@ -43,7 +42,6 @@ export default function Profile() {
 
       let filteredGuestEvents = events.filter((event) => {
         if (event.confirmed_users && Array.isArray(event.confirmed_users)) {
-          // Check if any confirmed user has the same user_id as the current user
           return event.confirmed_users.some(
             (user) => user.user_id === auth.currentUser.uid
           );
@@ -128,6 +126,8 @@ export default function Profile() {
                       document_id,
                       pending_users,
                       confirmed_users,
+                      contacts,
+                      name,
                     },
                     index
                   ) => {
@@ -148,6 +148,8 @@ export default function Profile() {
                         key={`event-${index}`}
                         pending_users={pending_users}
                         confirmed_users={confirmed_users}
+                        contacts={contacts}
+                        name={name}
                         myEvent={true}
                       />
                     );
@@ -193,6 +195,8 @@ export default function Profile() {
                       document_id,
                       pending_users,
                       confirmed_users,
+                      contacts,
+                      name,
                     },
                     index
                   ) => {
@@ -213,6 +217,8 @@ export default function Profile() {
                         key={`event-${index}`}
                         pending_users={pending_users}
                         confirmed_users={confirmed_users}
+                        contacts={contacts}
+                        name={name}
                         leaveEvent={true}
                       />
                     );

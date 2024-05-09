@@ -106,7 +106,7 @@ export const ProfileQuiz = () => {
 
   return (
     <CenterWrap>
-      <FlexWrapper $flexDirection="column" $width="100%">
+      <FlexWrapper $flexDirection="column" $width="100%" $minHeight="100vh" $padding='40px 0'>
         {reDo && (
           <FlexWrapper
             $justifyContent="flex-start"

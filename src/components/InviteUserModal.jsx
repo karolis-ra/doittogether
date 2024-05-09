@@ -31,6 +31,7 @@ export const InvitationModal = ({ pending_users, event_id }) => {
     info_object["confirmed_user"] = pending_users[userNum].id;
     info_object["member_contacts"] =
       pending_users[userNum].answers["Kontaktai"];
+    info_object["name"] = pending_users[userNum].name;
     console.log(info_object);
     dispatch(confirmUser(info_object));
     dispatch(hideInvitationModal());

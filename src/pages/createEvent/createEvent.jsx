@@ -12,6 +12,7 @@ import { COLORS } from "../../styles/colors";
 import { useNavigate } from "react-router";
 import { Image } from "../../components/Image";
 import { auth } from "../../firebase/clientApp";
+import { profileSelector } from "../../state/profile/selector";
 
 export default function CreateEvent() {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function CreateEvent() {
   const [answered, setAnswered] = useState(true);
 
   const { questions, userInfo } = useSelector(profileFormSelector);
+  const { user } = useSelector(profileSelector);
 
   useEffect(() => {
     dispatch(fetchQuestions())
@@ -103,7 +105,11 @@ export default function CreateEvent() {
 
     if (isValid) {
       setAnswered(true);
-      const updatedEvent = { ...event, id: auth.currentUser.uid };
+      const updatedEvent = {
+        ...event,
+        id: auth.currentUser.uid,
+        name: user.name,
+      };
       setEvent(updatedEvent);
       dispatch(registerEvent(updatedEvent));
       navigate("/home");
@@ -236,7 +242,12 @@ export default function CreateEvent() {
         </FlexWrapper>
         {!answered && <StyledDiv>Užpildykite visus laukelius</StyledDiv>}
         {!extraQuestions && (
-          <SubmitButton type="button" onClick={handleExtraQ}>
+          <SubmitButton
+            type="button"
+            onClick={handleExtraQ}
+            color={COLORS.darkCreme}
+            hover={COLORS.brown}
+          >
             {event.questionList ? "Papildyti " : "Pridėti "} klausimyną
           </SubmitButton>
         )}

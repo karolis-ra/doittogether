@@ -33,6 +33,8 @@ export const Event = ({
   myEvent,
   leaveEvent,
   joinEvent,
+  contacts,
+  name,
 }) => {
   const { showModal, doc_id } = useSelector(eventsSelector);
   const { showInvitationModal, modal_id } = useSelector(profileSelector);
@@ -88,8 +90,9 @@ export const Event = ({
           <StyledDisc>{discipline}</StyledDisc>
           <Text $textAlign="right">{physical_level}</Text>
         </FlexWrapper>
-        <FlexWrapper>
-          <FlexWrapper $gap="10px" $width="240px">
+        <FlexWrapper $justifyContent="space-between">
+          <StyledDisc>{name}</StyledDisc>
+          <FlexWrapper $gap="10px" $minWidth="90px">
             <Image src="./images/events/pin.png" $width="20px" />
             <Text>{location}</Text>
           </FlexWrapper>
@@ -135,6 +138,22 @@ export const Event = ({
             <FlexWrapper>{info}</FlexWrapper>
           </FlexWrapper>
         )}
+        {confirmed_users && confirmed_users.length + 1 === 2 && (
+          <FlexWrapper $flexDirection="column">
+            <StyledDisc>Kontaktai</StyledDisc>
+            <FlexWrapper
+              $flexDirection="column"
+              $padding="0 0 20px 0"
+              gap="5px"
+            >
+              <FlexWrapper $wordBreak="break-all">{`${name} : ${contacts}`}</FlexWrapper>
+              <FlexWrapper
+                $wordBreak="break-all"
+                $flexWrap="wrap"
+              >{`${confirmed_users[0].name} : ${confirmed_users[0].member_contacts}`}</FlexWrapper>
+            </FlexWrapper>
+          </FlexWrapper>
+        )}
 
         {!pending_users ? null : (
           <>
@@ -147,7 +166,7 @@ export const Event = ({
               >
                 <div>{`Laukia patvirtinimo: ${pending_users.length}`}</div>
                 <SubmitButton width="100px" onClick={openInvitationWin}>
-                  Perziurėti
+                  Peržiūrėti
                 </SubmitButton>
                 {showInvitationModal && modal_id === document_id && (
                   <InvitationModal

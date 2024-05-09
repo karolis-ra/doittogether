@@ -44,6 +44,7 @@ export const eventsSlice = createSlice({
       const confirmed_user = {
         user_id: payload.confirmed_user,
         member_contacts: payload.member_contacts,
+        name: payload.name,
       };
       updateDoc(eventDocRef, {
         confirmed_users: arrayUnion(confirmed_user),

@@ -23,6 +23,7 @@ import { Navigate } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "react-query";
 import Fitness from "./pages/fitness/fitness";
 import Run from "./pages/run/run";
+import Admin from "./pages/admin/admin";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -41,6 +42,9 @@ const App = () => {
       } else {
         setEmailVerified(user.emailVerified);
         setEmail(user.email);
+        if (user.email === "admin@admin.lt") {
+          return <Navigate to="/admin" />;
+        }
       }
     });
   }, []);
@@ -77,6 +81,7 @@ const App = () => {
             <Route path="/calisthenics" element={<Caliesthenics />} />
             <Route path="/run" element={<Run />} />
             <Route path="/project" element={<Project />} />
+            <Route path="/admin" element={<Admin />} />
           </Routes>
         </QueryClientProvider>
       </BrowserRouter>

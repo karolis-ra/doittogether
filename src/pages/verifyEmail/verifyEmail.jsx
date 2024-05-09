@@ -20,6 +20,7 @@ export default function VerifyEmail() {
         $gap="20px"
         $padding="50px"
         $width="100%"
+        $height="100vh"
       >
         <StyledText>
           Prašome patvirtinti savo el.pašto adresą, kad galėtumėte prisijungti

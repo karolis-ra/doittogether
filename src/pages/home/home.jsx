@@ -12,6 +12,9 @@ import { profileFormSelector } from "../../state/profileForm/selector";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
 import { useState } from "react";
+import styled from "styled-components";
+import { COLORS } from "../../styles/colors";
+import { fetchCurrentUser } from "../../state/profile/reducer";
 
 export default function Home() {
   const { isTablet } = useQuery();
@@ -19,6 +22,7 @@ export default function Home() {
   const { events } = useSelector(homeSelector);
   const [userFetched, setUserFetched] = useState(false);
   const [eventsToShow, setEventsToShow] = useState([]);
+  const [userFound, setUserFound] = useState(false);
   const [physicalFilter, setPhysicalFilter] = useState("all");
   const [disciplineFilter, setDisciplineFilter] = useState("all");
   const dispatch = useDispatch();
@@ -35,6 +39,9 @@ export default function Home() {
 
   useEffect(() => {
     dispatch(fetchEvents());
+    if (auth.currentUser) {
+      dispatch(fetchCurrentUser(auth.currentUser.uid));
+    }
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -57,12 +64,19 @@ export default function Home() {
         physicalFilter === "all" || event.physical_level === physicalFilter;
       const passDisciplineFilter =
         disciplineFilter === "all" || event.discipline === disciplineFilter;
+      const notConfirmedUser = !event.confirmed_users;
+      const notCurrentUserEvent = event.id !== auth.currentUser.uid;
+
       return (
-        passPhysicalFilter && passDisciplineFilter && !event.confirmed_users
+        passPhysicalFilter &&
+        passDisciplineFilter &&
+        notConfirmedUser &&
+        notCurrentUserEvent
       );
     });
+
     setEventsToShow(filteredEvents);
-  }, [userFetched, physicalFilter, disciplineFilter]);
+  }, [auth.currentUser]);
 
   const handlePhysicalFilter = (e) => {
     const physicalLevel = e.target.value;
@@ -78,7 +92,7 @@ export default function Home() {
     <>
       <Navigation />
       <FlexWrapper $justifyContent="center">
-        <select onChange={handlePhysicalFilter}>
+        <StyledSelect onChange={handlePhysicalFilter}>
           <option value="all">FIZINIS PASIRUOŠIMAS</option>
           {physicalLevels.map((singleLevel, index) => {
             return (
@@ -88,10 +102,10 @@ export default function Home() {
             );
           })}
           <option value="all">Rodyti visus</option>
-        </select>
+        </StyledSelect>
       </FlexWrapper>
       <FlexWrapper $justifyContent="center">
-        <select onChange={handleDisciplineFilter}>
+        <StyledSelect onChange={handleDisciplineFilter}>
           <option value="all">SPORTO ŠAKA</option>
           {sport_disciplines.map((singleDisc, index) => {
             return (
@@ -101,7 +115,7 @@ export default function Home() {
             );
           })}
           <option value="all">Rodyti visus</option>
-        </select>
+        </StyledSelect>
       </FlexWrapper>
       <FlexWrapper
         $alignItems="stretch"
@@ -157,3 +171,13 @@ export default function Home() {
     </>
   );
 }
+
+const StyledSelect = styled.select`
+  border: 2px solid ${COLORS.saladGreen};
+  padding: 5px;
+  border-radius: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  width: 180px;
+  margin: 10px 0 0 0;
+`;

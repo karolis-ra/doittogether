@@ -11,12 +11,14 @@ import { useState } from "react";
 import { profileFormSelector } from "../state/profileForm/selector";
 import { auth } from "../firebase/clientApp";
 import { useNavigate } from "react-router";
+import { profileSelector } from "../state/profile/selector";
 
 export const QuestionModal = ({ questions, doc_id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [answers, setAnswers] = useState({});
   const { userInfo } = useSelector(profileFormSelector);
+  const { user } = useSelector(profileSelector);
   const event_id = doc_id;
 
   const handleAnswerInput = (e) => {
@@ -34,7 +36,8 @@ export const QuestionModal = ({ questions, doc_id }) => {
     participant.answers = answers;
     participant.id = auth.currentUser.uid;
     participant.email = auth.currentUser.email;
-    participant.name = userInfo.name;
+    participant.name = user.name;
+
     await dispatch(registerUser(participant));
 
     const allQuestionsAnswered = questions.every(
@@ -45,7 +48,7 @@ export const QuestionModal = ({ questions, doc_id }) => {
       dispatch(hideModal());
       setTimeout(() => {
         window.location.reload();
-      }, 1000);
+      }, 500);
     } else {
       alert("Please answer all questions.");
     }
