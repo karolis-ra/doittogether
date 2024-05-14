@@ -14,19 +14,17 @@ export const fetchCurrentUser = createAsyncThunk(
   "data/fetchCurrentUser",
   async (user_id) => {
     try {
-      const docRef = doc(doItTogether, "users", user_id); // Create a reference to the document
-      const docSnap = await getDoc(docRef); // Fetch the document
+      const docRef = doc(doItTogether, "users", user_id);
+      const docSnap = await getDoc(docRef); 
 
       if (docSnap.exists()) {
-        // Document exists, return its data
         return docSnap.data();
       } else {
-        // Document doesn't exist
         return null;
       }
     } catch (error) {
       console.error("Error getting document:", error);
-      throw error; // Rethrow the error to handle it in the calling code
+      throw error; 
     }
   }
 );

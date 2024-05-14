@@ -8,7 +8,6 @@ const initialState = {
 };
 
 export const fetchEvents = createAsyncThunk("data/fetchEvents", async () => {
-  console.log("fetching");
   const colRef = collection(doItTogether, "events");
   let items = [];
   await getDocs(colRef).then((snapshot) => {
@@ -24,12 +23,7 @@ export const fetchEvents = createAsyncThunk("data/fetchEvents", async () => {
 export const home = createSlice({
   name: "home",
   initialState,
-  reducers: {
-    // setCqIndex: (state, { payload }) => {
-    //   const currentQ = state.cqIndex;
-    //   state.cqIndex = currentQ + payload;
-    // },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchEvents.fulfilled, (state, { payload }) => {
       state.events = payload;

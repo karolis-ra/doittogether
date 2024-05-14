@@ -9,7 +9,6 @@ export const SubmitButton = ({
   hover,
   color,
   width,
-  zIndex,
 }) => {
   return (
     <StyledButton

@@ -29,10 +29,8 @@ export const Navigation = () => {
     signOut(auth)
       .then(() => {
         navigate("/");
-        // Sign-out successful.
       })
       .catch((error) => {
-        // An error happened.
       });
   };
 

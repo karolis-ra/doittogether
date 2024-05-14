@@ -3,9 +3,7 @@ import { FlexWrapper } from "./FlexWrapper";
 import styled from "styled-components";
 import { useState } from "react";
 import { setUserActivities, setCqIndex } from "../state/profileForm/reducer";
-import { useDispatch, useSelector } from "react-redux";
-import { AnswerBtn } from "./AnswerBtn";
-import { SubmitButton } from "./SubmitButton";
+import { useDispatch } from "react-redux";
 
 export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   const [options, setOption] = useState({});

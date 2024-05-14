@@ -116,7 +116,6 @@ export default function Profile() {
                       discipline,
                       physical_level,
                       location,
-                      max_members,
                       info,
                       id,
                       price,

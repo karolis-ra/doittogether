@@ -42,9 +42,6 @@ const App = () => {
       } else {
         setEmailVerified(user.emailVerified);
         setEmail(user.email);
-        if (user.email === "admin@admin.lt") {
-          return <Navigate to="/admin" />;
-        }
       }
     });
   }, []);
