@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useState } from "react";
 import { setUserActivities, setCqIndex } from "../state/profileForm/reducer";
 import { useDispatch } from "react-redux";
+import { SubmitButton } from "./SubmitButton";
 
 export const AnswerBlock = ({ singleQuestion, disciplines }) => {
   const [options, setOption] = useState({});

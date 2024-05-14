@@ -24,7 +24,7 @@ export default function Hello() {
           $bgImage="/images/cyclers.png"
           $justifyContent="flex-end"
         >
-          <BlueFadeDiv></BlueFadeDiv>
+          {/* <BlueFadeDiv></BlueFadeDiv> */}
           <FlexWrapper
             $flexDirection="column"
             $alignItems="center"
@@ -50,15 +50,15 @@ export default function Hello() {
   );
 }
 
-const BlueFadeDiv = styled.div`
-  position: absolute;
-  max-width: 1440px;
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  background: linear-gradient(to left, #3498db, rgba(0, 0, 255, 0));
-`;
+// const BlueFadeDiv = styled.div`
+//   position: absolute;
+//   max-width: 1440px;
+//   margin: 0 auto;
+//   width: 100%;
+//   height: 100%;
+//   z-index: 1;
+//   background: linear-gradient(to left, #3498db, rgba(0, 0, 255, 0));
+// `;
 
 const StyledText = styled.div`
   padding: 0 20px;
@@ -67,6 +67,8 @@ const StyledText = styled.div`
   color: white;
   font-weight: 600;
   z-index: 2;
+  text-shadow: -1px 1px 0 #000, 1px 1px 0 #000, 1px -1px 0 #000,
+    -1px -1px 0 #000;
 `;
 
 // const StyledButton = styled.div`
