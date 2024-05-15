@@ -24,6 +24,7 @@ export default function MTB() {
           $bgImage="/images/fitness.jpg"
           $justifyContent="center"
           $alignItems="center"
+          alt='fitness'
         >
           <StyledTitle>FITNESAS</StyledTitle>
         </FlexWrapper>

@@ -43,6 +43,7 @@ export const HelloNav = () => {
             src="./images/logo.png"
             $width="200px"
             onClick={handleLogoClick}
+            alt="doittogether logo"
           />
           <FlexWrapper
             $flexDirection={isTablet ? "row" : "column"}

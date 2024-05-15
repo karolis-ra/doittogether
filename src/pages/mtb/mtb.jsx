@@ -24,6 +24,7 @@ export default function MTB() {
           $bgImage="/images/mtb.jpg"
           $justifyContent="center"
           $alignItems="center"
+          alt='mtb cycler'
         >
           <StyledTitle>MTB DVIRAČIAI</StyledTitle>
         </FlexWrapper>

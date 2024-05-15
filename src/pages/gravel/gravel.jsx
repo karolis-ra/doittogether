@@ -24,6 +24,7 @@ export default function MTB() {
           $bgImage="/images/gravel.jpg"
           $justifyContent="center"
           $alignItems="center"
+          alt="gravel"
         >
           <StyledTitle>GRAVEL DVIRAČIAI</StyledTitle>
         </FlexWrapper>

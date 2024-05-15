@@ -24,6 +24,7 @@ export default function MTB() {
           $bgImage="/images/cali.jpg"
           $justifyContent="center"
           $alignItems="center"
+          alt='calisthenics'
         >
           <StyledTitle>GATVĖS GIMNASTIKA</StyledTitle>
         </FlexWrapper>

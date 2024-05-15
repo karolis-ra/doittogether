@@ -30,8 +30,7 @@ export const Navigation = () => {
       .then(() => {
         navigate("/");
       })
-      .catch((error) => {
-      });
+      .catch((error) => {});
   };
 
   const handleLogoClick = () => {
@@ -49,6 +48,7 @@ export const Navigation = () => {
             src="./images/logo.png"
             $width="200px"
             onClick={handleLogoClick}
+            alt="doittogether logo"
           />
           <FlexWrapper
             $flexDirection={isTablet ? "row" : "column"}

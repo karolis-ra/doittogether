@@ -1,6 +1,7 @@
 import styled from "styled-components";
 
 export const Image = styled.img`
+  fetchpriority:${(props) => props.$fetchPriority}
   align-self: ${(props) => props.$alignSelf};
   width: ${(props) => props.$width || "100%"};
   height: ${(props) => props.$height || "auto"};
