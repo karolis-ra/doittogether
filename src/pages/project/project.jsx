@@ -19,7 +19,7 @@ export default function Project() {
         </FlexWrapper>
         <FlexWrapper
           $height="340px"
-          $bgImage="/images/doittogether.webp"
+          $bgImage="/images/doittogether.jpg"
           $justifyContent="center"
           $alignItems="center"
         >

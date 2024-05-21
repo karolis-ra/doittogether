@@ -15,9 +15,11 @@ import { profileSelector } from "../../state/profile/selector";
 import { ProfileInfo } from "../../components/ProfileInfo";
 import { useQuery } from "../../styles/breakpoints";
 import { Image } from "../../components/Image";
+import { useNavigate } from "react-router";
 
 export default function Profile() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { user, confirmed } = useSelector(profileSelector);
   const [userFound, setUserFound] = useState(false);
   const [eventsFetched, setEventsFetched] = useState(false);
@@ -26,6 +28,10 @@ export default function Profile() {
   const { events } = useSelector(homeSelector);
   const { isTablet } = useQuery();
   useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/login");
+    }
+
     if (events.length === 0) {
       dispatch(fetchEvents());
       setEventsFetched(true);

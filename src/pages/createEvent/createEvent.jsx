@@ -27,6 +27,9 @@ export default function CreateEvent() {
   const { user } = useSelector(profileSelector);
 
   useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/login");
+    }
     dispatch(fetchQuestions())
       .then(() => setLoading(false))
       .catch((error) => {

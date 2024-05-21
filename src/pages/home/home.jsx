@@ -35,9 +35,14 @@ export default function Home() {
     "Mtb dviračiai",
     "Gravel dviračiai",
     "Plento dviračiai",
+    "Fitnesas",
+    "Gatvės gimnastika"
   ];
 
   useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/login");
+    }
     dispatch(fetchEvents());
     if (auth.currentUser) {
       dispatch(fetchCurrentUser(auth.currentUser.uid));
@@ -142,6 +147,8 @@ export default function Home() {
               document_id,
               confirmed_users,
               pending_users,
+              contacts,
+              name,
             },
             index
           ) => {
@@ -163,6 +170,8 @@ export default function Home() {
                 confirmed_users={confirmed_users}
                 joinEvent={true}
                 pending_users={pending_users}
+                contacts={contacts}
+                name={name}
               />
             );
           }

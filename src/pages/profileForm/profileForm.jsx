@@ -23,6 +23,9 @@ export const ProfileForm = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/login");
+    }
     dispatch(fetchQuestions());
   }, []);
 

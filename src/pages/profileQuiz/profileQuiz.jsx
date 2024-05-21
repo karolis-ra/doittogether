@@ -19,6 +19,7 @@ import { SubmitButton } from "../../components/SubmitButton";
 import { Image } from "../../components/Image";
 import { setQuizDone } from "../../state/profileForm/reducer";
 import { auth } from "../../firebase/clientApp";
+import { useNavigate } from "react-router";
 
 export const ProfileQuiz = () => {
   const [answered, setAnswered] = useState([]);
@@ -27,11 +28,15 @@ export const ProfileQuiz = () => {
   const [cont, setCont] = useState();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const { questions, cqIndex, userInfo, reDo } =
     useSelector(profileFormSelector);
 
   useEffect(() => {
+    if (!auth.currentUser) {
+      navigate("/login");
+    }
     dispatch(fetchQuestions());
   }, []);
 
@@ -106,7 +111,12 @@ export const ProfileQuiz = () => {
 
   return (
     <CenterWrap>
-      <FlexWrapper $flexDirection="column" $width="100%" $minHeight="100vh" $padding='40px 0'>
+      <FlexWrapper
+        $flexDirection="column"
+        $width="100%"
+        $minHeight="100vh"
+        $padding="40px 0"
+      >
         {reDo && (
           <FlexWrapper
             $justifyContent="flex-start"
