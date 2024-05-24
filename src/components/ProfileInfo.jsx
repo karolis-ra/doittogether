@@ -4,6 +4,7 @@ import { FlexWrapper } from "./FlexWrapper";
 import { DefaultButton } from "./DefaultButton";
 import { useDispatch } from "react-redux";
 import { setQuizNotDone } from "../state/profileForm/reducer";
+
 export const ProfileInfo = ({ user }) => {
   const activities = { ...user.activities };
   const dispatch = useDispatch();
@@ -13,6 +14,8 @@ export const ProfileInfo = ({ user }) => {
   const handleChangeProfileInfo = () => {
     dispatch(setQuizNotDone(false));
   };
+
+  const sortedActivityKeys = Object.keys(activities).sort();
 
   return (
     <>
@@ -45,7 +48,7 @@ export const ProfileInfo = ({ user }) => {
         </FlexWrapper>
         <FlexWrapper $flexDirection="column" $padding="0 0 20px 0">
           <StyledText>Sportas</StyledText>
-          {Object.entries(activities).map(([activity, values]) => (
+          {sortedActivityKeys.map((activity) => (
             <FlexWrapper key={activity} $flexDirection="column" $gap="8px">
               <StyledDisc>{activity}</StyledDisc>
               {orderedKeys.map((key) => (
@@ -56,7 +59,7 @@ export const ProfileInfo = ({ user }) => {
                   $borderBottom={`2px solid ${COLORS.gray}`}
                 >
                   <FlexWrapper $flex="1">{key}</FlexWrapper>
-                  <FlexWrapper $flex="1">{values[key]}</FlexWrapper>
+                  <FlexWrapper $flex="1">{activities[activity][key]}</FlexWrapper>
                 </FlexWrapper>
               ))}
             </FlexWrapper>

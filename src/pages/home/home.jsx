@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEvents } from "../../state/home/reducer";
 import { Navigation } from "../../components/Navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FlexWrapper } from "../../components/FlexWrapper";
 import { homeSelector } from "../../state/home/selector";
 import { Event } from "../../components/Event";
@@ -11,7 +11,6 @@ import { fetchUser } from "../../state/profileForm/reducer";
 import { profileFormSelector } from "../../state/profileForm/selector";
 import { onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router";
-import { useState } from "react";
 import styled from "styled-components";
 import { COLORS } from "../../styles/colors";
 import { fetchCurrentUser } from "../../state/profile/reducer";
@@ -22,7 +21,6 @@ export default function Home() {
   const { events } = useSelector(homeSelector);
   const [userFetched, setUserFetched] = useState(false);
   const [eventsToShow, setEventsToShow] = useState([]);
-  const [userFound, setUserFound] = useState(false);
   const [physicalFilter, setPhysicalFilter] = useState("all");
   const [disciplineFilter, setDisciplineFilter] = useState("all");
   const dispatch = useDispatch();
@@ -42,33 +40,31 @@ export default function Home() {
   useEffect(() => {
     if (!auth.currentUser) {
       navigate("/login");
-    }
-    dispatch(fetchEvents());
-    if (auth.currentUser) {
+    } else {
       dispatch(fetchCurrentUser(auth.currentUser.uid));
-    }
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUserFetched(true);
-        dispatch(fetchUser(auth.currentUser.uid));
-        if (!userFetched) {
-          console.log(userFetched);
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          setUserFetched(true);
+          dispatch(fetchUser(user.uid));
         }
-      } else {
-        console.log("user not found");
-      }
-    });
-
-    if (!userInfo.quizDone) {
-      navigate("/profileQuiz");
+      });
     }
+  }, [auth.currentUser, navigate, dispatch]);
 
+  useEffect(() => {
+    if (auth.currentUser && userFetched) {
+      if (!userInfo.quizDone) {
+        navigate("/profileQuiz");
+      } else {
+        dispatch(fetchEvents());
+      }
+    }
+  }, [auth.currentUser, userFetched, userInfo, navigate, dispatch]);
+
+  useEffect(() => {
     const filteredEvents = events.filter((event) => {
-      const passPhysicalFilter =
-        physicalFilter === "all" || event.physical_level === physicalFilter;
-      const passDisciplineFilter =
-        disciplineFilter === "all" || event.discipline === disciplineFilter;
+      const passPhysicalFilter = physicalFilter === "all" || event.physical_level === physicalFilter;
+      const passDisciplineFilter = disciplineFilter === "all" || event.discipline === disciplineFilter;
       const notConfirmedUser = !event.confirmed_users;
       const notCurrentUserEvent = event.id !== auth.currentUser.uid;
 
@@ -81,16 +77,14 @@ export default function Home() {
     });
 
     setEventsToShow(filteredEvents);
-  }, [auth.currentUser]);
+  }, [events, physicalFilter, disciplineFilter]);
 
   const handlePhysicalFilter = (e) => {
-    const physicalLevel = e.target.value;
-    setPhysicalFilter(physicalLevel);
+    setPhysicalFilter(e.target.value);
   };
 
   const handleDisciplineFilter = (e) => {
-    const sport_disc = e.target.value;
-    setDisciplineFilter(sport_disc);
+    setDisciplineFilter(e.target.value);
   };
 
   return (
@@ -99,26 +93,22 @@ export default function Home() {
       <FlexWrapper $justifyContent="center">
         <StyledSelect onChange={handlePhysicalFilter}>
           <option value="all">FIZINIS PASIRUOŠIMAS</option>
-          {physicalLevels.map((singleLevel, index) => {
-            return (
-              <option key={`${index} + 1`} value={singleLevel}>
-                {singleLevel}
-              </option>
-            );
-          })}
+          {physicalLevels.map((singleLevel, index) => (
+            <option key={index} value={singleLevel}>
+              {singleLevel}
+            </option>
+          ))}
           <option value="all">Rodyti visus</option>
         </StyledSelect>
       </FlexWrapper>
       <FlexWrapper $justifyContent="center">
         <StyledSelect onChange={handleDisciplineFilter}>
           <option value="all">SPORTO ŠAKA</option>
-          {sport_disciplines.map((singleDisc, index) => {
-            return (
-              <option key={`${index} + 1`} value={singleDisc}>
-                {singleDisc}
-              </option>
-            );
-          })}
+          {sport_disciplines.map((singleDisc, index) => (
+            <option key={index} value={singleDisc}>
+              {singleDisc}
+            </option>
+          ))}
           <option value="all">Rodyti visus</option>
         </StyledSelect>
       </FlexWrapper>
@@ -137,7 +127,6 @@ export default function Home() {
               discipline,
               physical_level,
               location,
-              max_members,
               info,
               id,
               price,
@@ -151,30 +140,28 @@ export default function Home() {
               name,
             },
             index
-          ) => {
-            return (
-              <Event
-                date={date}
-                discipline={discipline}
-                physical_level={physical_level}
-                location={location}
-                max_members="2"
-                info={info}
-                id={id}
-                price={price}
-                questionList={questionList}
-                from={time_from}
-                participants={participants}
-                document_id={document_id}
-                key={`event-${index}`}
-                confirmed_users={confirmed_users}
-                joinEvent={true}
-                pending_users={pending_users}
-                contacts={contacts}
-                name={name}
-              />
-            );
-          }
+          ) => (
+            <Event
+              key={`event-${index}`}
+              date={date}
+              discipline={discipline}
+              physical_level={physical_level}
+              location={location}
+              max_members="2"
+              info={info}
+              id={id}
+              price={price}
+              questionList={questionList}
+              from={time_from}
+              participants={participants}
+              document_id={document_id}
+              confirmed_users={confirmed_users}
+              joinEvent={true}
+              pending_users={pending_users}
+              contacts={contacts}
+              name={name}
+            />
+          )
         )}
       </FlexWrapper>
     </>
