@@ -23,6 +23,8 @@ export default function Home() {
   const [eventsToShow, setEventsToShow] = useState([]);
   const [physicalFilter, setPhysicalFilter] = useState("all");
   const [disciplineFilter, setDisciplineFilter] = useState("all");
+  const [cityFilter, setCityFilter] = useState("all");
+  const [cities, setCities] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -34,7 +36,7 @@ export default function Home() {
     "Gravel dviračiai",
     "Plento dviračiai",
     "Fitnesas",
-    "Gatvės gimnastika"
+    "Gatvės gimnastika",
   ];
 
   useEffect(() => {
@@ -63,21 +65,34 @@ export default function Home() {
 
   useEffect(() => {
     const filteredEvents = events.filter((event) => {
-      const passPhysicalFilter = physicalFilter === "all" || event.physical_level === physicalFilter;
-      const passDisciplineFilter = disciplineFilter === "all" || event.discipline === disciplineFilter;
+      const passPhysicalFilter =
+        physicalFilter === "all" || event.physical_level === physicalFilter;
+      const passDisciplineFilter =
+        disciplineFilter === "all" || event.discipline === disciplineFilter;
+      const passCityFilter =
+        cityFilter === "all" || event.location === cityFilter;
       const notConfirmedUser = !event.confirmed_users;
       const notCurrentUserEvent = event.id !== auth.currentUser.uid;
 
       return (
         passPhysicalFilter &&
         passDisciplineFilter &&
+        passCityFilter &&
         notConfirmedUser &&
         notCurrentUserEvent
       );
     });
 
     setEventsToShow(filteredEvents);
-  }, [events, physicalFilter, disciplineFilter]);
+  }, [events, physicalFilter, disciplineFilter, cityFilter, auth.currentUser.uid]);
+
+  useEffect(() => {
+    const citySet = new Set();
+    events.forEach((singleEvent) => {
+      citySet.add(singleEvent["location"]);
+    });
+    setCities([...citySet]);
+  }, [events]);
 
   const handlePhysicalFilter = (e) => {
     setPhysicalFilter(e.target.value);
@@ -85,6 +100,10 @@ export default function Home() {
 
   const handleDisciplineFilter = (e) => {
     setDisciplineFilter(e.target.value);
+  };
+
+  const handleCityFilter = (e) => {
+    setCityFilter(e.target.value);
   };
 
   return (
@@ -105,6 +124,17 @@ export default function Home() {
         <StyledSelect onChange={handleDisciplineFilter}>
           <option value="all">SPORTO ŠAKA</option>
           {sport_disciplines.map((singleDisc, index) => (
+            <option key={index} value={singleDisc}>
+              {singleDisc}
+            </option>
+          ))}
+          <option value="all">Rodyti visus</option>
+        </StyledSelect>
+      </FlexWrapper>
+      <FlexWrapper $justifyContent="center">
+        <StyledSelect onChange={handleCityFilter}>
+          <option value="all">MIESTAS</option>
+          {cities.map((singleDisc, index) => (
             <option key={index} value={singleDisc}>
               {singleDisc}
             </option>

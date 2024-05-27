@@ -59,9 +59,23 @@ export default function MTB() {
               konstrukcijų taikymą. Dauguma tokių modelių sveria mažiau nei 10
               Kg. Plentinių dviračių padangos būna 18-25 mm pločio.
             </StyledText>
-            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+            <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
               <JoinText>prie plento dviratininkų!</JoinText>
+            </FlexWrapper>
+            <FlexWrapper
+              $gap="5px"
+              $justifyContent="flex-end"
+              $padding="0 20px 20px 0"
+            >
+              <FlexWrapper>
+                <a
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </a>
+              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>

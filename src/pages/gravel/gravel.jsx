@@ -57,9 +57,23 @@ export default function MTB() {
               trumpai reziumuoti, kad Gravel tipo dviračiai labiau mėgstami
               keliautojų, ir mėgėjų važiuoti įvairiomis sąlygomis.
             </StyledText>
-            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+            <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
               <JoinText>prie gravel dviratininkų!</JoinText>
+            </FlexWrapper>
+            <FlexWrapper
+              $gap="5px"
+              $justifyContent="flex-end"
+              $padding="0 20px 20px 0"
+            >
+              <FlexWrapper>
+                <a
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </a>
+              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>

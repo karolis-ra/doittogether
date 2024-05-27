@@ -24,7 +24,7 @@ export default function MTB() {
           $bgImage="/images/mtb.jpg"
           $justifyContent="center"
           $alignItems="center"
-          alt='mtb cycler'
+          alt="mtb cycler"
         >
           <StyledTitle>MTB DVIRAČIAI</StyledTitle>
         </FlexWrapper>
@@ -69,9 +69,24 @@ export default function MTB() {
               amortizatoriumi (angl. Hardtail); <br />
               3. Pilnos amortizacijos kalnų dviratis (angl. Full suspension).
             </StyledText>
-            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 0 0">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
               <JoinText>prie MTB dviratininkų!</JoinText>
+            </FlexWrapper>
+            <FlexWrapper
+              $gap="5px"
+              $justifyContent="flex-end"
+              $padding="0 20px 20px 0"
+              
+            >
+              <FlexWrapper>
+                <a
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </a>
+              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>

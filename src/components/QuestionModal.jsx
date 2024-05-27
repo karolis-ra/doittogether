@@ -38,13 +38,12 @@ export const QuestionModal = ({ questions, doc_id }) => {
     participant.email = auth.currentUser.email;
     participant.name = user.name;
 
-    await dispatch(registerUser(participant));
-
     const allQuestionsAnswered = questions.every(
       (question) => answers[question]
     );
 
     if (allQuestionsAnswered) {
+      await dispatch(registerUser(participant));
       dispatch(hideModal());
       setTimeout(() => {
         window.location.reload();

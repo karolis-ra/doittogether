@@ -66,9 +66,23 @@ export default function MTB() {
               bėgimo metu išsiskiria endorfinai, yra specialus terminas –
               „bėgiko euforija“.
             </StyledText>
-            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+            <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
               <JoinText>prie bėgikų!</JoinText>
+            </FlexWrapper>
+            <FlexWrapper
+              $gap="5px"
+              $justifyContent="flex-end"
+              $padding="0 20px 20px 0"
+            >
+              <FlexWrapper>
+                <a
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </a>
+              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>

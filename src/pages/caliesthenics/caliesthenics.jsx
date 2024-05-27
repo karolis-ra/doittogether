@@ -24,7 +24,7 @@ export default function MTB() {
           $bgImage="/images/cali.jpg"
           $justifyContent="center"
           $alignItems="center"
-          alt='calisthenics'
+          alt="calisthenics"
         >
           <StyledTitle>GATVĖS GIMNASTIKA</StyledTitle>
         </FlexWrapper>
@@ -60,9 +60,23 @@ export default function MTB() {
               namie, miškuose ar net poilsiaujant prie jūros.
               <br /> <br />
             </StyledText>
-            <FlexWrapper $gap="10px" $alignItems="center" $padding="0 0 40px 0">
+            <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
               <JoinText>gatvės gimnastų!</JoinText>
+            </FlexWrapper>
+            <FlexWrapper
+              $gap="5px"
+              $justifyContent="flex-end"
+              $padding="0 20px 20px 0"
+            >
+              <FlexWrapper>
+                <a
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </a>
+              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
