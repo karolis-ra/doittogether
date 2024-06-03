@@ -58,6 +58,14 @@ export default function MTB() {
               deja, riboja naujų techninių sprendimų ir netradicinių dviračių
               konstrukcijų taikymą. Dauguma tokių modelių sveria mažiau nei 10
               Kg. Plentinių dviračių padangos būna 18-25 mm pločio.
+              <FlexWrapper $justifyContent="flex-end">
+                <StyledSource
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </StyledSource>
+              </FlexWrapper>
             </StyledText>
             <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
@@ -67,16 +75,7 @@ export default function MTB() {
               $gap="5px"
               $justifyContent="flex-end"
               $padding="0 20px 20px 0"
-            >
-              <FlexWrapper>
-                <a
-                  href="https://bikko.lt/pagalba/dviraciu-tipai"
-                  target="blank"
-                >
-                  ŠALTINIO NUORODA
-                </a>
-              </FlexWrapper>
-            </FlexWrapper>
+            ></FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
       </CenterWrap>
@@ -105,4 +104,10 @@ const StyledTitle = styled.div`
 const JoinText = styled.div`
   color: ${COLORS.saladGreen};
   font-weight: 600;
+`;
+
+const StyledSource = styled.a`
+  font-size: 10px;
+  font-style: italic;
+  margin-top: 10px;
 `;

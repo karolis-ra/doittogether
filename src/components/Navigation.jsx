@@ -34,7 +34,7 @@ export const Navigation = () => {
   };
 
   const handleLogoClick = () => {
-    navigate("/home");
+    navigate("/");
   };
 
   const { showModal } = useSelector(navigationSelector);

@@ -64,6 +64,14 @@ export default function MTB() {
               padeda greičiau susidoroti su stresu). <br /> <br />
               6. Pagerėja širdies ir kraujagyslių sistema (ypač atliekant kardio
               pratimus).
+              <FlexWrapper $justifyContent="flex-end">
+                <StyledSource
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </StyledSource>
+              </FlexWrapper>
             </StyledText>
             <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
@@ -74,14 +82,6 @@ export default function MTB() {
               $justifyContent="flex-end"
               $padding="0 20px 20px 0"
             >
-              <FlexWrapper>
-                <a
-                  href="https://bikko.lt/pagalba/dviraciu-tipai"
-                  target="blank"
-                >
-                  ŠALTINIO NUORODA
-                </a>
-              </FlexWrapper>
             </FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
@@ -111,4 +111,10 @@ const StyledTitle = styled.div`
 const JoinText = styled.div`
   color: ${COLORS.saladGreen};
   font-weight: 600;
+`;
+
+const StyledSource = styled.a`
+  font-size: 10px;
+  font-style: italic;
+  margin-top: 10px;
 `;

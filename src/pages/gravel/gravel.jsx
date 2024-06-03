@@ -56,6 +56,14 @@ export default function MTB() {
               montuojama plataus diapazono galinė žvaigždžių kasetė. Galima
               trumpai reziumuoti, kad Gravel tipo dviračiai labiau mėgstami
               keliautojų, ir mėgėjų važiuoti įvairiomis sąlygomis.
+              <FlexWrapper $justifyContent="flex-end">
+                <StyledSource
+                  href="https://bikko.lt/pagalba/dviraciu-tipai"
+                  target="blank"
+                >
+                  ŠALTINIO NUORODA
+                </StyledSource>
+              </FlexWrapper>
             </StyledText>
             <FlexWrapper $gap="10px" $alignItems="center">
               <DefaultButton to="/login">Prisijunk</DefaultButton>
@@ -65,16 +73,7 @@ export default function MTB() {
               $gap="5px"
               $justifyContent="flex-end"
               $padding="0 20px 20px 0"
-            >
-              <FlexWrapper>
-                <a
-                  href="https://bikko.lt/pagalba/dviraciu-tipai"
-                  target="blank"
-                >
-                  ŠALTINIO NUORODA
-                </a>
-              </FlexWrapper>
-            </FlexWrapper>
+            ></FlexWrapper>
           </FlexWrapper>
         </FlexWrapper>
       </CenterWrap>
@@ -103,4 +102,10 @@ const StyledTitle = styled.div`
 const JoinText = styled.div`
   color: ${COLORS.saladGreen};
   font-weight: 600;
+`;
+
+const StyledSource = styled.a`
+  font-size: 10px;
+  font-style: italic;
+  margin-top: 10px;
 `;

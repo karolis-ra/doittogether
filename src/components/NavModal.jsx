@@ -18,6 +18,10 @@ export const NavModal = () => {
     dispatch(hideModal());
   };
 
+  const handleLogoClick = () => {
+    navigate("/");
+  };
+
   const logout = () => {
     const auth = getAuth();
     signOut(auth)
